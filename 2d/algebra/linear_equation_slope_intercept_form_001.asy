@@ -23,9 +23,6 @@
 /*  Provides a vector struct for drawing lines and curves.                    */
 import vec2;
 
-/*  Sharp tikz style arrows provided here.                                    */
-import custom_arrows as arrows;
-
 /*  Functions for adding grid lines to a drawing.                             */
 import grid_lines as grid;
 
