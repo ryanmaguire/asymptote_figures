@@ -21,19 +21,19 @@
  ******************************************************************************/
 
 /*  Provides a vector struct for drawing lines and curves.                    */
-import "vec2.asy" as vec2;
+import vec2 as vec2;
 
 /*  Functions for creating paths from real-valued functions.                  */
-import "path_functions.asy" as pf;
+import path_functions as pf;
 
 /*  Functions for adding grid lines to a drawing.                             */
-import "grid_lines.asy" as grid;
+import grid_lines as grid;
 
 /*  Functions for plotting the x and y axes.                                  */
-import "coordinate_axes.asy" as axes;
+import coordinate_axes as axes;
 
 /*  Default pens and parameters for size(512) drawings provided here.         */
-import "size_512_default_settings.asy" as default;
+import size_512_default_settings as default;
 
 /*  The parabola function to be drawn.                                        */
 real two_minus_x_squared(real x)
