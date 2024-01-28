@@ -22,7 +22,7 @@
  ******************************************************************************/
 
 /*  Provides a vector struct for drawing lines and curves.                    */
-import vec2 as vec2;
+import vec2;
 
 /*  Default pens and parameters for size(64) drawings provided here.          */
 import size_64_default_settings as default;
