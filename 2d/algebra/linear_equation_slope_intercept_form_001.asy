@@ -21,7 +21,7 @@
  ******************************************************************************/
 
 /*  Provides a vector struct for drawing lines and curves.                    */
-import vec2 as vec2;
+import vec2;
 
 /*  Sharp tikz style arrows provided here.                                    */
 import custom_arrows as arrows;

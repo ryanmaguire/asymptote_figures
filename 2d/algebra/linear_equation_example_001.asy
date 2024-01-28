@@ -21,7 +21,7 @@
  ******************************************************************************/
 
 /*  Two dimensional vector struct provided here.                              */
-import vec2 as vec2;
+import vec2;
 
 /*  Functions for adding grid lines to a drawing.                             */
 import grid_lines as grid;

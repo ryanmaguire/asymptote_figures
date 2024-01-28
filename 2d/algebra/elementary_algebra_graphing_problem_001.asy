@@ -21,7 +21,7 @@
  ******************************************************************************/
 
 /*  Provides a vector struct for drawing lines and curves.                    */
-import vec2 as vec2;
+import vec2;
 
 /*  Functions for creating paths from real-valued functions.                  */
 import path_functions as pf;
