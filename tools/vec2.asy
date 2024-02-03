@@ -921,3 +921,8 @@ void AddLabel(picture pic = currentpicture, Label L, Vec2 v,
 {
     label(pic = pic, L, v.AsPair(), align = a, p = p, filltype = f);
 }
+
+path Arc(Vec2 center, real radius, real start_angle, real end_angle)
+{
+    return arc(center.AsPair(), radius, start_angle, end_angle);
+}
