@@ -318,7 +318,7 @@ struct Vec2 {
 
     /**************************************************************************
      *  Method:                                                               *
-     *      AsTriple                                                          *
+     *      EmbedXY                                                           *
      *  Purpose:                                                              *
      *      Converts a Vec2 object into a triple (asymptote primitive).       *
      *  Arguments:                                                            *
@@ -329,11 +329,49 @@ struct Vec2 {
      *  Method:                                                               *
      *      Convert *this* into a tuple and return.                           *
      **************************************************************************/
-    triple AsTriple()
+    triple EmbedXY()
     {
         return (this.x, this.y, 0.0);
     }
-    /*  End of AsTriple.                                                      */
+    /*  End of EmbedXY.                                                       */
+
+    /**************************************************************************
+     *  Method:                                                               *
+     *      EmbedXZ                                                           *
+     *  Purpose:                                                              *
+     *      Converts a Vec2 object into a triple (asymptote primitive).       *
+     *  Arguments:                                                            *
+     *      None (void).                                                      *
+     *  Output:                                                               *
+     *      P (triple):                                                       *
+     *          The ordered triple (this.x, 0.0, this.y).                     *
+     *  Method:                                                               *
+     *      Convert *this* into a tuple and return.                           *
+     **************************************************************************/
+    triple EmbedXZ()
+    {
+        return (this.x, 0.0, this.y);
+    }
+    /*  End of EmbedXZ.                                                       */
+
+    /**************************************************************************
+     *  Method:                                                               *
+     *      EmbedYZ                                                           *
+     *  Purpose:                                                              *
+     *      Converts a Vec2 object into a triple (asymptote primitive).       *
+     *  Arguments:                                                            *
+     *      None (void).                                                      *
+     *  Output:                                                               *
+     *      P (triple):                                                       *
+     *          The ordered triple (0.0, this.x, this.y).                     *
+     *  Method:                                                               *
+     *      Convert *this* into a tuple and return.                           *
+     **************************************************************************/
+    triple EmbedYZ()
+    {
+        return (0.0, this.x, this.y);
+    }
+    /*  End of EmbedYZ.                                                       */
 
     /**************************************************************************
      *  Method:                                                               *
@@ -911,18 +949,190 @@ Vec2 ProjectXYZ(real x, real y, real z)
 }
 /*  End of ProjectXYZ.                                                        */
 
+/******************************************************************************
+ *  Function:                                                                 *
+ *      DrawDot                                                               *
+ *  Purpose:                                                                  *
+ *      Draws a dot about a given point in the plane.                         *
+ *  Arguments:                                                                *
+ *      v (Vec2):                                                             *
+ *          The center of the dot.                                            *
+ *      r (real):                                                             *
+ *          The radius of the dot.                                            *
+ *  Keywords:                                                                 *
+ *      fillpen (pen):                                                        *
+ *          The pen used to fill in the dot.                                  *
+ *      drawpen (pen):                                                        *
+ *          The pen used for the outline of the dot.                          *
+ *  Outputs:                                                                  *
+ *      None (void).                                                          *
+ ******************************************************************************/
 void DrawDot(Vec2 v, real r, pen fillpen = black, pen drawpen = black)
 {
     filldraw(circle(v.AsPair(), r), fillpen = fillpen, drawpen = drawpen);
 }
+/*  End of DrawDot.                                                           */
 
+/******************************************************************************
+ *  Function:                                                                 *
+ *      AddLabel                                                              *
+ *  Purpose:                                                                  *
+ *      Draws a dot about a given point in the plane.                         *
+ *  Arguments:                                                                *
+ *      v (Vec2):                                                             *
+ *          The center of the dot.                                            *
+ *      r (real):                                                             *
+ *          The radius of the dot.                                            *
+ *  Keywords:                                                                 *
+ *      fillpen (pen):                                                        *
+ *          The pen used to fill in the dot.                                  *
+ *      drawpen (pen):                                                        *
+ *          The pen used for the outline of the dot.                          *
+ *  Outputs:                                                                  *
+ *      None (void).                                                          *
+ ******************************************************************************/
 void AddLabel(picture pic = currentpicture, Label L, Vec2 v,
               align a = NoAlign, pen p = currentpen, filltype f = NoFill)
 {
     label(pic = pic, L, v.AsPair(), align = a, p = p, filltype = f);
 }
+/*  End of AddLabel.                                                          */
 
+/******************************************************************************
+ *  Function:                                                                 *
+ *      Arc                                                                   *
+ *  Purpose:                                                                  *
+ *      Creates a path from an arc of a circle.                               *
+ *  Arguments:                                                                *
+ *      center (Vec2):                                                        *
+ *          The center of the arc.                                            *
+ *      radius (real):                                                        *
+ *          The radius of the arc.                                            *
+ *      start_angle (real):                                                   *
+ *          The starting angle, in degrees, of the arc.                       *
+ *      end_angle (real):                                                     *
+ *          The ending angle, in degrees, of the arc.                         *
+ *  Outputs:                                                                  *
+ *      g (path):                                                             *
+ *          The arc on the circle.                                            *
+ ******************************************************************************/
 path Arc(Vec2 center, real radius, real start_angle, real end_angle)
 {
     return arc(center.AsPair(), radius, start_angle, end_angle);
 }
+/*  End of Arc.                                                               */
+
+/******************************************************************************
+ *  Function:                                                                 *
+ *      Midpoint                                                              *
+ *  Purpose:                                                                  *
+ *      Computes the midpoint of two points in the plane.                     *
+ *  Arguments:                                                                *
+ *      P (Vec2):                                                             *
+ *          A point in the plane.                                             *
+ *      Q (Vec2):                                                             *
+ *          Another point in the plane.                                       *
+ *  Outputs:                                                                  *
+ *      M (Vec2):                                                             *
+ *          The middle of P and Q.                                            *
+ ******************************************************************************/
+Vec2 Midpoint(Vec2 P, Vec2 Q)
+{
+    return 0.5 * (P + Q);
+}
+/*  End of Midpoint.                                                          */
+
+/******************************************************************************
+ *  Function:                                                                 *
+ *      Angle                                                                 *
+ *  Purpose:                                                                  *
+ *      Computes the angle two points make with the origin.                   *
+ *  Arguments:                                                                *
+ *      P (Vec2):                                                             *
+ *          A point in the plane.                                             *
+ *      Q (Vec2):                                                             *
+ *          Another point in the plane.                                       *
+ *  Outputs:                                                                  *
+ *      theta (real):                                                         *
+ *          The angle between P and Q.                                        *
+ ******************************************************************************/
+real Angle(Vec2 P, Vec2 Q)
+{
+    return acos(P.Dot(Q) / (P.Norm() * Q.Norm()));
+}
+/*  End of Angle.                                                             */
+
+/******************************************************************************
+ *  Function:                                                                 *
+ *      RelativeAngle                                                         *
+ *  Purpose:                                                                  *
+ *      Computes the angle two points make with respect to another point.     *
+ *  Arguments:                                                                *
+ *      P (Vec2):                                                             *
+ *          A point in the plane.                                             *
+ *      Q (Vec2):                                                             *
+ *          Another point in the plane.                                       *
+ *      C (Vec2):                                                             *
+ *          The point the angle is made with respect to.                      *
+ *  Outputs:                                                                  *
+ *      theta (real):                                                         *
+ *          The angle between P and Q with respect to C.                      *
+ ******************************************************************************/
+real RelativeAngle(Vec2 P, Vec2 Q, Vec2 C)
+{
+    Vec2 PC = P - C;
+    Vec2 QC = Q - C;
+    return Angle(PC, QC);
+}
+/*  End of RelativeAngle.                                                     */
+
+/******************************************************************************
+ *  Function:                                                                 *
+ *      Arc                                                                   *
+ *  Purpose:                                                                  *
+ *      Creates a path from an arc of a circle.                               *
+ *  Arguments:                                                                *
+ *      P (Vec2):                                                             *
+ *          A point on the circle.                                            *
+ *      Q (Vec2):                                                             *
+ *          Another point on the circle.                                      *
+ *      radius (real):                                                        *
+ *          The radius of the circle.                                         *
+ *  Outputs:                                                                  *
+ *      g (path):                                                             *
+ *          The arc on the circle.                                            *
+ ******************************************************************************/
+path Arc(Vec2 P, Vec2 Q, real radius)
+{
+    /*  Conversion factor to go from radians to degrees.                      */
+    real dpr = 180.0 / pi;
+
+    /*  The center of the chord on the circle containing P and Q.             */
+    Vec2 M = Midpoint(P, Q);
+
+    /*  Line representing the chord from P to Q.                              */
+    Vec2 PQ = Q - P;
+
+    /*  Orthogonal vector. This points from M to the center of the circle.    */
+    Vec2 ortho = PQ.AsUnitOrthogonal();
+
+    /*  The distance from M to the center can be computed using Pythagoras.   *
+     *  Since PQC, C being the center of the circle, is an isosceles triangle *
+     *  the height is sqrt(r^2 - (d/2)^2) where r is the radius and d is the  *
+     *  distance from P to Q. Compute using this.                             */
+    real dist = PQ.Norm();
+    real shift = sqrt(radius * radius - 0.25 * dist * dist);
+
+    /*  Compute the location of the center of the circle.                     */
+    Vec2 center = M + shift*ortho;
+
+    /*  Treat the center as the origin and compute angles for P and Q.        */
+    Vec2 relP = P - center;
+    Vec2 relQ = Q - center;
+    real start_angle = dpr * relP.PolarAngle();
+    real end_angle = dpr * relQ.PolarAngle();
+
+    /*  The arc can be computed from the main arc routine.                    */
+    return Arc(center, radius, start_angle, end_angle);
+}
+/*  End of Arc.                                                               */
