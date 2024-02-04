@@ -28,7 +28,7 @@ import size_512_default_settings as default;
 
 /*  Pens for the drawing. Fill color is gray, outline color is black.         */
 pen black_pen = black + linewidth(7.0pt);
-pen gray_pen = rgb(0.5, 0.5, 0.5);
+pen gray_pen = rgb(0.6, 0.6, 0.6);
 
 /*  The components are made from equilateral triangles. Need this factor.     */
 real sin_pi_by_3 = 0.8660254037844387;
