@@ -115,6 +115,16 @@ struct Vec2 {
     }
     /*  End of PolarAngle.                                                    */
 
+    real PositivePolarAngle()
+    {
+        real angle = this.PolarAngle();
+
+        if (angle < 0.0)
+            return angle + 2.0 * pi;
+
+        return angle;
+    }
+
     /**************************************************************************
      *  Method:                                                               *
      *      Dot                                                               *
@@ -1102,7 +1112,7 @@ real RelativeAngle(Vec2 P, Vec2 Q, Vec2 C)
  *      g (path):                                                             *
  *          The arc on the circle.                                            *
  ******************************************************************************/
-path Arc(Vec2 P, Vec2 Q, real radius)
+path Arc(Vec2 P, Vec2 Q, real radius, bool flip = false)
 {
     /*  Conversion factor to go from radians to degrees.                      */
     real dpr = 180.0 / pi;
@@ -1121,7 +1131,8 @@ path Arc(Vec2 P, Vec2 Q, real radius)
      *  the height is sqrt(r^2 - (d/2)^2) where r is the radius and d is the  *
      *  distance from P to Q. Compute using this.                             */
     real dist = PQ.Norm();
-    real shift = sqrt(radius * radius - 0.25 * dist * dist);
+    real shift_val = sqrt(radius * radius - 0.25 * dist * dist);
+    real shift = (flip ? -shift_val : shift_val);
 
     /*  Compute the location of the center of the circle.                     */
     Vec2 center = M + shift*ortho;
@@ -1129,8 +1140,8 @@ path Arc(Vec2 P, Vec2 Q, real radius)
     /*  Treat the center as the origin and compute angles for P and Q.        */
     Vec2 relP = P - center;
     Vec2 relQ = Q - center;
-    real start_angle = dpr * relP.PolarAngle();
-    real end_angle = dpr * relQ.PolarAngle();
+    real start_angle = dpr * relP.PositivePolarAngle();
+    real end_angle = dpr * relQ.PositivePolarAngle();
 
     /*  The arc can be computed from the main arc routine.                    */
     return Arc(center, radius, start_angle, end_angle);
