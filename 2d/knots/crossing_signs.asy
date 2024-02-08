@@ -1,38 +1,70 @@
 /******************************************************************************
- *                                 LICENSE                                    *
+ *                                  LICENSE                                   *
  ******************************************************************************
- *  This file is part of Mathematics-and-Physics.                             *
+ *  This file is part of asymptote_figures.                                   *
  *                                                                            *
- *  Mathematics-and-Physics is free software: you can redistribute it and/or  *
+ *  asymptote_figures is free software: you can redistribute it and/or        *
  *  modify it under the terms of the GNU General Public License as published  *
  *  by the Free Software Foundation, either version 3 of the License, or      *
  *  (at your option) any later version.                                       *
  *                                                                            *
- *  Mathematics-and-Physics is distributed in the hope that it will be useful *
+ *  asymptote_figures is distributed in the hope that it will be useful       *
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of            *
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             *
  *  GNU General Public License for more details.                              *
  *                                                                            *
  *  You should have received a copy of the GNU General Public License         *
- *  along with Mathematics-and-Physics.  If not, see                          *
- *  <https://www.gnu.org/licenses/>.                                          *
+ *  along with asymptote_figures. If not see <https://www.gnu.org/licenses/>. *
+ ******************************************************************************
+ *  Purpose:                                                                  *
+ *      Draws the trefoil knot as an oriented knot diagram.                   *
  ******************************************************************************/
 
-/*  Size of the figure.                                                       */
-size(128);
+/*  Vec2 struct provided here.                                                */
+import vec2;
 
-import custom_arrows;
-import settings;
-settings.outformat = "pdf";
+/*  Default parameters for a size(256) drawing provided here.                 */
+import size_256_default_settings as default;
 
-real arsize = 5bp;
-draw((0, 0) -- (1, 1), SharpArrow(arsize));
-draw((1, 0) -- (0, 1), white + linewidth(5pt));
-draw((1, 0) -- (0, 1), SharpArrow(arsize));
-label("$-$", (0.5, -0.3));
+/*  Margins to give the crossings an under-over look.                         */
+margin right_margins = TrueMargin(0.0, 2.3cm);
+margin left_margins = TrueMargin(2.3cm, 0.0);
 
-draw((3, 0) -- (2, 1), SharpArrow(arsize));
-draw((2, 0) -- (3, 1), white + linewidth(5pt));
-draw((2, 0) -- (3, 1), SharpArrow(arsize));
-label("$+$", (2.5, -0.3));
+/*  Points for the negative crossing on the left.                             */
+vec2.Vec2 NegOver[] = {
+    vec2.Vec2(1.0, 0.0),
+    vec2.Vec2(0.0, 1.0)
+};
 
+vec2.Vec2 NegUnder[] = {
+    vec2.Vec2(0.0, 0.0),
+    vec2.Vec2(1.0, 1.0)
+};
+
+/*  Points for the positive crossing on the right.                            */
+vec2.Vec2 PosOver[] = {
+    vec2.Vec2(2.0, 0.0),
+    vec2.Vec2(3.0, 1.0)
+};
+
+vec2.Vec2 PosUnder[] = {
+    vec2.Vec2(3.0, 0.0),
+    vec2.Vec2(2.0, 1.0)
+};
+
+/*  Points for the labels.                                                    */
+vec2.Vec2 NegLabel = vec2.Vec2(0.5, -0.2);
+vec2.Vec2 PosLabel = vec2.Vec2(2.5, -0.2);
+
+/*  Draw the crossings.                                                       */
+draw(NegOver[0].LineTo(NegOver[1]), default.sharp_arrow);
+draw(NegUnder[0].LineTo(NegUnder[1]), right_margins);
+draw(NegUnder[0].LineTo(NegUnder[1]), default.sharp_arrow, left_margins);
+
+draw(PosOver[0].LineTo(PosOver[1]), default.sharp_arrow);
+draw(PosUnder[0].LineTo(PosUnder[1]), right_margins);
+draw(PosUnder[0].LineTo(PosUnder[1]), default.sharp_arrow, left_margins);
+
+/*  Add the labels.                                                           */
+NegLabel.AddLabel("$-$");
+PosLabel.AddLabel("$+$");
