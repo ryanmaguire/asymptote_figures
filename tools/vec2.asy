@@ -1,21 +1,20 @@
 /******************************************************************************
  *                                  LICENSE                                   *
  ******************************************************************************
- *  This file is part of Mathematics-and-Physics.                             *
+ *  This file is part of asymptote_figures.                                   *
  *                                                                            *
- *  Mathematics-and-Physics is free software: you can redistribute it and/or  *
+ *  asymptote_figures is free software: you can redistribute it and/or        *
  *  modify it under the terms of the GNU General Public License as published  *
  *  by the Free Software Foundation, either version 3 of the License, or      *
  *  (at your option) any later version.                                       *
  *                                                                            *
- *  Mathematics-and-Physics is distributed in the hope that it will be useful *
+ *  asymptote_figures is distributed in the hope that it will be useful       *
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of            *
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             *
  *  GNU General Public License for more details.                              *
  *                                                                            *
  *  You should have received a copy of the GNU General Public License         *
- *  along with Mathematics-and-Physics.  If not, see                          *
- *  <https://www.gnu.org/licenses/>.                                          *
+ *  along with asymptote_figures. If not see <https://www.gnu.org/licenses/>. *
  ******************************************************************************
  *                                    vec2                                    *
  ******************************************************************************
@@ -434,6 +433,22 @@ struct Vec2 {
     void DrawDot(real radius)
     {
         filldraw(circle(this.AsPair(), radius));
+    }
+
+    /**************************************************************************
+     *  Method:                                                               *
+     *      DrawCircle                                                        *
+     *  Purpose:                                                              *
+     *      Draws a circle dot centered at *this*.                            *
+     *  Arguments:                                                            *
+     *      radius (real):                                                    *
+     *          The radius of the circle.                                     *
+     *  Output:                                                               *
+     *      None (void).                                                      *
+     **************************************************************************/
+    void DrawCircle(real radius)
+    {
+        draw(circle(this.AsPair(), radius));
     }
 }
 
