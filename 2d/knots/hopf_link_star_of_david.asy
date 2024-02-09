@@ -30,8 +30,8 @@ import line2;
 import size_512_default_settings as default;
 
 /*  Pens for the drawing. Yellow is fill color, black is outline.             */
-pen yellow_pen = rgb(1.0, 1.0, 0.0);
-pen black_pen = black + linewidth(6pt);
+pen fill_pen = rgb(0.95, 0.95, 0.95);
+pen draw_pen = rgb(0.0, 0.3, 1.0) + linewidth(6pt);
 
 /*  Radius of the "inner" and "outer" triangles.                              */
 real r = 1.0;
@@ -128,9 +128,9 @@ guide gAArc1 = rotate(180.0) * gBArc1;
 guide gAArc2 = rotate(180.0) * gBArc2;
 
 /*  Draw the link.                                                            */
-filldraw(gBArc0, yellow_pen, black_pen);
-filldraw(gBArc1, yellow_pen, black_pen);
-filldraw(gBArc2, yellow_pen, black_pen);
-filldraw(gAArc0, yellow_pen, black_pen);
-filldraw(gAArc1, yellow_pen, black_pen);
-filldraw(gAArc2, yellow_pen, black_pen);
+filldraw(gBArc0, fill_pen, draw_pen);
+filldraw(gBArc1, fill_pen, draw_pen);
+filldraw(gBArc2, fill_pen, draw_pen);
+filldraw(gAArc0, fill_pen, draw_pen);
+filldraw(gAArc1, fill_pen, draw_pen);
+filldraw(gAArc2, fill_pen, draw_pen);
