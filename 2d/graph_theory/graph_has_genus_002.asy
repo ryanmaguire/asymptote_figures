@@ -88,11 +88,11 @@ pair B3 = (1.2, 0.55);
 pair B4 = (1.28, 0.6);
 pair B5 = (1.36, 0.4);
 
-dot(V0);
-dot(V1);
-dot(V2);
-dot(V3);
-dot(V4);
+filldraw(circle(V0, 0.02), black, black);
+filldraw(circle(V1, 0.02), black, black);
+filldraw(circle(V2, 0.02), black, black);
+filldraw(circle(V3, 0.02), black, black);
+filldraw(circle(V4, 0.02), black, black);
 
 draw(V0 -- V2, dpen);
 draw(V1 -- V2, dpen);
