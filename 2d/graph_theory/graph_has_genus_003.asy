@@ -1,44 +1,57 @@
 /******************************************************************************
- *                                 LICENSE                                    *
+ *                                  LICENSE                                   *
  ******************************************************************************
- *  This file is part of Mathematics-and-Physics.                             *
+ *  This file is part of asymptote_figures.                                   *
  *                                                                            *
- *  Mathematics-and-Physics is free software: you can redistribute it and/or  *
+ *  asymptote_figures is free software: you can redistribute it and/or        *
  *  modify it under the terms of the GNU General Public License as published  *
  *  by the Free Software Foundation, either version 3 of the License, or      *
  *  (at your option) any later version.                                       *
  *                                                                            *
- *  Mathematics-and-Physics is distributed in the hope that it will be useful *
+ *  asymptote_figures is distributed in the hope that it will be useful       *
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of            *
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             *
  *  GNU General Public License for more details.                              *
  *                                                                            *
  *  You should have received a copy of the GNU General Public License         *
- *  along with Mathematics-and-Physics.  If not, see                          *
- *  <https://www.gnu.org/licenses/>.                                          *
+ *  along with asymptote_figures. If not see <https://www.gnu.org/licenses/>. *
+ ******************************************************************************
+ *  Purpose:                                                                  *
+ *      Draws an oriented trefoil with unsigned Gauss code.                   *
  ******************************************************************************/
 
-/*  Size of the figure.                                                       */
-size(128);
+/*  Vec2 struct provided here.                                                */
+import vec2;
+
+/*  Default parameters for a size(256) drawing provided here.                 */
+import size_256_default_settings as default;
 
 /*  Coordinates for the vertices of the graph.                                */
-pair[] A = {(-1.0, 1.0), (0.0, 0.0), (1.0, -1.0)};
-pair[] B = {(1.0, 1.0), (-1.0, -1.0)};
+vec2.Vec2 A[] = {
+    vec2.Vec2(-1.0, 1.0),
+    vec2.Vec2(0.0, 0.0),
+    vec2.Vec2(1.0, -1.0)
+};
+
+vec2.Vec2 B[] = {
+    vec2.Vec2(1.0, 1.0),
+    vec2.Vec2(-1.0, -1.0)
+};
 
 /*  Radius of the dots.                                                       */
-real radius = 0.05;
+default.dot_radius = 0.02;
 
 /*  Draw the edges.                                                           */
-draw(A[0] -- B[0]);
-draw(A[0] -- B[1]);
-draw(A[1] -- B[0]);
-draw(A[1] -- B[1]);
-draw(A[2] -- B[0]);
-draw(A[2] -- B[1]);
+draw(A[0].LineTo(B[0]));
+draw(A[0].LineTo(B[1]));
+draw(A[1].LineTo(B[0]));
+draw(A[1].LineTo(B[1]));
+draw(A[2].LineTo(B[0]));
+draw(A[2].LineTo(B[1]));
 
 /*  Dots for the vertices of the graph.                                       */
-filldraw(circle(A[0], radius), blue, black);
-filldraw(circle(A[1], radius), blue, black);
-filldraw(circle(A[2], radius), blue, black);
-filldraw(circle(B[0], radius), red, black);
-filldraw(circle(B[1], radius), red, black);
+A[0].DrawDot(default.dot_radius);
+A[1].DrawDot(default.dot_radius);
+A[2].DrawDot(default.dot_radius);
+B[0].DrawDot(default.dot_radius);
+B[1].DrawDot(default.dot_radius);
