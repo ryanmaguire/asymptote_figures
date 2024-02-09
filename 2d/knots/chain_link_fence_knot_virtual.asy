@@ -1,50 +1,59 @@
 /******************************************************************************
- *                                 LICENSE                                    *
+ *                                  LICENSE                                   *
  ******************************************************************************
- *  This file is part of Mathematics-and-Physics.                             *
+ *  This file is part of asymptote_figures.                                   *
  *                                                                            *
- *  Mathematics-and-Physics is free software: you can redistribute it and/or  *
+ *  asymptote_figures is free software: you can redistribute it and/or        *
  *  modify it under the terms of the GNU General Public License as published  *
  *  by the Free Software Foundation, either version 3 of the License, or      *
  *  (at your option) any later version.                                       *
  *                                                                            *
- *  Mathematics-and-Physics is distributed in the hope that it will be useful *
+ *  asymptote_figures is distributed in the hope that it will be useful       *
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of            *
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             *
  *  GNU General Public License for more details.                              *
  *                                                                            *
  *  You should have received a copy of the GNU General Public License         *
- *  along with Mathematics-and-Physics.  If not, see                          *
- *  <https://www.gnu.org/licenses/>.                                          *
+ *  along with asymptote_figures. If not see <https://www.gnu.org/licenses/>. *
+ ******************************************************************************
+ *  Purpose:                                                                  *
+ *      Draws an oriented trefoil with unsigned Gauss code.                   *
  ******************************************************************************/
 
-/*  PDF works best in LaTeX, so use this.                                     */
-import settings;
-settings.outformat = "pdf";
+/*  Vec2 struct provided here.                                                */
+import vec2;
 
-/*  Size of the figure.                                                       */
-size(128);
+/*  Default parameters for a size(256) drawing provided here.                 */
+import size_256_default_settings as default;
 
-pair A = (0.0, 0.0);
-pair B = (0.3, 0.5);
-pair C = (0.0, 1.0);
+/*  Points for the virtual knot.                                              */
+vec2.Vec2 A = vec2.Vec2(0.0, 0.0);
+vec2.Vec2 B = vec2.Vec2(0.3, 0.5);
+vec2.Vec2 AB0 = A + 0.45*(B - A);
+vec2.Vec2 AB1 = A + 0.55*(B - A);
+vec2.Vec2 C = vec2.Vec2(0.0, 1.0);
+vec2.Vec2 D = vec2.Vec2(1.0, 1.5);
+vec2.Vec2 E = vec2.Vec2(0.3, 0.0);
+vec2.Vec2 F = vec2.Vec2(0.0, 0.5);
+vec2.Vec2 G = vec2.Vec2(0.3, 1.0);
+vec2.Vec2 FG0 = F + 0.45*(G - F);
+vec2.Vec2 FG1 = F + 0.55*(G - F);
+vec2.Vec2 H = vec2.Vec2(1.0, -0.5);
+vec2.Vec2 I = B + 0.1*(C - B);
+vec2.Vec2 J = vec2.Vec2(0.53, 0.5);
 
-pair D = (1.0, 1.5);
-pair E = (0.3, 0.0);
-pair F = (0.0, 0.5);
-pair G = (0.3, 1.0);
-pair H = (1.0, -0.5);
+/*  Draw the knot diagram with over-under information.                        */
+draw(B.LineTo(C));
+draw(C.LineTo(D));
+draw(D.LineTo(E));
+draw(E.LineTo(F));
+draw(F.LineTo(FG0));
+draw(FG1.LineTo(G));
+draw(G.LineTo(H));
+draw(A.LineTo(AB0));
+draw(AB1.LineTo(B));
+draw(H.LineTo(A));
+draw(B.LineTo(I));
 
-draw(B -- C);
-draw(C -- D);
-draw(D -- E);
-draw(F -- G, white + linewidth(5pt));
-draw(E -- F);
-draw(F -- G);
-draw(G -- H);
-draw(A -- B, white + linewidth(5pt));
-draw(A -- B);
-draw(H -- A);
-draw(B -- (B + scale(0.1)*(C - B)));
-
-draw(circle((0.53, 0.5), 0.05), black);
+/*  Mark off the virtual crossing with a circle.                              */
+J.DrawCircle(0.05);

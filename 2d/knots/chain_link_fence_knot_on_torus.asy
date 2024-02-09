@@ -1,29 +1,27 @@
 /******************************************************************************
- *                                 LICENSE                                    *
+ *                                  LICENSE                                   *
  ******************************************************************************
- *  This file is part of Mathematics-and-Physics.                             *
+ *  This file is part of asymptote_figures.                                   *
  *                                                                            *
- *  Mathematics-and-Physics is free software: you can redistribute it and/or  *
+ *  asymptote_figures is free software: you can redistribute it and/or        *
  *  modify it under the terms of the GNU General Public License as published  *
  *  by the Free Software Foundation, either version 3 of the License, or      *
  *  (at your option) any later version.                                       *
  *                                                                            *
- *  Mathematics-and-Physics is distributed in the hope that it will be useful *
+ *  asymptote_figures is distributed in the hope that it will be useful       *
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of            *
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             *
  *  GNU General Public License for more details.                              *
  *                                                                            *
  *  You should have received a copy of the GNU General Public License         *
- *  along with Mathematics-and-Physics.  If not, see                          *
- *  <https://www.gnu.org/licenses/>.                                          *
+ *  along with asymptote_figures. If not see <https://www.gnu.org/licenses/>. *
+ ******************************************************************************
+ *  Purpose:                                                                  *
+ *      Draws an oriented trefoil with unsigned Gauss code.                   *
  ******************************************************************************/
 
-/*  PDF works best in LaTeX, so use this.                                     */
-import settings;
-settings.outformat = "pdf";
-
-/*  Size of the output figure.                                                */
-size(256);
+/*  Default parameters for a size(256) drawing provided here.                 */
+import size_256_default_settings as default;
 
 /*  The five vertices of K_5.                                                 */
 pair[] V;
