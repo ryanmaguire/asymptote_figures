@@ -2,7 +2,6 @@ import settings;
 import tube;
 import graph3;
 settings.render = 8;
-settings.outformat = "pdf";
 
 /*  Size of the image. Make this a power of 2 to avoid horizontal black lines.*/
 size(256);
