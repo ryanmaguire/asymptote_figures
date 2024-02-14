@@ -21,7 +21,7 @@
 import custom_arrows;
 
 /*  Size of the figure.                                                       */
-size(128);
+size(256);
 
 real arsize = 5bp;
 
