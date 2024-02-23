@@ -25,9 +25,9 @@ pair A = (0.0, 0.0);
 pair B = (1.0, 0.0);
 real rDot = 0.03;
 
-draw(A -- B, blue);
-draw(A{NE} .. B{SE}, blue);
-draw(A{SE} .. B{NE}, blue);
+draw(A -- B, red);
+draw(A{NE} .. B{SE}, red);
+draw(A{SE} .. B{NE}, red);
 
 filldraw(circle(A, rDot), grey, black);
 filldraw(circle(B, rDot), grey, black);
