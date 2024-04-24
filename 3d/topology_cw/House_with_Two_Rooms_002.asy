@@ -1,20 +1,13 @@
 // Boilerplate stuff.
-import settings;
 import tube;
 import three;
 
-if(!settings.multipleView) settings.batchView = false;
-
-settings.render      = 8;
-settings.outformat   = "pdf";
-settings.inlineimage = true;
-settings.embed       = true;
-settings.toolbar     = false;
-
-viewportmargin = (2, 2);
-
-currentprojection = perspective(camera = (60, 20, 20), up   = (0, 0, 1),
-                                target = (0,  0,  0),  zoom = 1.0);
+currentprojection = orthographic(
+    camera = (60, 20, 20),
+    up = (0, 0, 1),
+    target = (0,  0,  0),
+    zoom = 1.0
+);
 
 // Set up the lighting.
 currentlight = nolight;
@@ -36,9 +29,9 @@ guide3 g3;
 surface s;
 
 // Size of the box.
-real boxwidth  = 0.5*xlength;
+real boxwidth = 0.5*xlength;
 real boxystart = 0.15*ylength;
-real boxxstart = 0.5(xlength-boxwidth);
+real boxxstart = 0.5(xlength - boxwidth);
 
 // Materials used throughout.
 material pipe;
@@ -48,15 +41,14 @@ pen mgray = gray(0.4)+opacity(0.8);
 pen wgray = gray(0.3)+opacity(0.5);
 pen lgray = gray(0.9)+opacity(0.6);
 
-
 // Material for the curves.
 pipe = material(diffusepen=black, emissivepen=gray(0.2), specularpen=gray(0.2));
 
 // Draw the walls.
-g = (0.0,     0.0, 0.0)--
-    (xlength, 0.0, 0.0)--
-    (xlength, 0.0, 2*zlength)--
-    (0.0,     0.0, 2*zlength)--cycle;
+g = (0.0, 0.0, 0.0) --
+    (xlength, 0.0, 0.0) --
+    (xlength, 0.0, 2*zlength) --
+    (0.0, 0.0, 2*zlength) -- cycle;
 
 s = surface(g, planar=true);
 draw(s, wgray, render(merge=true));

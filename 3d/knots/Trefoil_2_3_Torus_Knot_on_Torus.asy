@@ -3,15 +3,18 @@ import tube;
 import graph3;
 import palette;
 settings.render=8;
-
 size(128);
 
 // Radii of the torus.
 real R = 1.5;
 real a = 1.0;
 
-currentprojection=perspective(camera = (100, 0, 100), up   = (0, 0, 1),
-                              target = (0, 0, 0),   zoom = 0.85);
+currentprojection = perspective(
+    camera = (100, 0, 100),
+    up = (0, 0, 1),
+    target = (0, 0, 0),
+    zoom = 0.85
+);
 
 triple f(real t)
 {
@@ -24,26 +27,29 @@ triple g(pair t)
 }
 
 // One light source
-currentlight = light(diffuse  = new pen[]    {white},
-                     specular = new pen[]    {white},
-                     position = new triple[] {0.25*X+0.25*Y+Z});
-
-
+currentlight = light(
+    diffuse = new pen[] {white},
+    specular = new pen[] {white},
+    position = new triple[] {0.25*X+0.25*Y+Z}
+);
 
 // Number of samples in the figure.
 int samples = 24;
 
-material pipe = material(diffusepen  = blue+0.3*green,
-                         emissivepen = gray(0.20),
-                         specularpen = gray(0.20));
+material pipe = material(
+    diffusepen = blue + 0.3*green,
+    emissivepen = gray(0.20),
+    specularpen = gray(0.20)
+);
 
-material blob = material(diffusepen=gray(0.7),
-                         emissivepen=gray(0.2),
-                         specularpen=gray(0.2));
+material blob = material(
+    diffusepen = gray(0.7),
+    emissivepen = gray(0.2),
+    specularpen = gray(0.2)
+);
 
-path3 p=graph(f, 0, 2pi, n=1000, operator ..);
-draw(tube(p, scale(0.1)*unitcircle), surfacepen=pipe, light=currentlight);
-
-
+path3 p = graph(f, 0, 2pi, n = 1000, operator ..);
 surface s = surface(g, (0,0), (2pi,2pi), samples, samples, Spline);
-draw(s, surfacepen=blob, render(merge=true));
+
+draw(tube(p, scale(0.1)*unitcircle), surfacepen = pipe, light = currentlight);
+draw(s, surfacepen = blob, render(merge = true));

@@ -9,7 +9,7 @@ currentprojection = perspective(
 );
 
 // Size of the output figure.
-size(256);
+size(512);
 
 pen mpen = black;
 int samplesx = 10;
@@ -17,7 +17,7 @@ int samplesy = 6;
 
 // Material for the xy plane.
 material blob = material(
-    diffusepen = gray(0.7) + opacity(0.8),
+    diffusepen = gray(0.7),
     emissivepen = gray(0.2),
     specularpen = gray(0.1)
 );
