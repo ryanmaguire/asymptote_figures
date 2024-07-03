@@ -33,7 +33,7 @@ TOOLS_OBJS := $(TOOLS_SRCS:%=$(TOOLS_DIR)/%)
 
 all: $(TOOLS_OBJS) $(OUT)
 
-$(OUT): $(ASY_DIR) $(TWO_OBJS) # $(THREE_OBJS)
+$(OUT): $(ASY_DIR) $(TWO_OBJS) $(THREE_OBJS)
 	touch done.txt
 
 $(BUILD_DIR)/%.pdf: %.asy
