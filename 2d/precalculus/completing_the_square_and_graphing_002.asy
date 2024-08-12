@@ -17,7 +17,7 @@
  *  along with asymptote_figures. If not see <https://www.gnu.org/licenses/>. *
  ******************************************************************************
  *  Purpose:                                                                  *
- *      Plots the function x^2 - 4x + 3.                                      *
+ *      Plots the function x^2 + 2x + 3.                                      *
  ******************************************************************************/
 
 /*  Provides a vector struct for drawing lines and curves.                    */
@@ -38,21 +38,21 @@ import size_256_default_settings as default;
 /*  The parabola function to be drawn.                                        */
 real parabola(real x)
 {
-    real arg = (x - 2.0);
-    return arg*arg - 1.0;
+    real arg = (x + 1.0);
+    return arg*arg + 2.0;
 }
 
 /*  Start and end values for the square guide-grid to be drawn.               */
-int grid_start = -1;
+int grid_start = -4;
 int grid_end = 4;
-vec2.Vec2 start = vec2.Vec2(-1.2, -1.2);
-vec2.Vec2 end = vec2.Vec2(4.4, 4.3);
+vec2.Vec2 start = vec2.Vec2(-4.4, -4.4);
+vec2.Vec2 end = vec2.Vec2(4.4, 4.4);
 
 /*  Number of samples used in drawing the parabola.                           */
 int samples = 20;
 
 /*  Create a path from the function.                                          */
-path plot = pf.PathFromFunction(parabola, 0.1, 3.9, samples);
+path plot = pf.PathFromFunction(parabola, -2.4, 0.4, samples);
 
 /*  Create the plot with tick-marks, axes, and directed arrows.               */
 grid.DrawGridLinesWithTickMarks(grid_start, grid_end, start, end);
@@ -60,4 +60,4 @@ axes.DrawAndLabelCoordinateAxes(start, end);
 draw(plot, default.sharp_arrows);
 
 /*  Add a label for the function above the graph.                             */
-label("$f(x)=x^{2}-4x+3$", (1.95, 2.5));
+label("$f(x)=x^{2}+2x+3$", (1.95, 2.5));
