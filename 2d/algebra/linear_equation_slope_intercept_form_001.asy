@@ -57,7 +57,7 @@ vec2.Vec2 b = vec2.Vec2(-2.1, 1.6);
 vec2.Vec2 y = vec2.Vec2(2.0, 3.3);
 
 /*  Add grid lines to the drawing.                                            */
-grid.DrawGridLinesWithTickMarks(grid_start, grid_end, grid_length);
+grid.DrawSquareGridLinesWithTickMarks(grid_start, grid_end, grid_length);
 
 /*  Draw the coordinate axes.                                                 */
 axes.DrawAndLabelSquareCoordinateAxes(axes_length);

@@ -17,7 +17,7 @@
  *  along with asymptote_figures. If not see <https://www.gnu.org/licenses/>. *
  ******************************************************************************
  *  Purpose:                                                                  *
- *      Plots the "cusp" curve y^3 = x^2.                                     *
+ *      Plots the function x^2 - 4x + 3.                                      *
  ******************************************************************************/
 
 /*  Provides a vector struct for drawing lines and curves.                    */
@@ -32,41 +32,32 @@ import grid_lines as grid;
 /*  Functions for plotting the x and y axes.                                  */
 import coordinate_axes as axes;
 
-/*  Default pens and parameters for size(512) drawings provided here.         */
-import size_512_default_settings as default;
+/*  Default pens and parameters for size(256) drawings provided here.         */
+import size_256_default_settings as default;
 
 /*  The parabola function to be drawn.                                        */
-real cusp_func(real x)
+real parabola(real x)
 {
-    return cbrt(x*x);
+    real arg = (x - 2.0);
+    return arg*arg - 1.0;
 }
 
 /*  Start and end values for the square guide-grid to be drawn.               */
-int grid_start = -3;
-int grid_end = 3;
+int grid_start = -1;
+int grid_end = 4;
+vec2.Vec2 start = vec2.Vec2(-1.2, -1.2);
+vec2.Vec2 end = vec2.Vec2(4.2, 4.2);
 
-/*  Length of the grid lines.                                                 */
-real grid_length = 3.2;
+/*  Number of samples used in drawing the parabola.                           */
+int samples = 20;
 
-/*  Number of samples for the square root and parabola functions.             */
-int samples = 10;
+/*  Create a path from the function.                                          */
+path plot = pf.PathFromFunction(parabola, 0.1, 3.9, samples);
 
-/*  The PathFromFunction function uses cubic splining. The function is not    *
- *  differentiable at the origin, causing a bizarre picture. Split the path   *
- *  into left and right portions, where the derivative is defined, so that    *
- *  the cubic splining technique renders an accurate image.                   */
-path gLeft = pf.PathFromFunction(cusp_func, -3.0, 0.0, samples);
-path gRight = reflect((0.0, 0.0), (0.0, 1.0))*gLeft;
+/*  Create the plot with tick-marks, axes, and directed arrows.               */
+grid.DrawGridLinesWithTickMarks(grid_start, grid_end, start, end);
+axes.DrawAndLabelCoordinateAxes(start, end);
+draw(plot, default.sharp_arrows);
 
-/*  Add grid lines to the drawing.                                            */
-grid.DrawSquareGridLinesWithTickMarks(grid_start, grid_end, grid_length);
-
-/*  Draw the coordinate axes.                                                 */
-axes.DrawAndLabelSquareCoordinateAxes(grid_length);
-
-/*  Draw the curve in the plane.                                              */
-draw(gLeft);
-draw(gRight);
-
-/*  And lastly add a label.                                                   */
-label("$y^{3}=x^{2}$", (1.5, 1.7));
+/*  Add a label for the function above the graph.                             */
+label("$f(x)=x^{2}-4x+3$", (1.95, 2.5));

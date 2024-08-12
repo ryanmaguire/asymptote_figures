@@ -62,7 +62,7 @@ path g_square = pf.PathFromFunction(two_minus_x_squared, -3.46, 3.46, samples);
 path g_root = pf.PathFromFunction(sqrt_two_minus_x, 2.0, -10.0, samples);
 
 /*  Add grid lines to the drawing.                                            */
-grid.DrawGridLinesWithTickMarks(grid_start, grid_end, grid_length);
+grid.DrawSquareGridLinesWithTickMarks(grid_start, grid_end, grid_length);
 
 /*  Draw the coordinate axes.                                                 */
 axes.DrawAndLabelSquareCoordinateAxes(grid_length);

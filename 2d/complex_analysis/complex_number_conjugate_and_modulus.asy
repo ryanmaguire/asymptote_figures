@@ -68,7 +68,7 @@ Z.DrawDot(default.dot_radius);
 ZBar.DrawDot(default.dot_radius);
 
 /*  Label Z, Z bar, the modulus |z|, and the complex plane C.                 */
-Z.AddLabel("$z=(x,\,y)$", N);
-ZBar.AddLabel("$\bar{z}=(x,\,-y)$", S);
-HalfZ.AddLabel("$|z|$", N);
+Z.AddLabel("$z=(x,\,y)$", vec2.North);
+ZBar.AddLabel("$\bar{z}=(x,\,-y)$", vec2.South);
+HalfZ.AddLabel("$|z|$", vec2.North);
 C.AddLabel("$\mathbb{C}$");

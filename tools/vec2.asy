@@ -414,9 +414,9 @@ struct Vec2 {
      *  Output:                                                               *
      *      None (void).                                                      *
      **************************************************************************/
-    void AddLabel(string L, pair offset = (0.0, 0.0))
+    void AddLabel(string L, Vec2 offset = Vec2(0.0, 0.0))
     {
-        label(L, this.AsPair(), offset);
+        label(L, this.AsPair(), offset.AsPair());
     }
 
     /**************************************************************************
@@ -435,6 +435,16 @@ struct Vec2 {
         filldraw(circle(this.AsPair(), radius));
     }
 
+    path Circle(real radius)
+    {
+        return circle(this.AsPair(), radius);
+    }
+
+    transform Shift()
+    {
+        return shift(this.AsPair());
+    }
+
     /**************************************************************************
      *  Method:                                                               *
      *      DrawCircle                                                        *
@@ -448,7 +458,7 @@ struct Vec2 {
      **************************************************************************/
     void DrawCircle(real radius)
     {
-        draw(circle(this.AsPair(), radius));
+        draw(this.Circle(radius));
     }
 }
 
@@ -923,6 +933,7 @@ Vec2 East = Vec2(1.0, 0.0);
 Vec2 North = Vec2(0.0, 1.0);
 Vec2 West = Vec2(-1.0, 0.0);
 Vec2 South = Vec2(0.0, -1.0);
+Vec2 Origin = Vec2(0.0, 0.0);
 
 /*  Value used to scale the axes in the ProjectXYZ function below.            */
 private real shear_factor = -0.4;
@@ -1162,3 +1173,52 @@ path Arc(Vec2 P, Vec2 Q, real radius, bool flip = false)
     return Arc(center, radius, start_angle, end_angle);
 }
 /*  End of Arc.                                                               */
+
+/******************************************************************************
+ *  Function:                                                                 *
+ *      PointOnLine                                                           *
+ *  Purpose:                                                                  *
+ *      Computes the point on a line parameterized by two fixed points.       *
+ *  Arguments:                                                                *
+ *      t (real):                                                             *
+ *          The time parameter corresponding to the desired point.            *
+ *      P (Vec2):                                                             *
+ *          The starting point for the line, corresponding to t = 0.          *
+ *      Q (Vec2):                                                             *
+ *          The finishing point for the line, corresponding to t = 1.         *
+ *  Output:                                                                   *
+ *      out (Vec2):                                                           *
+ *          The point (1-t)P + tQ.                                            *
+ *  Method:                                                                   *
+ *      Compute (1-t)*P and t*Q and then compute their sum.                   *
+ ******************************************************************************/
+Vec2 PointOnLine(real t, Vec2 P, Vec2 Q)
+{
+    Vec2 X0 = (1.0 - t) * P;
+    Vec2 X1 = t * Q;
+    return X0 + X1;
+}
+/*  End of PointOnLine.                                                       */
+
+/******************************************************************************
+ *  Function:                                                                 *
+ *      PlaneToDisk                                                           *
+ *  Purpose:                                                                  *
+ *      Provides an explicit smooth transformation of the Euclidean plane to  *
+ *      the unit disk (i.e. a diffeomorphism).                                *
+ *  Arguments:                                                                *
+ *      P (Vec2):                                                             *
+ *          A point in the Euclidean plane.                                   *
+ *  Output:                                                                   *
+ *      out (Vec2):                                                           *
+ *          The point P transformed to the unit disk.                         *
+ *  Method:                                                                   *
+ *      Compute 1 / (1 + ||P||^2) and scale the input by this.                *
+ ******************************************************************************/
+Vec2 PlaneToDisk(Vec2 P)
+{
+    real norm_squared = P.NormSq();
+    real factor = 1.0 / (1.0 + norm_squared);
+    return factor * P;
+}
+/*  End of PlaneToDisk.                                                       */

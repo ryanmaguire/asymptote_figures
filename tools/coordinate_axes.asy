@@ -22,7 +22,10 @@
  ******************************************************************************/
 
 /*  Sharp tikz-style arrows found here.                                       */
-access "custom_arrows.asy" as arrows;
+import custom_arrows as arrows;
+
+/*  Points and directions in the plane.                                       */
+import vec2;
 
 /*  Default arrow head.                                                       */
 arrowbar default_arrow = arrows.SharpArrow(8bp);
@@ -39,16 +42,16 @@ pen default_tick_pen = black + linewidth(0.4pt) + fontsize(12pt);
  *  Purpose:                                                                  *
  *      Draw the x and y axes and gives them labels.                          *
  *  Arguments:                                                                *
- *      start (pair):                                                         *
+ *      start (vec2.Vec2):                                                    *
  *          The smallest values for the x and y axes. The x axis will begin   *
  *          at start.x and the y axis at start.y.                             *
- *      end (pair):                                                           *
+ *      end (vec2.Vec2):                                                      *
  *          The largest values for the x and y axes. The x axis will end at   *
  *          end.x and the y axis ends at end.y.                               *
  *  Keywords:                                                                 *
- *      x_label_dir (pair):                                                   *
+ *      x_label_dir (vec2.Vec2):                                              *
  *          The direction of the label for the x axis. Default is South.      *
- *      y_label_dir (pair):                                                   *
+ *      y_label_dir (vec2.Vec2):                                              *
  *          The direction of the label for the y axis. Default is East.       *
  *      axis_pen (pen):                                                       *
  *          Pen used to draw the axis.                                        *
@@ -57,29 +60,30 @@ pen default_tick_pen = black + linewidth(0.4pt) + fontsize(12pt);
  *  Outputs:                                                                  *
  *      None (void).                                                          *
  ******************************************************************************/
-void DrawAndLabelCoordinateAxes(pair start, pair end,
-                                pair x_label_dir = S,
-                                pair y_label_dir = E,
+void DrawAndLabelCoordinateAxes(vec2.Vec2 start,
+                                vec2.Vec2 end,
+                                vec2.Vec2 x_label_dir = vec2.South,
+                                vec2.Vec2 y_label_dir = vec2.East,
                                 pen axis_pen = default_axis_pen,
                                 arrowbar arrow = default_arrow,
                                 string x_string = "x",
                                 string y_string = "y")
 {
     /*  Start and end of the x axis, given by the start and end parameters.   */
-    pair left = (start.x, 0.0);
-    pair right = (end.x, 0.0);
+    vec2.Vec2 left = vec2.Vec2(start.x, 0.0);
+    vec2.Vec2 right = vec2.Vec2(end.x, 0.0);
 
     /*  Similarly provide the start and end of the y axis.                    */
-    pair bottom = (0.0, start.y);
-    pair top = (0.0, end.y);
+    vec2.Vec2 bottom = vec2.Vec2(0.0, start.y);
+    vec2.Vec2 top = vec2.Vec2(0.0, end.y);
 
     /*  Create labels for the two axes.                                       */
     Label x_label = Label("$" + x_string + "$", position = 1.0);
     Label y_label = Label("$" + y_string + "$", position = 1.0);
 
     /*  Draw the coordinate axes with labels.                                 */
-    draw(x_label, left -- right, x_label_dir, axis_pen, arrow);
-    draw(y_label, bottom -- top, y_label_dir, axis_pen, arrow);
+    draw(x_label, left.LineTo(right), x_label_dir.AsPair(), axis_pen, arrow);
+    draw(y_label, bottom.LineTo(top), y_label_dir.AsPair(), axis_pen, arrow);
 }
 /*  End of DrawAndLabelCoordinateAxes.                                        */
 
@@ -92,9 +96,9 @@ void DrawAndLabelCoordinateAxes(pair start, pair end,
  *      axis_length (real):                                                   *
  *          The length of the x and y axes.                                   *
  *  Keywords:                                                                 *
- *      x_label_dir (pair):                                                   *
+ *      x_label_dir (vec2.Vec2):                                              *
  *          The direction of the label for the x axis. Default is South.      *
- *      y_label_dir (pair):                                                   *
+ *      y_label_dir (vec2.Vec2):                                              *
  *          The direction of the label for the y axis. Default is East.       *
  *      axis_pen (pen):                                                       *
  *          Pen used to draw the axis.                                        *
@@ -104,22 +108,28 @@ void DrawAndLabelCoordinateAxes(pair start, pair end,
  *      None (void).                                                          *
  ******************************************************************************/
 void DrawAndLabelSquareCoordinateAxes(real axis_length,
-                                      pair x_label_dir = S,
-                                      pair y_label_dir = E,
+                                      vec2.Vec2 x_label_dir = vec2.South,
+                                      vec2.Vec2 y_label_dir = vec2.East,
                                       pen axis_pen = default_axis_pen,
                                       arrowbar arrow = default_arrow,
                                       string x_string = "x",
                                       string y_string = "y")
 {
     /*  Compute the start and end points of the axes.                         */
-    pair start = (-axis_length, -axis_length);
-    pair end = (axis_length, axis_length);
+    vec2.Vec2 start = vec2.Vec2(-axis_length, -axis_length);
+    vec2.Vec2 end = vec2.Vec2(axis_length, axis_length);
 
     /*  Pass these points to the main axes functions.                         */
-    DrawAndLabelCoordinateAxes(start, end, x_label_dir = x_label_dir,
-                               y_label_dir = y_label_dir,
-                               axis_pen = axis_pen, arrow = arrow,
-                               x_string = x_string, y_string = y_string);
+    DrawAndLabelCoordinateAxes(
+        start,
+        end,
+        x_label_dir = x_label_dir,
+        y_label_dir = y_label_dir,
+        axis_pen = axis_pen,
+        arrow = arrow,
+        x_string = x_string,
+        y_string = y_string
+    );
 }
 /*  End of DrawAndLabelSquareCoordinateAxes.                                  */
 
@@ -134,9 +144,9 @@ void DrawAndLabelSquareCoordinateAxes(real axis_length,
  *      axis_end (real):                                                      *
  *          Final value of the x and y axes.                                  *
  *  Keywords:                                                                 *
- *      x_label_dir (pair):                                                   *
+ *      x_label_dir (vec2.Vec2):                                              *
  *          The direction of the label for the x axis. Default is South.      *
- *      y_label_dir (pair):                                                   *
+ *      y_label_dir (vec2.Vec2):                                              *
  *          The direction of the label for the y axis. Default is East.       *
  *      axis_pen (pen):                                                       *
  *          Pen used to draw the axis.                                        *
@@ -145,23 +155,30 @@ void DrawAndLabelSquareCoordinateAxes(real axis_length,
  *  Outputs:                                                                  *
  *      None (void).                                                          *
  ******************************************************************************/
-void DrawAndLabelRectangularCoordinateAxes(real axis_start, real axis_end,
-                                           pair x_label_dir = S,
-                                           pair y_label_dir = E,
+void DrawAndLabelRectangularCoordinateAxes(real axis_start,
+                                           real axis_end,
+                                           vec2.Vec2 x_label_dir = vec2.South,
+                                           vec2.Vec2 y_label_dir = vec2.East,
                                            pen axis_pen = default_axis_pen,
                                            arrowbar arrow = default_arrow,
                                            string x_string = "x",
                                            string y_string = "y")
 {
     /*  Compute the start and end points of the axes.                         */
-    pair start = (axis_start, axis_start);
-    pair end = (axis_end, axis_end);
+    vec2.Vec2 start = vec2.Vec2(axis_start, axis_start);
+    vec2.Vec2 end = vec2.Vec2(axis_end, axis_end);
 
     /*  Pass these points to the main axes functions.                         */
-    DrawAndLabelCoordinateAxes(start, end, x_label_dir = x_label_dir,
-                               y_label_dir = y_label_dir,
-                               axis_pen = axis_pen, arrow = arrow,
-                               x_string = x_string, y_string = y_string);
+    DrawAndLabelCoordinateAxes(
+        start,
+        end,
+        x_label_dir = x_label_dir,
+        y_label_dir = y_label_dir,
+        axis_pen = axis_pen,
+        arrow = arrow,
+        x_string = x_string,
+        y_string = y_string
+    );
 }
 /*  End of DrawAndLabelRectangularCoordinateAxes.                             */
 
@@ -171,16 +188,16 @@ void DrawAndLabelRectangularCoordinateAxes(real axis_start, real axis_end,
  *  Purpose:                                                                  *
  *      Draw the x and y axes and gives them labels with tick marks.          *
  *  Arguments:                                                                *
- *      start (pair):                                                         *
+ *      start (vec2.Vec2):                                                    *
  *          The smallest values for the x and y axes. The x axis will begin   *
  *          at start.x and the y axis at start.y.                             *
- *      end (pair):                                                           *
+ *      end (vec2.Vec2):                                                      *
  *          The largest values for the x and y axes. The x axis will end at   *
  *          end.x and the y axis ends at end.y.                               *
  *  Keywords:                                                                 *
- *      x_label_dir (pair):                                                   *
+ *      x_label_dir (vec2.Vec2):                                              *
  *          The direction of the label for the x axis. Default is South.      *
- *      y_label_dir (pair):                                                   *
+ *      y_label_dir (vec2.Vec2):                                              *
  *          The direction of the label for the y axis. Default is East.       *
  *      axis_pen (pen):                                                       *
  *          Pen used to draw the axis.                                        *
@@ -189,9 +206,10 @@ void DrawAndLabelRectangularCoordinateAxes(real axis_start, real axis_end,
  *  Outputs:                                                                  *
  *      None (void).                                                          *
  ******************************************************************************/
-void DrawAndLabelCoordinateAxesWithTickMarks(pair start, pair end,
-                                             pair x_label_dir = S,
-                                             pair y_label_dir = E,
+void DrawAndLabelCoordinateAxesWithTickMarks(vec2.Vec2 start,
+                                             vec2.Vec2 end,
+                                             vec2.Vec2 x_label_dir = vec2.South,
+                                             vec2.Vec2 y_label_dir = vec2.East,
                                              pen axis_pen = default_axis_pen,
                                              arrowbar arrow = default_arrow,
                                              real x_tick_length = 0.1,
@@ -215,9 +233,14 @@ void DrawAndLabelCoordinateAxesWithTickMarks(pair start, pair end,
 
     /*  Draw the coordinate axes using the previous function.                 */
     DrawAndLabelCoordinateAxes(
-        start, end, x_label_dir = x_label_dir,
-        y_label_dir = y_label_dir, axis_pen = axis_pen,
-        arrow = arrow, x_string = x_string, y_string = y_string
+        start,
+        end,
+        x_label_dir = x_label_dir,
+        y_label_dir = y_label_dir,
+        axis_pen = axis_pen,
+        arrow = arrow,
+        x_string = x_string,
+        y_string = y_string
     );
 
     /*  Compute the starting indices for the tick marks in both axes.         */
@@ -238,8 +261,8 @@ void DrawAndLabelCoordinateAxesWithTickMarks(pair start, pair end,
         else
         {
             /*  End points for the tick marks.                                */
-            pair top = (n, x_tick_length);
-            pair bottom = (n, -x_tick_length);
+            vec2.Vec2 top = vec2.Vec2(n, x_tick_length);
+            vec2.Vec2 bottom = vec2.Vec2(n, -x_tick_length);
 
             /*  Tick labels are optional. Check if the user requested them.   */
             if (label_ticks)
@@ -249,12 +272,12 @@ void DrawAndLabelCoordinateAxesWithTickMarks(pair start, pair end,
                 Label tick_label = Label("$" + tick_str + "$", position = 1.0);
 
                 /*  Draw and label the tick marks.                            */
-                draw(tick_label, top -- bottom, tick_pen);
+                draw(tick_label, top.LineTo(bottom), tick_pen);
             }
 
             /*  Otherwise draw the tick marks without labels.                 */
             else
-                draw(top -- bottom, tick_pen);
+                draw(top.LineTo(bottom), tick_pen);
         }
     }
     /*  End of for-loop drawing the x-tick-marks.                             */
@@ -271,8 +294,8 @@ void DrawAndLabelCoordinateAxesWithTickMarks(pair start, pair end,
         else
         {
             /*  End points for the tick marks.                                */
-            pair left = (-y_tick_length, n);
-            pair right = (y_tick_length, n);
+            vec2.Vec2 left = vec2.Vec2(-y_tick_length, n);
+            vec2.Vec2 right = vec2.Vec2(y_tick_length, n);
 
             /*  Tick labels are optional. Check if the user requested them.   */
             if (label_ticks)
@@ -282,12 +305,12 @@ void DrawAndLabelCoordinateAxesWithTickMarks(pair start, pair end,
                 Label tick_label = Label("$" + tick_str + "$", position=1.0);
 
                 /*  Draw and label the tick marks.                            */
-                draw(tick_label, right -- left, tick_pen);
+                draw(tick_label, right.LineTo(left), tick_pen);
             }
 
             /*  Otherwise draw the tick marks without labels.                 */
             else
-                draw(right -- left, tick_pen);
+                draw(right.LineTo(left), tick_pen);
         }
     }
     /*  End of for-loop drawing the y-tick-marks.                             */

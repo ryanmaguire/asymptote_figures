@@ -1,44 +1,27 @@
 /******************************************************************************
- *                                 LICENSE                                    *
+ *                                  LICENSE                                   *
  ******************************************************************************
- *  This file is part of Mathematics-and-Physics.                             *
+ *  This file is part of asymptote_figures.                                   *
  *                                                                            *
- *  Mathematics-and-Physics is free software: you can redistribute it and/or  *
+ *  asymptote_figures is free software: you can redistribute it and/or        *
  *  modify it under the terms of the GNU General Public License as published  *
  *  by the Free Software Foundation, either version 3 of the License, or      *
  *  (at your option) any later version.                                       *
  *                                                                            *
- *  Mathematics-and-Physics is distributed in the hope that it will be useful *
+ *  asymptote_figures is distributed in the hope that it will be useful       *
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of            *
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             *
  *  GNU General Public License for more details.                              *
  *                                                                            *
  *  You should have received a copy of the GNU General Public License         *
- *  along with Mathematics-and-Physics.  If not, see                          *
- *  <https://www.gnu.org/licenses/>.                                          *
+ *  along with asymptote_figures. If not see <https://www.gnu.org/licenses/>. *
  ******************************************************************************/
 
-/*  PDF is easiest to use in LaTeX, so output this.                           */
-access settings;
-settings.outformat = "pdf";
+/*  Provides a vector struct for drawing lines and curves.                    */
+import vec2;
 
-/*  Sharp tikz style arrows provided here.                                    */
-access "custom_arrows.asy" as arrows;
-
-/*  Basic geometry routines found here.                                       */
-access "euclidean_2d.asy" as euc2;
-
-/*  Size of the output figure.                                                */
-size(256);
-
-/*  Default pen for drawing figures.                                          */
-defaultpen(black + linewidth(0.5pt) + fontsize(7pt));
-
-/*  Radius for drawing dots.                                                  */
-real rDot = 0.03;
-
-/*  Pen for labels.                                                           */
-pen labelp = defaultpen + fontsize(10pt);
+/*  Default pens and parameters for size(256) drawings provided here.         */
+import size_256_default_settings as default;
 
 /*  Start and end times for the line between A and C, and B and C.            */
 real start = -0.2;
@@ -48,38 +31,38 @@ real end = 1.3;
 real angle_length = 0.2;
 
 /*  The three points used for the two lines.                                  */
-pair A = (0.0, 1.0);
-pair B = (0.0, 0.0);
-pair C = (4.0, 0.2);
+vec2.Vec2 A = vec2.Vec2(0.0, 1.0);
+vec2.Vec2 B = vec2.Vec2(0.0, 0.0);
+vec2.Vec2 C = vec2.Vec2(4.0, 0.2);
 
 /*  The start and end points on both lines.                                   */
-pair L0_Start = scale(1.0 - start)*A + scale(start)*C;
-pair L1_Start = scale(1.0 - start)*B + scale(start)*C;
-pair L0_End = scale(1.0 - end)*A + scale(end)*C;
-pair L1_End = scale(1.0 - end)*B + scale(end)*C;
+vec2.Vec2 L0Start = vec2.PointOnLine(start, A, C);
+vec2.Vec2 L1Start = vec2.PointOnLine(start, B, C);
+vec2.Vec2 L0End = vec2.PointOnLine(end, A, C);
+vec2.Vec2 L1End = vec2.PointOnLine(end, B, C);
 
 /*  The angles the two lines make.                                            */
-real angle1 = euc2.RelAngle2D(A, B, C);
-real angle2 = euc2.RelAngle2D(B, A, C);
+real angle1 = vec2.RelativeAngle(A, B, C);
+real angle2 = vec2.RelativeAngle(B, A, C);
 
 /*  Factor for converting from radians to degrees.                            */
 real r2d = 0.017453292519943295;
 
 /*  Draw the lines.                                                           */
-draw(L0_Start -- L0_End);
-draw(L1_Start -- L1_End);
+draw(L0Start.LineTo(L0End));
+draw(L1Start.LineTo(L1End));
 
 /*  Draw the perspective line from A to B.                                    */
-draw(A -- B);
+draw(A.LineTo(B));
 
 /*  Mark the angles.                                                          */
-draw(arc(A, angle_length, 270, 270 + r2d*angle1));
-draw(arc(B, angle_length, 90,  90 - r2d*angle2));
+draw(vec2.Arc(A, angle_length, 270, 270 + r2d*angle1));
+draw(vec2.Arc(B, angle_length, 90,  90 - r2d*angle2));
 
 /*  Mark and label the points.                                                */
-filldraw(circle(A, rDot));
-filldraw(circle(B, rDot));
-filldraw(circle(C, rDot));
-label("$A$", A, NE, labelp);
-label("$B$", B, SE, labelp);
-label("$C$", C, N, labelp);
+A.DrawDot(default.dot_radius);
+B.DrawDot(default.dot_radius);
+C.DrawDot(default.dot_radius);
+A.AddLabel("$A$", vec2.NorthEast);
+B.AddLabel("$B$", vec2.SouthEast);
+C.AddLabel("$C$", vec2.North);

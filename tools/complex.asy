@@ -26,25 +26,44 @@
  *  Date:       September 17, 2023                                            *
  ******************************************************************************/
 
+import vec2;
+
 /*  Struct for points in the complex plane.                                   */
 struct Complex {
 
-    /*  A point in the plane is represented by real and imaginary parts.      */
-    real re, im;
+    /*  A complex number is represented as a point in the plane.              */
+    vec2.Vec2 point;
 
     /*  Constructor from two real numbers, the x and y coordinates.           */
     void operator init(real x, real y)
     {
-        this.re = x;
-        this.im = y;
+        this.point.x = x;
+        this.point.y = y;
     }
 
     /*  Initializer with no inputs. Set *this* to the origin.                 */
     void operator init()
     {
-        this.re = 0.0;
-        this.im = 0.0;
+        this.point.x = 0.0;
+        this.point.y = 0.0;
     }
+
+    void operator init(vec2.Vec2 v)
+    {
+        this.point = v;
+    }
+
+    real RealPart()
+    {
+        return this.point.x;
+    }
+
+    real ImagPart()
+    {
+        return this.point.y;
+    }
+
+    real ImaginaryPart() = ImagPart;
 
     /**************************************************************************
      *  Method:                                                               *
@@ -61,7 +80,7 @@ struct Complex {
      **************************************************************************/
     Complex RealProjection()
     {
-        return Complex(this.re, 0.0);
+        return Complex(this.point.x, 0.0);
     }
 
     /**************************************************************************
@@ -79,7 +98,7 @@ struct Complex {
      **************************************************************************/
     Complex ImagProjection()
     {
-        return Complex(0.0, this.im);
+        return Complex(0.0, this.point.y);
     }
 
     /*  Verbose alias for the imaginary projection function.                  */
@@ -105,7 +124,7 @@ struct Complex {
      **************************************************************************/
     real AbsSq()
     {
-        return this.re*this.re + this.im*this.im;
+        return this.point.NormSq();
     }
     /*  End of AbsSq.                                                         */
 
@@ -129,7 +148,7 @@ struct Complex {
      **************************************************************************/
     real Abs()
     {
-        return sqrt(this.AbsSq());
+        return this.point.Norm();
     }
     /*  End of Abs.                                                           */
 
@@ -149,7 +168,7 @@ struct Complex {
      **************************************************************************/
     real Argument()
     {
-        return atan2(this.im, this.re);
+        return this.point.PolarAngle();
     }
     /*  End of Argument.                                                      */
 
@@ -168,7 +187,7 @@ struct Complex {
      **************************************************************************/
     Complex Conjugate()
     {
-        return Complex(this.re, -this.im);
+        return Complex(this.point.x, -this.point.y);
     }
 
     /**************************************************************************
@@ -194,7 +213,7 @@ struct Complex {
 
         factor = 1.0 / abs_sq;
 
-        return Complex(this.re * factor, -this.im * factor);
+        return Complex(this.point.x * factor, -this.point.y * factor);
     }
 
     /**************************************************************************
@@ -216,38 +235,18 @@ struct Complex {
 
         if (abs_sq == 0.0)
         {
-            this.re = nan;
-            this.im = nan;
+            this.point.x = nan;
+            this.point.y = nan;
         }
 
         else
         {
             factor = 1.0 / abs_sq;
 
-            this.re *= factor;
-            this.im *= -factor;
+            this.point.x *= factor;
+            this.point.y *= -factor;
         }
     }
-
-    /**************************************************************************
-     *  Method:                                                               *
-     *      Dot                                                               *
-     *  Purpose:                                                              *
-     *      Computes the Euclidean dot product of *this* with another point.  *
-     *  Arguments:                                                            *
-     *      w (Complex):                                                      *
-     *          A point in the plane.                                         *
-     *  Output:                                                               *
-     *      dot_prod (real):                                                  *
-     *          The dot product of *this* and w, viewed as 2D vectors.        *
-     *  Method:                                                               *
-     *      Compute the sum of the products of the components.                *
-     **************************************************************************/
-    real Dot(Complex w)
-    {
-        return this.re*w.re + this.im*w.im;
-    }
-    /*  End of Dot.                                                           */
 
     /**************************************************************************
      *  Method:                                                               *
@@ -264,18 +263,7 @@ struct Complex {
      **************************************************************************/
     Complex AsUnitNormal()
     {
-        /*  Avoid division by zero, and a possibly redundant square root      *
-         *  call, by computing |*this*|^2 and checking if it is zero.         */
-        real abs_sq = this.AbsSq();
-        real factor;
-
-        /*  Division by zero is undefined, return a NaN complex number.       */
-        if (abs_sq == 0.0)
-            return Complex(nan, nan);
-
-        /*  Otherwise compute the scale factor 1 / |*this*| and normalize.    */
-        factor = 1.0 / sqrt(abs_sq);
-        return Complex(factor*this.re, factor*this.im);
+        return Complex(this.point.AsUnitNormal());
     }
     /*  End of AsUnitNormal.                                                  */
 
@@ -293,22 +281,7 @@ struct Complex {
      **************************************************************************/
     void Normalize()
     {
-        /*  Avoid division by zero, and a possibly redundant square root      *
-         *  call, by computing |*this*|^2 and checking if it is zero.         */
-        real abs_sq = this.AbsSq();
-        real factor;
-
-        /*  Division by zero is undefined, set components to NaN.             */
-        if (abs_sq == 0.0)
-        {
-            this.re = nan;
-            this.im = nan;
-        }
-
-        /*  Otherwise compute the scale factor 1 / |*this*| and normalize.    */
-        factor = 1.0 / sqrt(abs_sq);
-        this.re *= factor;
-        this.im *= factor;
+        this.point.Normalize();
     }
     /*  End of Normalize.                                                     */
 
@@ -328,7 +301,7 @@ struct Complex {
      **************************************************************************/
     Complex Orthogonal()
     {
-        return Complex(-this.re, this.im);
+        return Complex(this.point.Orthogonal());
     }
     /*  End of Orthogonal.                                                    */
 
@@ -368,12 +341,7 @@ struct Complex {
      **************************************************************************/
     void Orthogonalize()
     {
-        /*  Avoid overwriting the data in an unrecoverable way. Save this.re. */
-        real x = this.re;
-
-        /*  Set *this* to an orthogonal complex number of the same magnitude. */
-        this.re = -this.im;
-        this.im = x;
+        this.point.Orthogonalize();
     }
     /*  End of Orthogonalize.                                                 */
 
@@ -391,9 +359,7 @@ struct Complex {
      **************************************************************************/
     void Orthonormalize()
     {
-        /*  Use the Orthogonalize and Normalize methods to complete the task. */
-        this.Orthogonalize();
-        this.Normalize();
+        this.point.Orthonormalize();
     }
     /*  End of Orthonormalize.                                                */
 
@@ -415,28 +381,9 @@ struct Complex {
      **************************************************************************/
     pair AsPair()
     {
-        return (this.re, this.im);
+        return this.point.AsPair();
     }
     /*  End of AsPair.                                                        */
-
-    /**************************************************************************
-     *  Method:                                                               *
-     *      AsTriple                                                          *
-     *  Purpose:                                                              *
-     *      Converts a Complex object into a triple (asymptote primitive).    *
-     *  Arguments:                                                            *
-     *      None (void).                                                      *
-     *  Output:                                                               *
-     *      P (triple):                                                       *
-     *          The ordered triple (this.re, this.im, 0.0).                   *
-     *  Method:                                                               *
-     *      Convert *this* into a tuple and return.                           *
-     **************************************************************************/
-    triple AsTriple()
-    {
-        return (this.re, this.im, 0.0);
-    }
-    /*  End of AsTriple.                                                      */
 
     /**************************************************************************
      *  Method:                                                               *
@@ -452,9 +399,7 @@ struct Complex {
      **************************************************************************/
     guide LineTo(Complex w)
     {
-        /*  Convert the points to pairs and use asymptote primitives.         */
-        guide g = this.AsPair() -- w.AsPair();
-        return g;
+        return this.point.LineTo(w.point);
     }
     /*  End of LineTo.                                                        */
 
@@ -473,9 +418,9 @@ struct Complex {
      *  Output:                                                               *
      *      None (void).                                                      *
      **************************************************************************/
-    void AddLabel(string L, pair offset = (0.0, 0.0))
+    void AddLabel(string L, vec2.Vec2 offset = vec2.Vec2(0.0, 0.0))
     {
-        label(L, this.AsPair(), offset);
+        label(L, this.point.AsPair(), offset.AsPair());
     }
 
     /**************************************************************************
@@ -491,17 +436,33 @@ struct Complex {
      **************************************************************************/
     void DrawDot(real radius)
     {
-        filldraw(circle(this.AsPair(), radius));
+        this.point.DrawDot(radius);
     }
 
     path Circle(real radius)
     {
-        return circle(this.AsPair(), radius);
+        return this.point.Circle(radius);
+    }
+
+    /**************************************************************************
+     *  Method:                                                               *
+     *      DrawCircle                                                        *
+     *  Purpose:                                                              *
+     *      Draws a circle dot centered at *this*.                            *
+     *  Arguments:                                                            *
+     *      radius (real):                                                    *
+     *          The radius of the circle.                                     *
+     *  Output:                                                               *
+     *      None (void).                                                      *
+     **************************************************************************/
+    void DrawCircle(real radius)
+    {
+        this.point.DrawCircle(radius);
     }
 
     transform Shift()
     {
-        return shift(this.AsPair());
+        return this.point.Shift();
     }
 }
 
@@ -553,17 +514,17 @@ Complex operator init()
  ******************************************************************************/
 Complex operator + (Complex z, Complex w)
 {
-    return Complex(z.re + w.re, z.im + w.im);
+    return Complex(z.point.x + w.point.x, z.point.y + w.point.y);
 }
 
 Complex operator + (Complex z, real x)
 {
-    return Complex(z.re + x, z.im);
+    return Complex(z.point.x + x, z.point.y);
 }
 
 Complex operator + (real x, Complex z)
 {
-    return Complex(x + z.re, z.im);
+    return Complex(x + z.point.x, z.point.y);
 }
 
 /******************************************************************************
@@ -589,17 +550,17 @@ Complex operator + (real x, Complex z)
  ******************************************************************************/
 Complex operator - (Complex z, Complex w)
 {
-    return Complex(z.re - w.re, z.im - w.im);
+    return Complex(z.point.x - w.point.x, z.point.y - w.point.y);
 }
 
 Complex operator - (Complex z, real x)
 {
-    return Complex(z.re - x, z.im);
+    return Complex(z.point.x - x, z.point.y);
 }
 
 Complex operator - (real x, Complex z)
 {
-    return Complex(x - z.re, -z.im);
+    return Complex(x - z.point.x, -z.point.y);
 }
 
 /******************************************************************************
@@ -625,7 +586,7 @@ Complex operator - (real x, Complex z)
  ******************************************************************************/
 Complex operator * (real a, Complex z)
 {
-    return Complex(a*z.re, a*z.im);
+    return Complex(a*z.point.x, a*z.point.y);
 }
 
 /******************************************************************************
@@ -651,7 +612,7 @@ Complex operator * (real a, Complex z)
  ******************************************************************************/
 Complex operator * (Complex z, real a)
 {
-    return Complex(a*z.re, a*z.im);
+    return Complex(a*z.point.x, a*z.point.y);
 }
 
 /******************************************************************************
@@ -677,8 +638,8 @@ Complex operator * (Complex z, real a)
  ******************************************************************************/
 Complex operator * (Complex z, Complex w)
 {
-    real x = z.re*w.re - z.im*w.im;
-    real y = z.re*w.im + z.im*w.re;
+    real x = z.point.x*w.point.x - z.point.y*w.point.y;
+    real y = z.point.x*w.point.y + z.point.y*w.point.x;
     return Complex(x, y);
 }
 
@@ -708,8 +669,8 @@ Complex operator / (Complex z, Complex w)
 
     factor = 1.0 / w_abs_sq;
 
-    re = factor * (z.re*w.re + z.im*w.im);
-    im = factor * (-z.re*w.im + z.im*w.re);
+    re = factor * (z.point.x*w.point.x + z.point.y*w.point.y);
+    im = factor * (-z.point.x*w.point.y + z.point.y*w.point.x);
 
     return Complex(re, im);
 }
@@ -746,7 +707,7 @@ Complex operator / (Complex z, real a)
 
     /*  Otherwise compute 1 / r and perform scalar multiplication with this.  */
     rcpr = 1.0 / a;
-    return Complex(rcpr * z.re, rcpr * z.im);
+    return Complex(rcpr * z.point.x, rcpr * z.point.y);
 }
 
 Complex operator / (real x, Complex z)
@@ -759,7 +720,7 @@ Complex operator / (real x, Complex z)
 
     factor = x / z_abs_sq;
 
-    return Complex(factor * z.re, -factor * z.im);
+    return Complex(factor * z.point.x, -factor * z.point.y);
 }
 
 /******************************************************************************
@@ -808,3 +769,39 @@ guide ClosedCurveThroughPoints(Complex[] z)
 {
     return CurveThroughPoints(z, true);
 }
+
+/******************************************************************************
+ *  Operator:                                                                 *
+ *      cast                                                                  *
+ *  Purpose:                                                                  *
+ *      Converts a pair to a Complex object.                                  *
+ *  Arguments:                                                                *
+ *      P (pair):                                                             *
+ *          A point in the plane.                                             *
+ *  Output:                                                                   *
+ *      v (Complex):                                                          *
+ *          The same point as a vector.                                       *
+ ******************************************************************************/
+Complex operator cast(pair P)
+{
+    return FromPair(P);
+}
+/*  End of cast.                                                              */
+
+/******************************************************************************
+ *  Operator:                                                                 *
+ *      cast                                                                  *
+ *  Purpose:                                                                  *
+ *      Converts a pair to a Vec2 object.                                     *
+ *  Arguments:                                                                *
+ *      P (Vec2):                                                             *
+ *          A point in the plane.                                             *
+ *  Output:                                                                   *
+ *      v (Complex):                                                          *
+ *          The same point as a vector.                                       *
+ ******************************************************************************/
+Complex operator cast(Vec2 P)
+{
+    return FromPair(P.AsPair());
+}
+/*  End of cast.                                                              */
