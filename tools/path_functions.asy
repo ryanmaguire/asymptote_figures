@@ -31,6 +31,10 @@ path PathFromFunction(real func(real), real a, real b, int n_samples)
     /*  There must be at least two samples to create a path.                  */
     assert(n_samples >= 2);
 
+    /*  Make sure the input parameters are legal.                             */
+    assert(!isnan(a));
+    assert(!isnan(b));
+
     /*  The end points can not be equal.                                      */
     assert(a != b);
 
