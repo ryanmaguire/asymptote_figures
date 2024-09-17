@@ -45,6 +45,16 @@ struct Vec2 {
         this.y = 0.0;
     }
 
+    Vec2 ProjectX()
+    {
+        return Vec2(this.x, 0.0);
+    }
+
+    Vec2 ProjectY()
+    {
+        return Vec2(0.0, this.y);
+    }
+
     /**************************************************************************
      *  Method:                                                               *
      *      NormSq                                                            *
