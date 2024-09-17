@@ -73,9 +73,9 @@ draw(point.LineTo(y_projection), default.dash_pen);
 
 /*  Label the point in Cartesian coordinates.                                 */
 point.DrawDot(dot_radius);
-x_projection.AddLabel("$5\sqrt{3}$", vec2.NorthEast);
+x_projection.AddLabel("$-5\sqrt{3}$", vec2.NorthEast);
 y_projection.AddLabel("$5$", vec2.East);
-point.AddLabel("$(5\sqrt{3},\,5)$", vec2.NorthEast);
+point.AddLabel("$(-5\sqrt{3},\,5)$", vec2.NorthEast);
 
 /*  Add labels for the radial component and the angle.                        */
 r_point.AddLabel("$r$", vec2.North);
