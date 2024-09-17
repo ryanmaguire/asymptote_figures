@@ -55,6 +55,14 @@ struct Vec2 {
         return Vec2(0.0, this.y);
     }
 
+    string AsString()
+    {
+        string x_string = string((int)this.x);
+        string y_string = string((int)this.y);
+
+        return "$(" + x_string + ",\," + y_string + ")$";
+    }
+
     /**************************************************************************
      *  Method:                                                               *
      *      NormSq                                                            *

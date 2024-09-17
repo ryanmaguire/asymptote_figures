@@ -65,3 +65,6 @@ pen red_thick_dash_pen = red_thick_pen + dash_type;
 
 /*  Pen used for very large labels. Used in some equations with knots.        */
 pen massive_pen = black + line_width + fontsize(32pt);
+
+pen gray_pen = gray(0.5) + line_width + label_size;
+pen transparent_gray_pen = gray_pen + opacity(0.5);
