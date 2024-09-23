@@ -68,3 +68,8 @@ pen massive_pen = black + line_width + fontsize(32pt);
 
 pen gray_pen = gray(0.5) + line_width + label_size;
 pen transparent_gray_pen = gray_pen + opacity(0.5);
+
+pen yellow_pen = yellow + line_width + label_size;
+pen purple_pen = purple + line_width + label_size;
+pen cyan_pen = cyan + line_width + label_size;
+pen magenta_pen = magenta + line_width + label_size;
