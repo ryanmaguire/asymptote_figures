@@ -52,7 +52,7 @@ grid.DrawGridLinesWithTickMarks(grid_start, grid_end, start, end, grid_skip=2);
 axes.DrawAndLabelCoordinateAxes(start, end);
 
 /*  Draw vectors representing the edges of the parallelogram.                 */
-filldraw(parallelogram, default.transparent_gray_pen);
+filldraw(parallelogram, default.gray_transparent_pen);
 draw(vec2.Origin.LineTo(v0), default.blue_pen, default.sharp_arrow);
 draw(vec2.Origin.LineTo(v1), default.blue_pen, default.sharp_arrow);
 draw(v0.LineTo(sum), default.blue_pen, default.sharp_arrow);
