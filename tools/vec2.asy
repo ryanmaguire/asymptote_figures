@@ -45,23 +45,69 @@ struct Vec2 {
         this.y = 0.0;
     }
 
+    /**************************************************************************
+     *  Method:                                                               *
+     *      ProjectX                                                          *
+     *  Purpose:                                                              *
+     *      Projects *this* onto the x axis, treating the output as a vector  *
+     *      instead of just a real number.                                    *
+     *  Arguments:                                                            *
+     *      None.                                                             *
+     *  Output:                                                               *
+     *      x_proj (Vec2):                                                    *
+     *          The projection of *this* onto the x axis, as a vector.        *
+     *  Method:                                                               *
+     *      Create the vector (this.x, 0).                                    *
+     **************************************************************************/
     Vec2 ProjectX()
     {
         return Vec2(this.x, 0.0);
     }
+    /*  End of ProjectX.                                                      */
 
+    /**************************************************************************
+     *  Method:                                                               *
+     *      ProjectY                                                          *
+     *  Purpose:                                                              *
+     *      Projects *this* onto the y axis, treating the output as a vector  *
+     *      instead of just a real number.                                    *
+     *  Arguments:                                                            *
+     *      None.                                                             *
+     *  Output:                                                               *
+     *      y_proj (Vec2):                                                    *
+     *          The projection of *this* onto the y axis, as a vector.        *
+     *  Method:                                                               *
+     *      Create the vector (0, this.y).                                    *
+     **************************************************************************/
     Vec2 ProjectY()
     {
         return Vec2(0.0, this.y);
     }
+    /*  End of ProjectY.                                                      */
 
-    string AsString()
+    /**************************************************************************
+     *  Method:                                                               *
+     *      AsString                                                          *
+     *  Purpose:                                                              *
+     *      Converts the vector into a string that can be printed or          *
+     *      displayed as a label on a figure.                                 *
+     *  Arguments:                                                            *
+     *      None.                                                             *
+     *  Output:                                                               *
+     *      y_proj (Vec2):                                                    *
+     *          The projection of *this* onto the y axis, as a vector.        *
+     *  Method:                                                               *
+     *      Create the vector (0, this.y).                                    *
+     **************************************************************************/
+    string AsString(bool as_int = true)
     {
-        string x_string = string((int)this.x);
-        string y_string = string((int)this.y);
+        string x_string = string(this.x);
+        string y_string = string(this.y);
 
+        /*  Return the string with LaTeX math-mode enabled.                   */
         return "$(" + x_string + ",\," + y_string + ")$";
     }
+    /*  End of AsString.                                                      */
 
     /**************************************************************************
      *  Method:                                                               *
@@ -132,15 +178,37 @@ struct Vec2 {
     }
     /*  End of PolarAngle.                                                    */
 
+    /**************************************************************************
+     *  Method:                                                               *
+     *      PositivePolarAngle                                                *
+     *  Purpose:                                                              *
+     *      Computes the angle the vector makes with the positive x axis.     *
+     *      The result is possibly shift by 2 pi to ensure it falls in the    *
+     *      interval [0, 2pi).                                                *
+     *  Arguments:                                                            *
+     *      None (void).                                                      *
+     *  Output:                                                               *
+     *      theta (real):                                                     *
+     *          The (positive) angle *this* makes with the positive x axis.   *
+     *  Method:                                                               *
+     *      The angle can be computed with the atan2 function. Given (x, y)   *
+     *      in the plane, return the value atan2(y, x).                       *
+     **************************************************************************/
     real PositivePolarAngle()
     {
+        /*  Get the signed angle for the vector in the plane with the x axis. */
         real angle = this.PolarAngle();
 
+        /*  theta and theta + 2pi represent the same angle on the circle. If  *
+         *  theta is negative, shifting by 2 pi will make it positive since   *
+         *  -pi < theta <= pi. Do this to ensure the result is non-negative.  */
         if (angle < 0.0)
             return angle + 2.0 * pi;
 
+        /*  Otherwise we have 0 <= theta <= pi. We can just return the angle. */
         return angle;
     }
+    /*  End of PositivePolarAngle.                                            */
 
     /**************************************************************************
      *  Method:                                                               *
