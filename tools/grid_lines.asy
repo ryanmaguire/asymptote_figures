@@ -38,11 +38,15 @@ pen default_tick_pen = black + linewidth(0.2pt) + fontsize(12pt);
  *          The left-most and bottom-most integer that receives a grid line.  *
  *      grid_end (int):                                                       *
  *          The right-most and top-most integer that receives a grid line.    *
- *      grid_length (real):                                                   *
- *          The length of the grid lines.                                     *
+ *      line_start (vec2.Vec2):                                               *
+ *          The start of the lines in the grid. The left most value will be   *
+ *          line_start.x and the bottom most value is line_start.y.           *
+ *      line_end (vec2.Vec2):                                                 *
+ *          The end of the lines in the grid. The right most value will be    *
+ *          line_end.x and the top most value is line_end.y.                  *
+ *  Keywords:                                                                 *
  *      grid_pen (pen):                                                       *
  *          The pen used to draw the grid lines.                              *
- *  Keywords:                                                                 *
  *      grid_skip (int):                                                      *
  *          The number of integers skipped between grid lines. Default is 1.  *
  *  Outputs:                                                                  *
@@ -50,7 +54,8 @@ pen default_tick_pen = black + linewidth(0.2pt) + fontsize(12pt);
  ******************************************************************************/
 void DrawGridLines(int grid_start,
                    int grid_end,
-                   real grid_length,
+                   vec2.Vec2 line_start,
+                   vec2.Vec2 line_end,
                    pen grid_pen = default_grid_pen,
                    int grid_skip = 1)
 {
@@ -62,10 +67,10 @@ void DrawGridLines(int grid_start,
     {
         /*  The grid consists of straight lines left-to-right and             *
          *  top-to-bottom. Compute the current set of lines to be drawn.      */
-        vec2.Vec2 bottom = vec2.Vec2(n, -grid_length);
-        vec2.Vec2 top = vec2.Vec2(n, grid_length);
-        vec2.Vec2 left = vec2.Vec2(-grid_length, n);
-        vec2.Vec2 right = vec2.Vec2(grid_length, n);
+        vec2.Vec2 bottom = vec2.Vec2(n, line_start.y);
+        vec2.Vec2 top = vec2.Vec2(n, line_end.y);
+        vec2.Vec2 left = vec2.Vec2(line_start.x, n);
+        vec2.Vec2 right = vec2.Vec2(line_end.x, n);
 
         /*  Draw the current set of grid lines.                               */
         draw(bottom.LineTo(top), grid_pen);
@@ -77,6 +82,49 @@ void DrawGridLines(int grid_start,
 
 /******************************************************************************
  *  Function:                                                                 *
+ *      DrawSquareGridLines                                                   *
+ *  Purpose:                                                                  *
+ *      Adds grid lines to a drawing. Useful for plotting real functions.     *
+ *  Arguments:                                                                *
+ *      grid_start (int):                                                     *
+ *          The left-most and bottom-most integer that receives a grid line.  *
+ *      grid_end (int):                                                       *
+ *          The right-most and top-most integer that receives a grid line.    *
+ *      grid_length (real):                                                   *
+ *          The length of the grid lines.                                     *
+ *      grid_pen (pen):                                                       *
+ *          The pen used to draw the grid lines.                              *
+ *  Keywords:                                                                 *
+ *      grid_skip (int):                                                      *
+ *          The number of integers skipped between grid lines. Default is 1.  *
+ *  Outputs:                                                                  *
+ *      None (void).                                                          *
+ ******************************************************************************/
+void DrawSquareGridLines(int grid_start,
+                         int grid_end,
+                         real grid_length,
+                         pen grid_pen = default_grid_pen,
+                         int grid_skip = 1)
+{
+    /*  Create the parameters for the line, equal length and centered at the  *
+     *  origin.                                                               */
+    vec2.Vec2 line_start = vec2.Vec2(-grid_length, -grid_length);
+    vec2.Vec2 line_end = vec2.Vec2(grid_length, grid_length);
+
+    /*  Use the main grid line function for drawing.                          */
+    DrawGridLines(
+        grid_start,
+        grid_end,
+        line_start,
+        line_end,
+        grid_pen = grid_pen,
+        grid_skip = grid_skip
+    );
+}
+/*  End of DrawSquareGridLines.                                               */
+
+/******************************************************************************
+ *  Function:                                                                 *
  *      DrawGridLinesWithTickMarks                                            *
  *  Purpose:                                                                  *
  *      Adds grid lines to a drawing with tick mark labels.                   *
@@ -85,8 +133,12 @@ void DrawGridLines(int grid_start,
  *          The left-most and bottom-most integer that receives a grid line.  *
  *      grid_end (int):                                                       *
  *          The right-most and top-most integer that receives a grid line.    *
- *      grid_length (real):                                                   *
- *          The length of the grid lines.                                     *
+ *      line_start (vec2.Vec2):                                               *
+ *          The start of the lines in the grid. The left most value will be   *
+ *          line_start.x and the bottom most value is line_start.y.           *
+ *      line_end (vec2.Vec2):                                                 *
+ *          The end of the lines in the grid. The right most value will be    *
+ *          line_end.x and the top most value is line_end.y.                  *
  *  Keywords:                                                                 *
  *      tick_length (real):                                                   *
  *          The length of the tick marks. Default is 0.2.                     *
@@ -163,7 +215,7 @@ void DrawGridLinesWithTickMarks(int grid_start,
     }
     /*  End of for-loop drawing the guide-grid.                               */
 }
-/*  End of DrawSquareGridLinesWithTickMarks.                                  */
+/*  End of DrawGridLinesWithTickMarks.                                        */
 
 /******************************************************************************
  *  Function:                                                                 *
@@ -200,9 +252,11 @@ void DrawSquareGridLinesWithTickMarks(int grid_start,
                                       bool label_ticks = true,
                                       int grid_skip = 1)
 {
+    /*  Create the parameters for the grid lines.                             */
     vec2.Vec2 line_start = vec2.Vec2(-grid_length, -grid_length);
     vec2.Vec2 line_end = vec2.Vec2(grid_length, grid_length);
 
+    /*  Use the main drawing function with tick marks.                        */
     DrawGridLinesWithTickMarks(
         grid_start,
         grid_end,
