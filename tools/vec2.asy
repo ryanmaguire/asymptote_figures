@@ -526,6 +526,12 @@ struct Vec2 {
         return circle(this.AsPair(), radius);
     }
 
+    path Ellipse(real xradius, real yradius, real rotation = 0.0)
+    {
+        path g = rotate(rotation)*ellipse((0.0, 0.0), xradius, yradius);
+        return shift(this.x, this.y) * g;
+    }
+
     transform Shift()
     {
         return shift(this.AsPair());
