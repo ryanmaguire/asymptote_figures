@@ -21,6 +21,9 @@
  *      Creates paths from functions.                                         *
  ******************************************************************************/
 
+/*  2d vectors found here.                                                    */
+import vec2;
+
 /*  Function for producing a path from a real-valued function.                */
 path PathFromFunction(real func(real), real a, real b, int n_samples)
 {
@@ -78,8 +81,8 @@ path PathFromFunction(real func(real), real a, real b, int n_samples)
 }
 /*  End of PathFromFunction.                                                  */
 
-/* Given an array of pairs, draw a smooth curve through the points.           */
-path PathFromPoints(pair[] Pts, bool closed = false)
+/* Given an array of points, draw a smooth curve through them.                */
+path PathFromPoints(vec2.Vec2[] Pts, bool closed = false)
 {
     /*  Declare necessary variables.                                          */
     path g;
@@ -89,11 +92,11 @@ path PathFromPoints(pair[] Pts, bool closed = false)
     assert(Pts.length > 1);
 
     /*  Start the path going from the zeroth point to the first.              */
-    g = Pts[0] .. Pts[1];
+    g = Pts[0].AsPair() .. Pts[1].AsPair();
 
     /* Loop through the array and construct the path.                         */
     for (n = 2; n < Pts.length; ++n)
-        g = g .. Pts[n];
+        g = g .. Pts[n].AsPair();
 
     /* If the closed Boolean is true, close the path into a cycle.            */
     if (closed)
@@ -103,8 +106,8 @@ path PathFromPoints(pair[] Pts, bool closed = false)
 }
 /*  End of PathFromPoints.                                                    */
 
-/* Given an array of pairs, draw a polygonal curve through the point.         */
-path PolyFromPoints(pair[] Pts, bool closed)
+/* Given an array of points, draw a polygonal curve through them.             */
+path PolyFromPoints(vec2.Vec2[] Pts, bool closed)
 {
     /*  Declare necessary variables.                                          */
     path g;
@@ -114,11 +117,11 @@ path PolyFromPoints(pair[] Pts, bool closed)
     assert(Pts.length > 1);
 
     /*  Start the path going from the zeroth point to the first.              */
-    g = Pts[0] -- Pts[1];
+    g = Pts[0].AsPair() -- Pts[1].AsPair();
 
     /* Loop through the array and construct the path.                         */
     for (n = 2; n < Pts.length; ++n)
-        g = g -- Pts[n];
+        g = g -- Pts[n].AsPair();
 
     /* If the closed Boolean is true, close the path into a cycle.            */
     if (closed)
@@ -128,9 +131,9 @@ path PolyFromPoints(pair[] Pts, bool closed)
 }
 /*  End of PolyFromPoints.                                                    */
 
-/* Given an array of pairs and an array of reals, draw a path between the     *
- * pairs with angle specified by the array of reals.                          */
-path PathFromPointsAndAngles(pair[] Pts, real[] Dirs, bool closed)
+/* Given an array of points and an array of reals, draw a path between the    *
+ * points with angle specified by the array of reals.                         */
+path PathFromPointsAndAngles(vec2.Vec2[] Pts, real[] Dirs, bool closed)
 {
     /*  Declare necessary variables.                                          */
     path g;
@@ -143,11 +146,11 @@ path PathFromPointsAndAngles(pair[] Pts, real[] Dirs, bool closed)
     assert(Pts.length == Dirs.length);
 
     /*  Set the start of the path.                                            */
-    g = Pts[0]{dir(Dirs[0])} .. Pts[1]{dir(Dirs[1])};
+    g = Pts[0].AsPair(){dir(Dirs[0])} .. Pts[1].AsPair(){dir(Dirs[1])};
 
     /* Loop through the arrays and construct the path.                        */
     for (n = 2; n < Pts.length; ++n)
-        g = g .. Pts[n]{dir(Dirs[n])};
+        g = g .. Pts[n].AsPair(){dir(Dirs[n])};
 
     /* If the closed Boolean is true, close the path into a cycle.            */
     if (closed)
