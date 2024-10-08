@@ -50,9 +50,10 @@ grid.DrawSquareGridLines(grid_start, grid_end, grid_length);
 
 /*  Draw the coordinate axes.                                                 */
 axes.DrawAndLabelSquareCoordinateAxesWithTickMarks(
-    grid_length, y_suffix = "$i$",
-    x_string = "$\textrm{Re}(z)$",
-    y_string = "$\textrm{Im}(z)$"
+    grid_length,
+    y_suffix = "i",
+    x_string = "\textrm{Re}(z)",
+    y_string = "\textrm{Im}(z)"
 );
 
 /*  Label the point in Complex coordinates.                                   */
