@@ -724,6 +724,11 @@ Vec2 operator - (Vec2 v, Vec2 u)
     return Vec2(v.x - u.x, v.y - u.y);
 }
 
+Vec2 operator - (Vec2 v)
+{
+    return Vec2(-v.x, -v.y);
+}
+
 /******************************************************************************
  *  Operator:                                                                 *
  *      *                                                                     *
