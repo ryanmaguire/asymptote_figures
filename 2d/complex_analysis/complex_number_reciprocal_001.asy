@@ -17,7 +17,7 @@
  *  along with asymptote_figures. If not see <https://www.gnu.org/licenses/>. *
  ******************************************************************************
  *  Purpose:                                                                  *
- *      Draws arrows for subtraction in the complex plane.                    *
+ *      Draws the geometry behind complex number multiplication.              *
  ******************************************************************************/
 
 /*  Provides a vector struct for drawing lines and curves.                    */
@@ -32,28 +32,33 @@ import coordinate_axes as axes;
 /*  Default pens and parameters for size(256) drawings provided here.         */
 import size_256_default_settings as default;
 
-/*  Margins for the arrows to prevent them from overlapping.                  */
 margin margins = TrueMargin(0.0cm, 0.08cm);
 
-/*  Radius for dots marking the points in the plane.                          */
-real dot_radius = 0.05;
+real dot_radius = 0.03;
 
 /*  The point under consideration.                                            */
-vec2.Vec2 z = vec2.Vec2(3.0, 1.0);
-vec2.Vec2 w = vec2.Vec2(1.0, 3.0);
-vec2.Vec2 diff = z - w;
-
-/*  Labels for the arrows drawn between points.                               */
-Label z_label = Label("$z$", position = 0.5);
-Label w_label = Label("$w$", position = 0.5);
+vec2.Vec2 z = vec2.Vec2(1.0, 1.0);
+vec2.Vec2 w = vec2.Vec2(z.x, -z.y) / z.NormSq();
 
 /*  Start and end values for the square guide-grid to be drawn.               */
-int grid_start = -2;
-int grid_end = 4;
+int grid_start = -1;
+int grid_end = 2;
 
 /*  Points specifying the coordinate axes and grid lines.                     */
-vec2.Vec2 axis_start = vec2.Vec2(-2.4, -2.4);
-vec2.Vec2 axis_end = vec2.Vec2(4.7, 4.7);
+vec2.Vec2 axis_start = vec2.Vec2(-1.4, -1.4);
+vec2.Vec2 axis_end = vec2.Vec2(2.4, 2.4);
+
+real rad2deg = 180.0 / pi;
+
+real theta_angle = z.PolarAngle() * rad2deg;
+real theta_radius = 0.43 * z.Norm();
+path theta_arc = vec2.Arc(vec2.Origin, theta_radius, 0.0, theta_angle);
+Label theta_label = Label("$\theta$", position = 0.5);
+
+real psi_angle = w.PolarAngle() * rad2deg;
+real psi_radius = w.Norm() * 0.58;
+path psi_arc = vec2.Arc(vec2.Origin, psi_radius, psi_angle, 0.0);
+Label psi_label = Label("$-\theta$", position = 0.5);
 
 /*  Add grid lines to the drawing.                                            */
 grid.DrawGridLines(grid_start, grid_end, axis_start, axis_end);
@@ -67,15 +72,14 @@ axes.DrawAndLabelCoordinateAxesWithTickMarks(
     y_string = "\textrm{Im}(z)"
 );
 
-/*  Draw the arrows indicating the difference of z and w.                     */
-draw(vec2.Origin.LineTo(diff), default.thin_dash_pen);
+/*  Draw the arrows indicating the sum of z and w.                            */
 draw(vec2.Origin.LineTo(z), default.sharp_arrow, margins);
 draw(vec2.Origin.LineTo(w), default.sharp_arrow, margins);
-draw(diff.LineTo(z), default.sharp_arrow, margins);
 
 z.DrawDot(dot_radius);
 w.DrawDot(dot_radius);
-diff.DrawDot(dot_radius);
-z.AddLabel("$z$", vec2.SouthEast);
-w.AddLabel("$w$", vec2.NorthWest);
-diff.AddLabel("$z-w$", vec2.East);
+z.AddLabel("$z$", vec2.NorthEast);
+w.AddLabel("$z^{-1}$", vec2.SouthEast);
+
+draw(theta_label, theta_arc, default.thin_dash_pen);
+draw(psi_label, psi_arc, default.thin_dash_pen);
