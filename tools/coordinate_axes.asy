@@ -37,6 +37,201 @@ pen default_tick_pen = black + linewidth(0.4pt) + fontsize(12pt);
 
 /******************************************************************************
  *  Function:                                                                 *
+ *      DrawCoordinateAxes                                                    *
+ *  Purpose:                                                                  *
+ *      Draw the x and y axes without labels.                                 *
+ *  Arguments:                                                                *
+ *      start (vec2.Vec2):                                                    *
+ *          The smallest values for the x and y axes. The x axis will begin   *
+ *          at start.x and the y axis at start.y.                             *
+ *      end (vec2.Vec2):                                                      *
+ *          The largest values for the x and y axes. The x axis will end at   *
+ *          end.x and the y axis ends at end.y.                               *
+ *  Keywords:                                                                 *
+ *      axis_pen (pen):                                                       *
+ *          Pen used to draw the axis.                                        *
+ *      arrow (arrowbar):                                                     *
+ *          Arrow used to end the axes.                                       *
+ *  Outputs:                                                                  *
+ *      None (void).                                                          *
+ ******************************************************************************/
+void DrawCoordinateAxes(vec2.Vec2 start,
+                        vec2.Vec2 end,
+                        pen axis_pen = default_axis_pen,
+                        arrowbar arrow = default_arrow)
+{
+    /*  Start and end of the x axis, given by the start and end parameters.   */
+    vec2.Vec2 left = vec2.Vec2(start.x, 0.0);
+    vec2.Vec2 right = vec2.Vec2(end.x, 0.0);
+
+    /*  Similarly provide the start and end of the y axis.                    */
+    vec2.Vec2 bottom = vec2.Vec2(0.0, start.y);
+    vec2.Vec2 top = vec2.Vec2(0.0, end.y);
+
+    /*  Draw the coordinate axes with labels.                                 */
+    draw(left.LineTo(right), axis_pen, arrow);
+    draw(bottom.LineTo(top), axis_pen, arrow);
+}
+/*  End of DrawCoordinateAxes.                                                */
+
+/******************************************************************************
+ *  Function:                                                                 *
+ *      DrawRectangularCoordinateAxes                                         *
+ *  Purpose:                                                                  *
+ *      Draw x and y axes with the same lengths and without labels.           *
+ *  Arguments:                                                                *
+ *      axis_start (real):                                                    *
+ *          Starting value of the x and y axes.                               *
+ *      axis_end (real):                                                      *
+ *          Final value of the x and y axes.                                  *
+ *  Keywords:                                                                 *
+ *      axis_pen (pen):                                                       *
+ *          Pen used to draw the axis.                                        *
+ *      arrow (arrowbar):                                                     *
+ *          Arrow used to end the axes.                                       *
+ *  Outputs:                                                                  *
+ *      None (void).                                                          *
+ ******************************************************************************/
+void DrawRectangularCoordinateAxes(real axis_start,
+                                   real axis_end,
+                                   pen axis_pen = default_axis_pen,
+                                   arrowbar arrow = default_arrow)
+{
+    /*  Compute the start and end points of the axes.                         */
+    vec2.Vec2 start = vec2.Vec2(axis_start, axis_start);
+    vec2.Vec2 end = vec2.Vec2(axis_end, axis_end);
+
+    /*  Pass these points to the main axes function.                          */
+    DrawCoordinateAxes(start, end, axis_pen = axis_pen, arrow = arrow);
+}
+/*  End of DrawRectangularCoordinateAxes.                                     */
+
+/******************************************************************************
+ *  Function:                                                                 *
+ *      DrawSquareCoordinateAxes                                              *
+ *  Purpose:                                                                  *
+ *      Draw x and y axes with the same lengths and without labels.           *
+ *  Arguments:                                                                *
+ *      axis_start (real):                                                    *
+ *          Starting value of the x and y axes.                               *
+ *      axis_end (real):                                                      *
+ *          Final value of the x and y axes.                                  *
+ *  Keywords:                                                                 *
+ *      axis_pen (pen):                                                       *
+ *          Pen used to draw the axis.                                        *
+ *      arrow (arrowbar):                                                     *
+ *          Arrow used to end the axes.                                       *
+ *  Outputs:                                                                  *
+ *      None (void).                                                          *
+ ******************************************************************************/
+void DrawSquareCoordinateAxes(real length,
+                              pen axis_pen = default_axis_pen,
+                              arrowbar arrow = default_arrow)
+{
+    /*  Use the rectangular function with start = -length and end = length.   */
+    DrawRectangularCoordinateAxes(
+        -length, length, axis_pen = axis_pen, arrow = arrow
+    );
+}
+/*  End of DrawRectangularCoordinateAxes.                                     */
+
+/******************************************************************************
+ *  Function:                                                                 *
+ *      DrawAndLabelCoordinateAxesWithTickMarks                               *
+ *  Purpose:                                                                  *
+ *      Draw the x and y axes and gives them labels with tick marks.          *
+ *  Arguments:                                                                *
+ *      start (vec2.Vec2):                                                    *
+ *          The smallest values for the x and y axes. The x axis will begin   *
+ *          at start.x and the y axis at start.y.                             *
+ *      end (vec2.Vec2):                                                      *
+ *          The largest values for the x and y axes. The x axis will end at   *
+ *          end.x and the y axis ends at end.y.                               *
+ *  Keywords:                                                                 *
+ *      axis_pen (pen):                                                       *
+ *          Pen used to draw the axis.                                        *
+ *      arrow (arrowbar):                                                     *
+ *          Arrow used to end the axes.                                       *
+ *      x_tick_length (real):                                                 *
+ *          Length of tick marks in the x axis.                               *
+ *      y_tick_length (real):                                                 *
+ *          Length of tick marks in the y axis.                               *
+ *      tick_pen (pen):                                                       *
+ *          Pen used for adding tick marks.                                   *
+ *      x_skip (int):                                                         *
+ *          The number of indices to skip in the x axis for tick marks.       *
+ *      y_skip (int):                                                         *
+ *          The number of indices to skip in the y axis for tick marks.       *
+ *  Outputs:                                                                  *
+ *      None (void).                                                          *
+ ******************************************************************************/
+void DrawCoordinateAxesWithTickMarks(vec2.Vec2 start,
+                                     vec2.Vec2 end,
+                                     pen axis_pen = default_axis_pen,
+                                     arrowbar arrow = default_arrow,
+                                     real x_tick_length = 0.1,
+                                     real y_tick_length = 0.1,
+                                     pen tick_pen = default_tick_pen,
+                                     int x_skip = 1,
+                                     int y_skip = 1)
+{
+    /*  Variable for indexing over the tick mark.                             */
+    int n;
+
+    /*  Indices representing the start and end values for the tick marks.     */
+    int start_x, end_x, start_y, end_y;
+
+    /*  Draw the coordinate axes using the previous function.                 */
+    DrawCoordinateAxes(start, end, axis_pen = axis_pen, arrow = arrow);
+
+    /*  Compute the starting indices for the tick marks in both axes.         */
+    start_x = (int)(start.x);
+    end_x = (int)(end.x);
+    start_y = (int)(start.y);
+    end_y = (int)(end.y);
+
+    /*  Loop through and draw the lines for the x axes.                       */
+    for (n = start_x; n <= end_x; n += x_skip)
+    {
+        /*  If n is zero, do not draw tick marks. The labels overlap with the *
+         *  axes lines and it isn't pretty.                                   */
+        if (n == 0)
+            continue;
+
+        /*  Otherwise, draw in tick marks and labels.                         */
+        else
+        {
+            /*  End points for the tick marks.                                */
+            vec2.Vec2 top = vec2.Vec2(n, x_tick_length);
+            vec2.Vec2 bottom = vec2.Vec2(n, -x_tick_length);
+            draw(top.LineTo(bottom), tick_pen);
+        }
+    }
+    /*  End of for-loop drawing the x-tick-marks.                             */
+
+    /*  Loop through and draw the lines for the y axes.                       */
+    for (n = start_y; n <= end_y; n += y_skip)
+    {
+        /*  If n is zero, do not draw tick marks. The labels overlap with the *
+         *  axes lines and it isn't pretty.                                   */
+        if (n == 0)
+            continue;
+
+        /*  Otherwise, draw in tick marks and labels.                         */
+        else
+        {
+            /*  End points for the tick marks.                                */
+            vec2.Vec2 left = vec2.Vec2(-y_tick_length, n);
+            vec2.Vec2 right = vec2.Vec2(y_tick_length, n);
+            draw(right.LineTo(left), tick_pen);
+        }
+    }
+    /*  End of for-loop drawing the y-tick-marks.                             */
+}
+/*  End of DrawCoordinateAxesWithTickMarks.                                   */
+
+/******************************************************************************
+ *  Function:                                                                 *
  *      DrawAndLabelCoordinateAxes                                            *
  *  Purpose:                                                                  *
  *      Draw the x and y axes and gives them labels.                          *
@@ -346,7 +541,7 @@ void DrawAndLabelCoordinateAxesWithTickMarks(vec2.Vec2 start,
     }
     /*  End of for-loop drawing the y-tick-marks.                             */
 }
-/*  End of DrawAndLabelCoordinateAxes.                                        */
+/*  End of DrawAndLabelCoordinateAxesWithTickMarks.                           */
 
 /******************************************************************************
  *  Function:                                                                 *
