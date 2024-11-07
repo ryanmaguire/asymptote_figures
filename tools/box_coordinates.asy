@@ -20,6 +20,7 @@
  *      Provides tools for making box plots.                                  *
  ******************************************************************************/
 import vec2;
+import grid_lines as grid;
 
 /*  Default axis pen. Adequate for most drawings.                             */
 pen default_axis_pen = black + linewidth(1.0pt) + fontsize(12pt);
@@ -57,4 +58,13 @@ void DrawSquareBoxCoordinates(int start, int end, real length)
         draw(L, left_tick_right.LineTo(left_tick_left), default_tick_pen);
         draw(L, right_tick_left.LineTo(right_tick_right), default_tick_pen);
     }
+}
+
+void DrawSquareBoxCoordinatesWithGridMarks(int start, int end, real length)
+{
+    /*  Add grid lines to the drawing.                                        */
+    grid.DrawSquareGridLines(start, end, length);
+
+    /*  Add a box, marking the two axes with tick marks.                      */
+    DrawSquareBoxCoordinates(start, end, length);
 }
