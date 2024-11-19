@@ -39,10 +39,7 @@ vec2.Vec2 vector_field(vec2.Vec2 point)
 }
 
 /*  Length of the grid lines.                                                 */
-real grid_length = 2.2;
-
-/*  Variable for sampling over the x and y coordinates for the vector field.  */
-real ds = 0.25;
+real length = 2.2;
 
 /*  Draw the vector field inside the box.                                     */
-vf.VectorFieldSquareBoxPlotWithGridLines(vector_field, grid_length, ds);
+vf.VectorFieldSquareBoxPlotWithGridLines(vector_field, length);
