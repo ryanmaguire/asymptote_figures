@@ -84,11 +84,13 @@ DrawBoxCoordinates(real x_start,
      *  three variables. If x_start is negative, truncation is fine. If       *
      *  x_start is positive, truncating will create a value less than it. We  *
      *  need to increment this value so that x_first >= x_start. We do the    *
-     *  same check with x_last, y_first, and y_last.                          */
-    x_first = (x_start < 0.0 ? (int)(x_start) : (int)(x_start + 1.0));
-    x_last = (x_end > 0.0 ? (int)(x_end) : (int)(x_end - 1.0));
-    y_first = (y_start < 0.0 ? (int)(y_start) : (int)(y_start + 1.0));
-    y_last = (y_end > 0.0 ? (int)(y_end) : (int)(y_end - 1.0));
+     *  same check with x_last, y_first, and y_last. For x_first and y_first  *
+     *  this can be achieved with the ceiling function. Similarly, for x_last *
+     *  and y_last, we can use the floor function.                            */
+    x_first = (int)(ceil(x_start));
+    x_last = (int)(floor(x_end));
+    y_first = (int)(ceil(y_start));
+    y_last = (int)(floor(y_end));
 
     /*  Create the points for the four vertices of the box plot.              */
     vec2.Vec2 bottom_left = vec2.Vec2(x_start, y_start);
