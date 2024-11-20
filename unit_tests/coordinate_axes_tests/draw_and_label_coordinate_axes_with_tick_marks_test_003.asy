@@ -17,7 +17,7 @@
  *  along with asymptote_figures. If not see <https://www.gnu.org/licenses/>. *
  ******************************************************************************
  *  Purpose:                                                                  *
- *      Tests the DrawSquareCoordinateAxesWithTickMarks routine.              *
+ *      Tests the DrawAndLabelCoordinateAxesWithTickMarks routine.            *
  ******************************************************************************/
 
 /*  Tools for creating coordinate axes.                                       */
@@ -27,7 +27,10 @@ import coordinate_axes as axes;
 import size_256_default_settings as default;
 
 /*  Parameters for the coordinates axes.                                      */
-real length = 3.3;
+real x_start = -3.2;
+real x_end = 4.5;
+real y_start = 3.8;
+real y_end = -1.4;
 
 /*  Make the plot.                                                            */
-axes.DrawSquareCoordinateAxesWithTickMarks(length);
+axes.DrawAndLabelCoordinateAxesWithTickMarks(x_start, x_end, y_start, y_end);
