@@ -70,10 +70,10 @@ DrawGridLines(real x_start,
     assert(grid_skip > 0);
 
     /*  Compute the ending indices for all of the grid lines.                 */
-    left_ind = (int)(x_start);
-    right_ind = (int)(x_end);
-    bottom_ind = (int)(y_start);
-    top_ind = (int)(y_end);
+    left_ind = (int)(ceil(x_start));
+    right_ind = (int)(floor(x_end));
+    bottom_ind = (int)(ceil(y_start));
+    top_ind = (int)(floor(y_end));
 
     /*  Loop through and draw the lines for the grid. Vertical lines first.   */
     for (n = left_ind; n <= right_ind; n += grid_skip)
