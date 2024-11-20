@@ -32,4 +32,4 @@ real y_length = 3.4;
 int grid_skip = 2;
 
 /*  Make the plot.                                                            */
-bc.DrawRectangularBoxCoordinates(x_length, y_length, grid_skip = grid_skip);
+bc.DrawRectangularBoxCoordinates(x_length, y_length, x_skip = grid_skip);

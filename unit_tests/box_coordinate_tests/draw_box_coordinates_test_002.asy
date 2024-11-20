@@ -34,4 +34,4 @@ real y_end = 7.8;
 int grid_skip = 2;
 
 /*  Make the plot.                                                            */
-bc.DrawBoxCoordinates(x_start, x_end, y_start, y_end, grid_skip = grid_skip);
+bc.DrawBoxCoordinates(x_start, x_end, y_start, y_end, x_skip = grid_skip);

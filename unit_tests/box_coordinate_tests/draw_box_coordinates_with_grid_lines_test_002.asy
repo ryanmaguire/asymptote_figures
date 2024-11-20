@@ -35,5 +35,5 @@ int grid_skip = 2;
 
 /*  Make the plot.                                                            */
 bc.DrawBoxCoordinatesWithGridLines(
-    x_start, x_end, y_start, y_end, grid_skip = grid_skip
+    x_start, x_end, y_start, y_end, x_skip = grid_skip
 );

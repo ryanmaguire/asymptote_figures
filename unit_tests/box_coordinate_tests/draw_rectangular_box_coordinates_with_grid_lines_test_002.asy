@@ -33,5 +33,5 @@ int grid_skip = 2;
 
 /*  Make the plot.                                                            */
 bc.DrawRectangularBoxCoordinatesWithGridLines(
-    x_length, y_length, grid_skip = grid_skip
+    x_length, y_length, x_skip = grid_skip
 );
