@@ -84,7 +84,7 @@ DrawBoxCoordinates(real x_start,
      *  three variables. If x_start is negative, truncation is fine. If       *
      *  x_start is positive, truncating will create a value less than it. We  *
      *  need to increment this value so that x_first >= x_start. We do the    *
-     *  same check with x_last, y_rist, and y_last.                           */
+     *  same check with x_last, y_first, and y_last.                          */
     x_first = (x_start < 0.0 ? (int)(x_start) : (int)(x_start + 1.0));
     x_last = (x_end > 0.0 ? (int)(x_end) : (int)(x_end - 1.0));
     y_first = (y_start < 0.0 ? (int)(y_start) : (int)(y_start + 1.0));
