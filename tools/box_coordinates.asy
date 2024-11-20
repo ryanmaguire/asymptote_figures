@@ -65,7 +65,8 @@ DrawBoxCoordinates(real x_start,
                    real y_end,
                    pen axis_pen = default_axis_pen,
                    pen tick_pen = default_tick_pen,
-                   int grid_skip = 1,
+                   int x_skip = 1,
+                   int y_skip = 1,
                    real tick_length = 0.1)
 {
     /*  Variable for index, and variables for casting reals to ints.          */
@@ -74,7 +75,8 @@ DrawBoxCoordinates(real x_start,
     /*  Ensure we were given legal inputs.                                    */
     assert(x_start < x_end);
     assert(y_start < y_end);
-    assert(grid_skip > 0);
+    assert(x_skip > 0);
+    assert(y_skip > 0);
     assert(tick_length > 0.0);
 
     /*  Cast to integers. We are assuming the rounding mode is truncation,    *
@@ -105,7 +107,7 @@ DrawBoxCoordinates(real x_start,
     draw(top_left.LineTo(bottom_left), axis_pen);
 
     /*  Loop through the x-coordinates and draw vertical tick marks.          */
-    for (n = x_first; n <= x_last; n += grid_skip)
+    for (n = x_first; n <= x_last; n += x_skip)
     {
         /*  Compute the endpoints for the tick-marks.                         */
         vec2.Vec2 upper_tick_top = vec2.Vec2(n, y_end + tick_length);
@@ -121,7 +123,7 @@ DrawBoxCoordinates(real x_start,
     /*  End of for-loop drawing the vertical tick-marks.                      */
 
     /*  Loop through the y-coordinates and draw horizontal tick marks.        */
-    for (n = y_first; n <= y_last; n += grid_skip)
+    for (n = y_first; n <= y_last; n += y_skip)
     {
         /*  Compute the endpoints for the tick-marks.                         */
         vec2.Vec2 right_tick_right = vec2.Vec2(x_end + tick_length, n);
@@ -165,13 +167,15 @@ DrawRectangularBoxCoordinates(real x_length,
                               real y_length,
                               pen axis_pen = default_axis_pen,
                               pen tick_pen = default_tick_pen,
-                              int grid_skip = 1,
+                              int x_skip = 1,
+                              int y_skip = 1,
                               real tick_length = 0.1)
 {
     /*  Ensure all of the inputs are legal for the plot                       */
     assert(x_length > 0.0);
     assert(y_length > 0.0);
-    assert(grid_skip > 0);
+    assert(x_skip > 0);
+    assert(y_skip > 0);
     assert(tick_length > 0.0);
 
     /*  Pass the parameters to the main drawing function. To make it centered *
@@ -184,7 +188,8 @@ DrawRectangularBoxCoordinates(real x_length,
         y_length,                   /*  Top-most border for the box plot.     */
         axis_pen = axis_pen,        /*  Pen used for drawing the box.         */
         tick_pen = tick_pen,        /*  Pen used for the smaller tick marks.  */
-        grid_skip = grid_skip,      /*  Number of tick marks skipped.         */
+        x_skip = x_skip,            /*  Number of tick marks skipped, x axis. */
+        y_skip = y_skip,            /*  Number of tick marks skipped, x axis. */
         tick_length = tick_length   /*  Length of the ticks drawn in the plot.*/
     );
 }
@@ -229,7 +234,8 @@ DrawSquareBoxCoordinates(real length,
         length,                     /*  Length in the y direction.            */
         axis_pen = axis_pen,        /*  Pen used for drawing the box.         */
         tick_pen = tick_pen,        /*  Pen used for the smaller tick marks.  */
-        grid_skip = grid_skip,      /*  Number of tick marks skipped.         */
+        x_skip = grid_skip,         /*  Number of tick marks skipped, x axis. */
+        y_skip = grid_skip,         /*  Number of tick marks skipped, x axis. */
         tick_length = tick_length   /*  Length of the smaller tick marks.     */
     );
 }
@@ -271,13 +277,15 @@ DrawBoxCoordinatesWithGridLines(real x_start,
                                 pen axis_pen = default_axis_pen,
                                 pen tick_pen = default_tick_pen,
                                 pen grid_pen = grid.default_grid_pen,
-                                int grid_skip = 1,
+                                int x_skip = 1,
+                                int y_skip = 1,
                                 real tick_length = 0.1)
 {
     /*  Ensure all of the inputs are legal for the plot                       */
     assert(x_start < x_end);
     assert(y_start < y_end);
-    assert(grid_skip > 0);
+    assert(x_skip > 0);
+    assert(y_skip > 0);
     assert(tick_length > 0.0);
 
     /*  Add grid lines to the drawing.                                        */
@@ -287,7 +295,8 @@ DrawBoxCoordinatesWithGridLines(real x_start,
         y_start,                    /*  Bottom-most border for the box plot.  */
         y_end,                      /*  Top-most border for the box plot.     */
         grid_pen = grid_pen,        /*  Pen used for the grid lines.          */
-        grid_skip = grid_skip       /*  Number of tick marks skipped.         */
+        x_skip = x_skip,            /*  Number of tick marks skipped, x axis. */
+        y_skip = y_skip             /*  Number of tick marks skipped, x axis. */
     );
 
     /*  Add a box, marking the two axes with tick marks.                      */
@@ -298,7 +307,8 @@ DrawBoxCoordinatesWithGridLines(real x_start,
         y_end,                      /*  Top-most border for the box plot.     */
         axis_pen = axis_pen,        /*  Pen used for drawing the box.         */
         tick_pen = tick_pen,        /*  Pen used for the smaller tick marks.  */
-        grid_skip = grid_skip,      /*  Number of tick marks skipped.         */
+        x_skip = x_skip,            /*  Number of tick marks skipped, x axis. */
+        y_skip = y_skip,            /*  Number of tick marks skipped, x axis. */
         tick_length = tick_length   /*  Length of the ticks drawn in the plot.*/
     );
 }
@@ -334,13 +344,15 @@ DrawRectangularBoxCoordinatesWithGridLines(real x_length,
                                            pen axis_pen = default_axis_pen,
                                            pen tick_pen = default_tick_pen,
                                            pen grid_pen = grid.default_grid_pen,
-                                           int grid_skip = 1,
+                                           int x_skip = 1,
+                                           int y_skip = 1,
                                            real tick_length = 0.1)
 {
     /*  Ensure all of the inputs are legal for the plot                       */
     assert(x_length > 0.0);
     assert(y_length > 0.0);
-    assert(grid_skip > 0);
+    assert(x_skip > 0);
+    assert(y_skip > 0);
     assert(tick_length > 0.0);
 
     /*  Pass the parameters to the main drawing function. To make it centered *
@@ -354,7 +366,8 @@ DrawRectangularBoxCoordinatesWithGridLines(real x_length,
         axis_pen = axis_pen,        /*  Pen used for drawing the box.         */
         tick_pen = tick_pen,        /*  Pen used for the smaller tick marks.  */
         grid_pen = grid_pen,        /*  Pen used for the grid lines.          */
-        grid_skip = grid_skip,      /*  Number of tick marks skipped.         */
+        x_skip = x_skip,            /*  Number of tick marks skipped, x axis. */
+        y_skip = y_skip,            /*  Number of tick marks skipped, x axis. */
         tick_length = tick_length   /*  Length of the ticks drawn in the plot.*/
     );
 }
@@ -395,11 +408,6 @@ DrawSquareBoxCoordinatesWithGridLines(real length,
     assert(grid_skip > 0);
     assert(tick_length > 0.0);
 
-    /*  Ensure all of the inputs are legal for the plot                       */
-    assert(length > 0.0);
-    assert(grid_skip > 0);
-    assert(tick_length > 0.0);
-
     /*  A square box is just a rectangular box with width equal to height.    *
      *  Use the rectangular drawing function with x_length = y_length.        */
     DrawRectangularBoxCoordinatesWithGridLines(
@@ -408,7 +416,8 @@ DrawSquareBoxCoordinatesWithGridLines(real length,
         axis_pen = axis_pen,        /*  Pen used for drawing the box.         */
         tick_pen = tick_pen,        /*  Pen used for the smaller tick marks.  */
         grid_pen = grid_pen,        /*  Pen used for the grid lines.          */
-        grid_skip = grid_skip,      /*  Number of tick marks skipped.         */
+        x_skip = grid_skip,         /*  Number of tick marks skipped, x axis. */
+        y_skip = grid_skip,         /*  Number of tick marks skipped, y axis. */
         tick_length = tick_length   /*  Length of the smaller tick marks.     */
     );
 }
