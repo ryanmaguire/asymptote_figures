@@ -56,7 +56,8 @@ DrawGridLines(real x_start,
               real y_start,
               real y_end,
               pen grid_pen = default_grid_pen,
-              int grid_skip = 1)
+              int x_skip = 1,
+              int y_skip = 1)
 {
     /*  Variable for indexing over the grid lines.                            */
     int n;
@@ -67,7 +68,8 @@ DrawGridLines(real x_start,
     /*  Check for legal inputs.                                               */
     assert(x_start < x_end);
     assert(y_start < y_end);
-    assert(grid_skip > 0);
+    assert(x_skip > 0);
+    assert(y_skip > 0);
 
     /*  Compute the ending indices for all of the grid lines.                 */
     left_ind = (int)(ceil(x_start));
@@ -76,7 +78,7 @@ DrawGridLines(real x_start,
     top_ind = (int)(floor(y_end));
 
     /*  Loop through and draw the lines for the grid. Vertical lines first.   */
-    for (n = left_ind; n <= right_ind; n += grid_skip)
+    for (n = left_ind; n <= right_ind; n += x_skip)
     {
         /*  Compute the points specifying the ends of the vertical lines.     */
         vec2.Vec2 bottom = vec2.Vec2(n, y_start);
@@ -88,7 +90,7 @@ DrawGridLines(real x_start,
     /*  End of for-loop drawing the vertical grid lines.                      */
 
     /*  Loop through and draw the lines for the grid. Horizontal lines next.  */
-    for (n = bottom_ind; n <= top_ind; n += grid_skip)
+    for (n = bottom_ind; n <= top_ind; n += y_skip)
     {
         /*  Compute the points specifying the ends of the horizontal lines.   */
         vec2.Vec2 left = vec2.Vec2(x_start, n);
@@ -123,12 +125,14 @@ void
 DrawRectangularGridLines(real x_length,
                          real y_length,
                          pen grid_pen = default_grid_pen,
-                         int grid_skip = 1)
+                         int x_skip = 1,
+                         int y_skip)
 {
     /*  Check for legal values.                                               */
     assert(x_length > 0.0);
     assert(y_length > 0.0);
-    assert(grid_skip > 0.0);
+    assert(x_skip > 0);
+    assert(y_skip > 0);
 
     /*  Call the main plotting function.                                      */
     DrawGridLines(
@@ -137,7 +141,8 @@ DrawRectangularGridLines(real x_length,
         -y_length,                  /*  Bottom-most border for the box plot.  */
         y_length,                   /*  Top-most border for the box plot.     */
         grid_pen = grid_pen,        /*  Pen used for the grid lines.          */
-        grid_skip = grid_skip       /*  Number of tick marks skipped.         */
+        x_skip = x_skip,            /*  Number of tick marks skipped, x axis. */
+        y_skip = y_skip             /*  Number of tick marks skipped, y axis. */
     );
 }
 /*  End of DrawRectangularGridLines.                                          */
@@ -169,7 +174,11 @@ DrawSquareGridLines(real grid_length,
 
     /*  Use the main grid line function for drawing.                          */
     DrawRectangularGridLines(
-        grid_length, grid_length, grid_pen = grid_pen, grid_skip = grid_skip
+        grid_length,
+        grid_length,
+        grid_pen = grid_pen,
+        x_skip = grid_skip,
+        y_skip = grid_skip
     );
 }
 /*  End of DrawSquareGridLines.                                               */
