@@ -80,7 +80,7 @@ DrawCoordinateAxes(real x_start,
     vec2.Vec2 bottom = vec2.Vec2(0.0, y_start);
     vec2.Vec2 top = vec2.Vec2(0.0, y_end);
 
-    /*  Draw the coordinate axes with labels.                                 */
+    /*  Draw the coordinate axes without labels.                              */
     draw(left.LineTo(right), axis_pen, arrow);
     draw(bottom.LineTo(top), axis_pen, arrow);
 }
@@ -118,8 +118,8 @@ DrawRectangularCoordinateAxes(real x_length,
     DrawCoordinateAxes(
         -x_length,              /*  Left-most point on the x axis.            */
         x_length,               /*  Right-most point on the x axis.           */
-        -y_length,              /*  Left-most point on the y axis.            */
-        y_length,               /*  Right-most point on the y axis.           */
+        -y_length,              /*  Bottom-most point on the y axis.          */
+        y_length,               /*  Top-most point on the y axis.             */
         axis_pen = axis_pen,    /*  Pen used for drawing the axes.            */
         arrow = arrow           /*  Arrow head for the end of the axes.       */
     );
@@ -162,9 +162,9 @@ DrawSquareCoordinateAxes(real length,
 
 /******************************************************************************
  *  Function:                                                                 *
- *      DrawAndLabelCoordinateAxesWithTickMarks                               *
+ *      DrawCoordinateAxesWithTickMarks                                       *
  *  Purpose:                                                                  *
- *      Draw the x and y axes and gives them labels with tick marks.          *
+ *      Draw the x and y axes and give them tick marks.                       *
  *  Arguments:                                                                *
  *      x_start (real):                                                       *
  *          The smallest values for the x axis.                               *
@@ -252,7 +252,7 @@ DrawCoordinateAxesWithTickMarks(real x_start,
  *  Function:                                                                 *
  *      DrawRectangularCoordinateAxesWithTickMarks                            *
  *  Purpose:                                                                  *
- *      Draw the x and y axes and gives them labels with tick marks.          *
+ *      Draw the x and y axes centered about the origin with tick marks.      *
  *  Arguments:                                                                *
  *      x_length (real):                                                      *
  *          Half the width of the x axis.                                     *
@@ -318,7 +318,7 @@ DrawRectangularCoordinateAxesWithTickMarks(real x_length,
  *  Function:                                                                 *
  *      DrawSquareCoordinateAxesWithTickMarks                                 *
  *  Purpose:                                                                  *
- *      Draw the x and y axes and gives them labels with tick marks.          *
+ *      Draw the x and y axes with the same length, and with tick marks.      *
  *  Arguments:                                                                *
  *      length (real):                                                        *
  *          Half the width of the axes.                                       *
@@ -333,10 +333,8 @@ DrawRectangularCoordinateAxesWithTickMarks(real x_length,
  *          Length of tick marks in the y axis.                               *
  *      tick_pen (pen):                                                       *
  *          Pen used for adding tick marks.                                   *
- *      x_skip (int):                                                         *
- *          The number of indices to skip in the x axis for tick marks.       *
- *      y_skip (int):                                                         *
- *          The number of indices to skip in the y axis for tick marks.       *
+ *      grid_skip (int):                                                      *
+ *          The number of indices to skip for tick marks.                     *
  *  Outputs:                                                                  *
  *      None (void).                                                          *
  ******************************************************************************/
@@ -347,8 +345,7 @@ DrawSquareCoordinateAxesWithTickMarks(real length,
                                       real x_tick_length = 0.1,
                                       real y_tick_length = 0.1,
                                       pen tick_pen = tick.default_tick_pen,
-                                      int x_skip = 1,
-                                      int y_skip = 1)
+                                      int grid_skip = 1)
 {
     /*  The origin does not get tick marks.                                   */
     bool skip_zero = true;
@@ -357,8 +354,7 @@ DrawSquareCoordinateAxesWithTickMarks(real length,
     assert(length > 0.0);
     assert(x_tick_length > 0.0);
     assert(y_tick_length > 0.0);
-    assert(x_skip > 0);
-    assert(y_skip > 0);
+    assert(grid_skip > 0);
 
     /*  Draw the coordinate axes using the previous function.                 */
     DrawRectangularCoordinateAxesWithTickMarks(
@@ -368,8 +364,8 @@ DrawSquareCoordinateAxesWithTickMarks(real length,
         arrow = arrow,                  /*  Arrow at the end of the axes.     */
         x_tick_length = x_tick_length,  /*  Length of the x-axis tick marks.  */
         y_tick_length = y_tick_length,  /*  Length of the y-axis tick marks.  */
-        x_skip = x_skip,                /*  Number of ticks to skip in x axis.*/
-        y_skip = y_skip                 /*  Number of ticks to skip in y axis.*/
+        x_skip = grid_skip,             /*  Number of ticks to skip in x axis.*/
+        y_skip = grid_skip              /*  Number of ticks to skip in y axis.*/
     );
 }
 /*  End of DrawSquareCoordinateAxesWithTickMarks.                             */
@@ -546,12 +542,14 @@ DrawAndLabelSquareCoordinateAxes(real length,
  *  Purpose:                                                                  *
  *      Draw the x and y axes and gives them labels with tick marks.          *
  *  Arguments:                                                                *
- *      start (vec2.Vec2):                                                    *
- *          The smallest values for the x and y axes. The x axis will begin   *
- *          at start.x and the y axis at start.y.                             *
- *      end (vec2.Vec2):                                                      *
- *          The largest values for the x and y axes. The x axis will end at   *
- *          end.x and the y axis ends at end.y.                               *
+ *      x_start (real):                                                       *
+ *          The smallest values for the x axis.                               *
+ *      x_end (real):                                                         *
+ *          The largest values for the x axis.                                *
+ *      y_start (real):                                                       *
+ *          The smallest values for the y axis.                               *
+ *      y_end (real):                                                         *
+ *          The largest values for the y axis.                                *
  *  Keywords:                                                                 *
  *      x_label_dir (vec2.Vec2):                                              *
  *          The direction of the label for the x axis. Default is South.      *
@@ -690,10 +688,10 @@ DrawAndLabelCoordinateAxesWithTickMarks(real x_start,
  *  Purpose:                                                                  *
  *      Draw the x and y axes and gives them labels with tick marks.          *
  *  Arguments:                                                                *
- *      axis_start (real):                                                    *
- *          The starting value for the x and y axes.                          *
- *      axis_finish (real):                                                   *
- *          The final value for the x and y axes.                             *
+ *      x_length (real):                                                      *
+ *          Half the width of the x axis.                                     *
+ *      y_length (real):                                                      *
+ *          Half the height of the y axis.                                    *
  *  Keywords:                                                                 *
  *      x_label_dir (vec2.Vec2):                                              *
  *          The direction of the label for the x axis. Default is South.      *
@@ -793,7 +791,7 @@ DrawAndLabelRectangularCoordinateAxesWithTickMarks(
  *      Draw the x and y axes and gives them labels with tick marks. The axes *
  *      will have the same lengths and be centered about the origin.          *
  *  Arguments:                                                                *
- *      axis_length (real):                                                   *
+ *      length (real):                                                        *
  *          The length of the x and y axes.                                   *
  *  Keywords:                                                                 *
  *      x_label_dir (vec2.Vec2):                                              *
@@ -831,7 +829,8 @@ DrawAndLabelRectangularCoordinateAxesWithTickMarks(
  *  Outputs:                                                                  *
  *      None (void).                                                          *
  ******************************************************************************/
-void DrawAndLabelSquareCoordinateAxesWithTickMarks(
+void
+DrawAndLabelSquareCoordinateAxesWithTickMarks(
     real length,
     vec2.Vec2 x_label_dir = vec2.South,
     vec2.Vec2 y_label_dir = vec2.East,
@@ -884,16 +883,18 @@ void DrawAndLabelSquareCoordinateAxesWithTickMarks(
 
 /******************************************************************************
  *  Function:                                                                 *
- *      DrawAndLabelCoordinateAxesWithTickMarks                               *
+ *      DrawAndLabelCoordinateAxesWithGridLines                               *
  *  Purpose:                                                                  *
- *      Draw the x and y axes and gives them labels with tick marks.          *
+ *      Draw the x and y axes and gives them labels with grid lines.          *
  *  Arguments:                                                                *
- *      start (vec2.Vec2):                                                    *
- *          The smallest values for the x and y axes. The x axis will begin   *
- *          at start.x and the y axis at start.y.                             *
- *      end (vec2.Vec2):                                                      *
- *          The largest values for the x and y axes. The x axis will end at   *
- *          end.x and the y axis ends at end.y.                               *
+ *      x_start (real):                                                       *
+ *          The smallest values for the x axis.                               *
+ *      x_end (real):                                                         *
+ *          The largest values for the x axis.                                *
+ *      y_start (real):                                                       *
+ *          The smallest values for the y axis.                               *
+ *      y_end (real):                                                         *
+ *          The largest values for the y axis.                                *
  *  Keywords:                                                                 *
  *      x_label_dir (vec2.Vec2):                                              *
  *          The direction of the label for the x axis. Default is South.      *
@@ -903,6 +904,8 @@ void DrawAndLabelSquareCoordinateAxesWithTickMarks(
  *          Pen used to draw the axis.                                        *
  *      arrow (arrowbar):                                                     *
  *          Arrow used to end the axes.                                       *
+ *      grid_pen (pen):                                                       *
+ *          Pen used for the grid lines.                                      *
  *      x_tick_length (real):                                                 *
  *          Length of tick marks in the x axis.                               *
  *      y_tick_length (real):                                                 *
@@ -953,23 +956,36 @@ DrawAndLabelCoordinateAxesWithGridLines(real x_start,
                                         string x_string = "x",
                                         string y_string = "y")
 {
+    /*  Parameters for the grid lines. The coordinate axes functions do not   *
+     *  mind if x_start > x_end, or if y_start > y_end. In this case the axes *
+     *  are drawn with the arrows in the reverse direction. The grid line     *
+     *  functions are made in increasing order. We compute the lesser of      *
+     *  x_start and x_end, storing this in x_begin, and the greater is stored *
+     *  in x_finish. We do the same thing for the y axis.                     */
     real x_begin, x_finish, y_begin, y_finish;
+
+    /* Check for legal inputs.                                                */
     assert(x_tick_length > 0.0);
     assert(y_tick_length > 0.0);
     assert(x_skip > 0);
     assert(y_skip > 0);
 
+    /*  Normal use case: x_start < x_end. The arrow points right. Set begin   *
+     *  equal to start and finish equal to end.                               */
     if (x_start < x_end)
     {
         x_begin = x_start;
         x_finish = x_end;
     }
+
+    /*  Flipped case, arrow points to the left. Set begin = end.              */
     else
     {
         x_begin = x_end;
         x_finish = x_start;
     }
 
+    /*  Same check for the y axis.                                            */
     if (y_start < y_end)
     {
         y_begin = y_start;
@@ -981,6 +997,7 @@ DrawAndLabelCoordinateAxesWithGridLines(real x_start,
         y_finish = y_start;
     }
 
+    /*  Add gride lines to the plot. This should be under the axes.           */
     grid.DrawGridLines(
         x_begin,
         x_finish,
@@ -991,6 +1008,7 @@ DrawAndLabelCoordinateAxesWithGridLines(real x_start,
         y_skip = y_skip
     );
 
+    /*  Draw the coordinate axes with labels and tick marks.                  */
     DrawAndLabelCoordinateAxesWithTickMarks(
         x_start,
         x_end,
@@ -1018,14 +1036,14 @@ DrawAndLabelCoordinateAxesWithGridLines(real x_start,
 
 /******************************************************************************
  *  Function:                                                                 *
- *      DrawAndLabelRectangularCoordinateAxesWithTickMarks                    *
+ *      DrawAndLabelRectangularCoordinateAxesWithGridLines                    *
  *  Purpose:                                                                  *
- *      Draw the x and y axes and gives them labels with tick marks.          *
+ *      Draw the x and y axes and gives them labels with grid lines.          *
  *  Arguments:                                                                *
- *      axis_start (real):                                                    *
- *          The starting value for the x and y axes.                          *
- *      axis_finish (real):                                                   *
- *          The final value for the x and y axes.                             *
+ *      x_length (real):                                                      *
+ *          Half the width of the x axis.                                     *
+ *      y_length (real):                                                      *
+ *          Half the height of the y axis.                                    *
  *  Keywords:                                                                 *
  *      x_label_dir (vec2.Vec2):                                              *
  *          The direction of the label for the x axis. Default is South.      *
@@ -1035,6 +1053,8 @@ DrawAndLabelCoordinateAxesWithGridLines(real x_start,
  *          Pen used to draw the axis.                                        *
  *      arrow (arrowbar):                                                     *
  *          Arrow used to end the axes.                                       *
+ *      grid_pen (pen):                                                       *
+ *          Pen used for the grid lines.                                      *
  *      x_tick_length (real):                                                 *
  *          Length of tick marks in the x axis.                               *
  *      y_tick_length (real):                                                 *
@@ -1122,12 +1142,12 @@ DrawAndLabelRectangularCoordinateAxesWithGridLines(
 
 /******************************************************************************
  *  Function:                                                                 *
- *      DrawAndLabelSquareCoordinateAxesWithTickMarks                         *
+ *      DrawAndLabelSquareCoordinateAxesWithGridLines                         *
  *  Purpose:                                                                  *
- *      Draw the x and y axes and gives them labels with tick marks. The axes *
+ *      Draw the x and y axes and gives them labels with grid lines. The axes *
  *      will have the same lengths and be centered about the origin.          *
  *  Arguments:                                                                *
- *      axis_length (real):                                                   *
+ *      length (real):                                                        *
  *          The length of the x and y axes.                                   *
  *  Keywords:                                                                 *
  *      x_label_dir (vec2.Vec2):                                              *
@@ -1138,6 +1158,8 @@ DrawAndLabelRectangularCoordinateAxesWithGridLines(
  *          Pen used to draw the axis.                                        *
  *      arrow (arrowbar):                                                     *
  *          Arrow used to end the axes.                                       *
+ *      grid_pen (pen):                                                       *
+ *          Pen used for the grid lines.                                      *
  *      x_tick_length (real):                                                 *
  *          Length of tick marks in the x axis.                               *
  *      y_tick_length (real):                                                 *
@@ -1165,7 +1187,8 @@ DrawAndLabelRectangularCoordinateAxesWithGridLines(
  *  Outputs:                                                                  *
  *      None (void).                                                          *
  ******************************************************************************/
-void DrawAndLabelSquareCoordinateAxesWithGridLines(
+void
+DrawAndLabelSquareCoordinateAxesWithGridLines(
     real length,
     vec2.Vec2 x_label_dir = vec2.South,
     vec2.Vec2 y_label_dir = vec2.East,
@@ -1217,3 +1240,251 @@ void DrawAndLabelSquareCoordinateAxesWithGridLines(
     );
 }
 /*  End of DrawAndLabelSquareCoordinateAxesWithGridLines.                     */
+
+/******************************************************************************
+ *  Function:                                                                 *
+ *      DrawCoordinateAxesWithGridLines                                       *
+ *  Purpose:                                                                  *
+ *      Draw the x and y axes without labels and with grid lines.             *
+ *  Arguments:                                                                *
+ *      x_start (real):                                                       *
+ *          The smallest values for the x axis.                               *
+ *      x_end (real):                                                         *
+ *          The largest values for the x axis.                                *
+ *      y_start (real):                                                       *
+ *          The smallest values for the y axis.                               *
+ *      y_end (real):                                                         *
+ *          The largest values for the y axis.                                *
+ *  Keywords:                                                                 *
+ *      axis_pen (pen):                                                       *
+ *          Pen used to draw the axis.                                        *
+ *      arrow (arrowbar):                                                     *
+ *          Arrow used to end the axes.                                       *
+ *      grid_pen (pen):                                                       *
+ *          Pen used for the grid lines.                                      *
+ *      x_tick_length (real):                                                 *
+ *          Length of tick marks in the x axis.                               *
+ *      y_tick_length (real):                                                 *
+ *          Length of tick marks in the y axis.                               *
+ *      tick_pen (pen):                                                       *
+ *          Pen used for adding tick marks.                                   *
+ *      x_skip (int):                                                         *
+ *          The number of indices to skip in the x axis for tick marks.       *
+ *      y_skip (int):                                                         *
+ *          The number of indices to skip in the y axis for tick marks.       *
+ *  Outputs:                                                                  *
+ *      None (void).                                                          *
+ ******************************************************************************/
+void
+DrawCoordinateAxesWithGridLines(real x_start,
+                                real x_end,
+                                real y_start,
+                                real y_end,
+                                pen axis_pen = default_axis_pen,
+                                arrowbar arrow = default_arrow,
+                                pen grid_pen = grid.default_grid_pen,
+                                real x_tick_length = 0.1,
+                                real y_tick_length = 0.1,
+                                pen tick_pen = tick.default_tick_pen,
+                                int x_skip = 1,
+                                int y_skip = 1)
+{
+    /*  Parameters for the grid lines. The coordinate axes functions do not   *
+     *  mind if x_start > x_end, or if y_start > y_end. In this case the axes *
+     *  are drawn with the arrows in the reverse direction. The grid line     *
+     *  functions are made in increasing order. We compute the lesser of      *
+     *  x_start and x_end, storing this in x_begin, and the greater is stored *
+     *  in x_finish. We do the same thing for the y axis.                     */
+    real x_begin, x_finish, y_begin, y_finish;
+
+    /* Check for legal inputs.                                                */
+    assert(x_tick_length > 0.0);
+    assert(y_tick_length > 0.0);
+    assert(x_skip > 0);
+    assert(y_skip > 0);
+
+    /*  Normal use case: x_start < x_end. The arrow points right. Set begin   *
+     *  equal to start and finish equal to end.                               */
+    if (x_start < x_end)
+    {
+        x_begin = x_start;
+        x_finish = x_end;
+    }
+
+    /*  Flipped case, arrow points to the left. Set begin = end.              */
+    else
+    {
+        x_begin = x_end;
+        x_finish = x_start;
+    }
+
+    /*  Same check for the y axis.                                            */
+    if (y_start < y_end)
+    {
+        y_begin = y_start;
+        y_finish = y_end;
+    }
+    else
+    {
+        y_begin = y_end;
+        y_finish = y_start;
+    }
+
+    /*  Add gride lines to the plot. This should be under the axes.           */
+    grid.DrawGridLines(
+        x_begin,
+        x_finish,
+        y_begin,
+        y_finish,
+        grid_pen = grid_pen,
+        x_skip = x_skip,
+        y_skip = y_skip
+    );
+
+    /*  Draw the coordinate axes with labels and tick marks.                  */
+    DrawCoordinateAxesWithTickMarks(
+        x_start,
+        x_end,
+        y_start,
+        y_end,
+        axis_pen = axis_pen,
+        arrow = arrow,
+        x_tick_length = x_tick_length,
+        y_tick_length = y_tick_length,
+        tick_pen = tick_pen,
+        x_skip = x_skip,
+        y_skip = y_skip
+    );
+}
+/*  End of DrawCoordinateAxesWithGridLines.                                   */
+
+/******************************************************************************
+ *  Function:                                                                 *
+ *      DrawRectangularCoordinateAxesWithGridLines                            *
+ *  Purpose:                                                                  *
+ *      Draw the x and y axes without labels and with grid lines.             *
+ *  Arguments:                                                                *
+ *      x_length (real):                                                      *
+ *          Half the width of the x axis.                                     *
+ *      y_length (real):                                                      *
+ *          Half the height of the y axis.                                    *
+ *  Keywords:                                                                 *
+ *      axis_pen (pen):                                                       *
+ *          Pen used to draw the axis.                                        *
+ *      arrow (arrowbar):                                                     *
+ *          Arrow used to end the axes.                                       *
+ *      grid_pen (pen):                                                       *
+ *          Pen used for the grid lines.                                      *
+ *      x_tick_length (real):                                                 *
+ *          Length of tick marks in the x axis.                               *
+ *      y_tick_length (real):                                                 *
+ *          Length of tick marks in the y axis.                               *
+ *      tick_pen (pen):                                                       *
+ *          Pen used for adding tick marks.                                   *
+ *      x_skip (int):                                                         *
+ *          The number of indices to skip in the x axis for tick marks.       *
+ *      y_skip (int):                                                         *
+ *          The number of indices to skip in the y axis for tick marks.       *
+ *  Outputs:                                                                  *
+ *      None (void).                                                          *
+ ******************************************************************************/
+void
+DrawRectangularCoordinateAxesWithGridLines(real x_length,
+                                           real y_length,
+                                           pen axis_pen = default_axis_pen,
+                                           arrowbar arrow = default_arrow,
+                                           pen grid_pen = grid.default_grid_pen,
+                                           real x_tick_length = 0.1,
+                                           real y_tick_length = 0.1,
+                                           pen tick_pen = tick.default_tick_pen,
+                                           int x_skip = 1,
+                                           int y_skip = 1)
+{
+    /*  Check for legal inputs.                                               */
+    assert(x_length > 0.0);
+    assert(y_length > 0.0);
+    assert(x_tick_length > 0.0);
+    assert(y_tick_length > 0.0);
+    assert(x_skip > 0);
+    assert(y_skip > 0);
+
+    /*  Use the main drawing function with the new parameters.                */
+    DrawCoordinateAxesWithGridLines(
+        -x_length,
+        x_length,
+        -y_length,
+        y_length,
+        axis_pen = axis_pen,
+        arrow = arrow,
+        grid_pen = grid_pen,
+        x_tick_length = x_tick_length,
+        y_tick_length = y_tick_length,
+        tick_pen = tick_pen,
+        x_skip = x_skip,
+        y_skip = y_skip
+    );
+}
+/*  End of DrawRectangularCoordinateAxesWithGridLines.                        */
+
+/******************************************************************************
+ *  Function:                                                                 *
+ *      DrawSquareCoordinateAxesWithGridLines                                 *
+ *  Purpose:                                                                  *
+ *      Draw the x and y axes without labels and with grid lines. The axes    *
+ *      will have the same lengths and be centered about the origin.          *
+ *  Arguments:                                                                *
+ *      length (real):                                                        *
+ *          The length of the x and y axes.                                   *
+ *  Keywords:                                                                 *
+ *      axis_pen (pen):                                                       *
+ *          Pen used to draw the axis.                                        *
+ *      arrow (arrowbar):                                                     *
+ *          Arrow used to end the axes.                                       *
+ *      grid_pen (pen):                                                       *
+ *          Pen used for the grid lines.                                      *
+ *      x_tick_length (real):                                                 *
+ *          Length of tick marks in the x axis.                               *
+ *      y_tick_length (real):                                                 *
+ *          Length of tick marks in the y axis.                               *
+ *      tick_pen (pen):                                                       *
+ *          Pen used for adding tick marks.                                   *
+ *      x_skip (int):                                                         *
+ *          The number of indices to skip in the x axis for tick marks.       *
+ *      y_skip (int):                                                         *
+ *          The number of indices to skip in the y axis for tick marks.       *
+ *  Outputs:                                                                  *
+ *      None (void).                                                          *
+ ******************************************************************************/
+void
+DrawSquareCoordinateAxesWithGridLines(real length,
+                                      pen axis_pen = default_axis_pen,
+                                      arrowbar arrow = default_arrow,
+                                      pen grid_pen = grid.default_grid_pen,
+                                      real x_tick_length = 0.1,
+                                      real y_tick_length = 0.1,
+                                      pen tick_pen = tick.default_tick_pen,
+                                      int x_skip = 1,
+                                      int y_skip = 1)
+{
+    /*  Check for legal inputs.                                               */
+    assert(length > 0.0);
+    assert(x_tick_length > 0.0);
+    assert(y_tick_length > 0.0);
+    assert(x_skip > 0);
+    assert(y_skip > 0);
+
+    /*  We use the rectangular function with start = -length and end = length.*/
+    DrawRectangularCoordinateAxesWithGridLines(
+        length,
+        length,
+        axis_pen = axis_pen,
+        arrow = arrow,
+        grid_pen = grid_pen,
+        x_tick_length = x_tick_length,
+        y_tick_length = y_tick_length,
+        tick_pen = tick_pen,
+        x_skip = x_skip,
+        y_skip = y_skip
+    );
+}
+/*  End of DrawSquareCoordinateAxesWithGridLines.                             */
