@@ -26,9 +26,6 @@ import vec2;
 /*  Functions for creating paths from real-valued functions.                  */
 import path_functions as pf;
 
-/*  Functions for adding grid lines to a drawing.                             */
-import grid_lines as grid;
-
 /*  Functions for plotting the x and y axes.                                  */
 import coordinate_axes as axes;
 
@@ -47,10 +44,6 @@ real sqrt_two_minus_x(real x)
     return sqrt(2.0 - x);
 }
 
-/*  Start and end values for the square guide-grid to be drawn.               */
-int grid_start = -9;
-int grid_end = 9;
-
 /*  Length of the grid lines.                                                 */
 real grid_length = 10.2;
 
@@ -61,11 +54,8 @@ int samples = 20;
 path g_square = pf.PathFromFunction(two_minus_x_squared, -3.46, 3.46, samples);
 path g_root = pf.PathFromFunction(sqrt_two_minus_x, 2.0, -10.0, samples);
 
-/*  Add grid lines to the drawing.                                            */
-grid.DrawSquareGridLinesWithTickMarks(grid_start, grid_end, grid_length);
-
 /*  Draw the coordinate axes.                                                 */
-axes.DrawAndLabelSquareCoordinateAxes(grid_length);
+axes.DrawAndLabelSquareCoordinateAxesWithGridLines(grid_length);
 
 /*  Points for the lines. Used for linear equations of the form y = mx + b.   */
 vec2.Vec2 A0 = vec2.Vec2(-3.00, -10.0);

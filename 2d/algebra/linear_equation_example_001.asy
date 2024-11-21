@@ -23,24 +23,14 @@
 /*  Two dimensional vector struct provided here.                              */
 import vec2;
 
-/*  Functions for adding grid lines to a drawing.                             */
-import grid_lines as grid;
-
 /*  Function for plotting the x and y axes.                                   */
 import coordinate_axes as axes;
 
 /*  Default pens and parameters for size(512) drawings provided here.         */
 import size_512_default_settings as default;
 
-/*  Start and end values for the square guide-grid to be drawn.               */
-int grid_start = -3;
-int grid_end = 3;
-
-/*  Length of the grid lines.                                                 */
-real grid_length = 3.9;
-
 /*  Length of the coordinate axes.                                            */
-real axis_length = 4.2;
+real axis_length = 3.95;
 
 /*  Start and end points for the line representing the linear equation.       */
 vec2.Vec2 start = vec2.Vec2(-axis_length, -axis_length);
@@ -52,11 +42,8 @@ vec2.Vec2 P = vec2.Vec2(1.0, 1.0);
 vec2.Vec2 L1 = vec2.Vec2(-0.58, 0.5);
 vec2.Vec2 L2 = vec2.Vec2(+0.58, 1.5);
 
-/*  Add grid lines to the drawing.                                            */
-grid.DrawSquareGridLinesWithTickMarks(grid_start, grid_end, grid_length);
-
 /*  Draw the coordinate axes.                                                 */
-axes.DrawAndLabelSquareCoordinateAxes(axis_length);
+axes.DrawAndLabelSquareCoordinateAxesWithGridLines(axis_length);
 
 /*  Draw the line representing the linear equation.                           */
 draw(start.LineTo(end));

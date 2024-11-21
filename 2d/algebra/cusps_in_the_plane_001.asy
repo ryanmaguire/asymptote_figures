@@ -26,9 +26,6 @@ import vec2;
 /*  Functions for creating paths from real-valued functions.                  */
 import path_functions as pf;
 
-/*  Functions for adding grid lines to a drawing.                             */
-import grid_lines as grid;
-
 /*  Functions for plotting the x and y axes.                                  */
 import coordinate_axes as axes;
 
@@ -41,10 +38,6 @@ real cusp_func(real x)
     return cbrt(x*x);
 }
 
-/*  Start and end values for the square guide-grid to be drawn.               */
-int grid_start = -3;
-int grid_end = 3;
-
 /*  Length of the grid lines.                                                 */
 real grid_length = 3.2;
 
@@ -56,13 +49,10 @@ int samples = 10;
  *  into left and right portions, where the derivative is defined, so that    *
  *  the cubic splining technique renders an accurate image.                   */
 path gLeft = pf.PathFromFunction(cusp_func, -3.0, 0.0, samples);
-path gRight = reflect((0.0, 0.0), (0.0, 1.0))*gLeft;
-
-/*  Add grid lines to the drawing.                                            */
-grid.DrawSquareGridLinesWithTickMarks(grid_start, grid_end, grid_length);
+path gRight = reflect((0.0, 0.0), (0.0, 1.0)) * gLeft;
 
 /*  Draw the coordinate axes.                                                 */
-axes.DrawAndLabelSquareCoordinateAxes(grid_length);
+axes.DrawAndLabelSquareCoordinateAxesWithGridLines(grid_length);
 
 /*  Draw the curve in the plane.                                              */
 draw(gLeft);
