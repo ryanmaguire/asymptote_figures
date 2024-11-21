@@ -51,8 +51,10 @@ pen default_tick_pen = black + linewidth(0.4pt) + fontsize(12pt);
  *          The pen used for the "axes," which is the outer box.              *
  *      tick_pen (pen):                                                       *
  *          Pen used for the small tick marks along the axes.                 *
- *      grid_skip (int):                                                      *
- *          The number of points to skip over when drawing tick marks.        *
+ *      x_skip (int):                                                         *
+ *          The number of tick marks to skip over in the x axis when drawing. *
+ *      y_skip (int):                                                         *
+ *          The number of tick marks to skip over in the y axis when drawing. *
  *      tick_length (real):                                                   *
  *          Parameter for the size of the tick marks.                         *
  *  Output:                                                                   *
@@ -69,7 +71,7 @@ DrawBoxCoordinates(real x_start,
                    int y_skip = 1,
                    real tick_length = 0.1)
 {
-    /*  Variable for index, and variables for casting reals to ints.          */
+    /*  Variable for indexing, and variables for casting reals to ints.       */
     int n, x_first, x_last, y_first, y_last;
 
     /*  Ensure we were given legal inputs.                                    */
@@ -83,12 +85,11 @@ DrawBoxCoordinates(real x_start,
      *  which is also called round-to-zero. To avoid tick marks and labels    *
      *  going outside the bounds of the plot, treat the cases where x_start   *
      *  is positive and x_start is negative carefully. Similarly for the      *
-     *  three variables. If x_start is negative, truncation is fine. If       *
+     *  other variables. If x_start is negative, truncation is fine. If       *
      *  x_start is positive, truncating will create a value less than it. We  *
-     *  need to increment this value so that x_first >= x_start. We do the    *
-     *  same check with x_last, y_first, and y_last. For x_first and y_first  *
-     *  this can be achieved with the ceiling function. Similarly, for x_last *
-     *  and y_last, we can use the floor function.                            */
+     *  need to increment this value so that x_first >= x_start. For x_first  *
+     *  and y_first this can be achieved with the ceiling function.           *
+     *  Similarly, for x_last and y_last, we can use the floor function.      */
     x_first = (int)(ceil(x_start));
     x_last = (int)(floor(x_end));
     y_first = (int)(ceil(y_start));
@@ -155,8 +156,10 @@ DrawBoxCoordinates(real x_start,
  *          The pen used for the "axes," which is the outer box.              *
  *      tick_pen (pen):                                                       *
  *          Pen used for the small tick marks along the axes.                 *
- *      grid_skip (int):                                                      *
- *          The number of points to skip over when drawing tick marks.        *
+ *      x_skip (int):                                                         *
+ *          The number of tick marks to skip over in the x axis when drawing. *
+ *      y_skip (int):                                                         *
+ *          The number of tick marks to skip over in the y axis when drawing. *
  *      tick_length (real):                                                   *
  *          Parameter for the size of the tick marks.                         *
  *  Output:                                                                   *
@@ -189,7 +192,7 @@ DrawRectangularBoxCoordinates(real x_length,
         axis_pen = axis_pen,        /*  Pen used for drawing the box.         */
         tick_pen = tick_pen,        /*  Pen used for the smaller tick marks.  */
         x_skip = x_skip,            /*  Number of tick marks skipped, x axis. */
-        y_skip = y_skip,            /*  Number of tick marks skipped, x axis. */
+        y_skip = y_skip,            /*  Number of tick marks skipped, y axis. */
         tick_length = tick_length   /*  Length of the ticks drawn in the plot.*/
     );
 }
@@ -235,7 +238,7 @@ DrawSquareBoxCoordinates(real length,
         axis_pen = axis_pen,        /*  Pen used for drawing the box.         */
         tick_pen = tick_pen,        /*  Pen used for the smaller tick marks.  */
         x_skip = grid_skip,         /*  Number of tick marks skipped, x axis. */
-        y_skip = grid_skip,         /*  Number of tick marks skipped, x axis. */
+        y_skip = grid_skip,         /*  Number of tick marks skipped, y axis. */
         tick_length = tick_length   /*  Length of the smaller tick marks.     */
     );
 }
@@ -262,8 +265,10 @@ DrawSquareBoxCoordinates(real length,
  *          Pen used for the small tick marks along the axes.                 *
  *      grid_pen (pen):                                                       *
  *          Pen used for the grid lines.                                      *
- *      grid_skip (int):                                                      *
- *          The number of points to skip over when drawing tick marks.        *
+ *      x_skip (int):                                                         *
+ *          The number of tick marks to skip over in the x axis when drawing. *
+ *      y_skip (int):                                                         *
+ *          The number of tick marks to skip over in the y axis when drawing. *
  *      tick_length (real):                                                   *
  *          Parameter for the size of the tick marks.                         *
  *  Output:                                                                   *
@@ -296,7 +301,7 @@ DrawBoxCoordinatesWithGridLines(real x_start,
         y_end,                      /*  Top-most border for the box plot.     */
         grid_pen = grid_pen,        /*  Pen used for the grid lines.          */
         x_skip = x_skip,            /*  Number of tick marks skipped, x axis. */
-        y_skip = y_skip             /*  Number of tick marks skipped, x axis. */
+        y_skip = y_skip             /*  Number of tick marks skipped, y axis. */
     );
 
     /*  Add a box, marking the two axes with tick marks.                      */
@@ -308,7 +313,7 @@ DrawBoxCoordinatesWithGridLines(real x_start,
         axis_pen = axis_pen,        /*  Pen used for drawing the box.         */
         tick_pen = tick_pen,        /*  Pen used for the smaller tick marks.  */
         x_skip = x_skip,            /*  Number of tick marks skipped, x axis. */
-        y_skip = y_skip,            /*  Number of tick marks skipped, x axis. */
+        y_skip = y_skip,            /*  Number of tick marks skipped, y axis. */
         tick_length = tick_length   /*  Length of the ticks drawn in the plot.*/
     );
 }
@@ -322,7 +327,7 @@ DrawBoxCoordinatesWithGridLines(real x_start,
  *  Arguments:                                                                *
  *      x_length (real):                                                      *
  *          Half the width of the plot.                                       *
- *      x_length (real):                                                      *
+ *      y_length (real):                                                      *
  *          Half the height of the plot.                                      *
  *  Keywords:                                                                 *
  *      axis_pen (pen):                                                       *
@@ -331,8 +336,10 @@ DrawBoxCoordinatesWithGridLines(real x_start,
  *          Pen used for the small tick marks along the axes.                 *
  *      grid_pen (pen):                                                       *
  *          Pen used for the grid lines.                                      *
- *      grid_skip (int):                                                      *
- *          The number of points to skip over when drawing tick marks.        *
+ *      x_skip (int):                                                         *
+ *          The number of tick marks to skip over in the x axis when drawing. *
+ *      y_skip (int):                                                         *
+ *          The number of tick marks to skip over in the y axis when drawing. *
  *      tick_length (real):                                                   *
  *          Parameter for the size of the tick marks.                         *
  *  Output:                                                                   *
@@ -367,7 +374,7 @@ DrawRectangularBoxCoordinatesWithGridLines(real x_length,
         tick_pen = tick_pen,        /*  Pen used for the smaller tick marks.  */
         grid_pen = grid_pen,        /*  Pen used for the grid lines.          */
         x_skip = x_skip,            /*  Number of tick marks skipped, x axis. */
-        y_skip = y_skip,            /*  Number of tick marks skipped, x axis. */
+        y_skip = y_skip,            /*  Number of tick marks skipped, y axis. */
         tick_length = tick_length   /*  Length of the ticks drawn in the plot.*/
     );
 }
