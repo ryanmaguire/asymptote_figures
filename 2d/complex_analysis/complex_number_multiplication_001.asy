@@ -23,17 +23,16 @@
 /*  Provides a vector struct for drawing lines and curves.                    */
 import vec2;
 
-/*  Functions for adding grid lines to a drawing.                             */
-import grid_lines as grid;
-
 /*  Functions for plotting the x and y axes.                                  */
 import coordinate_axes as axes;
 
 /*  Default pens and parameters for size(256) drawings provided here.         */
 import size_256_default_settings as default;
 
+/*  Margins for the arrows at the ends of the lines that are drawn.           */
 margin margins = TrueMargin(0.0cm, 0.08cm);
 
+/*  Radius for the dots indicating points in the plane.                       */
 real dot_radius = 0.05;
 
 /*  The point under consideration.                                            */
@@ -45,50 +44,54 @@ vec2.Vec2 prod = vec2.Vec2(z.x*w.x - z.y*w.y, z.x*w.y + z.y*w.x);
 Label z_label = Label("$z$", position = 0.5);
 Label w_label = Label("$w$", position = 0.5);
 
-/*  Start and end values for the square guide-grid to be drawn.               */
-int grid_start = -1;
-int grid_end = 6;
-
-/*  Points specifying the coordinate axes and grid lines.                     */
-vec2.Vec2 axis_start = vec2.Vec2(-1.4, -1.4);
-vec2.Vec2 axis_end = vec2.Vec2(6.7, 6.7);
-
+/*  Radians-to-Degrees conversion factor.                                     */
 real rad2deg = 180.0 / pi;
 
+/*  The angle to point z makes with the real axis.                            */
 real theta_angle = z.PolarAngle() * rad2deg;
 real theta_radius = 0.5 * z.Norm();
 path theta_arc = vec2.Arc(vec2.Origin, theta_radius, 0.0, theta_angle);
 Label theta_label = Label("$\theta$", position = 0.5);
 
+/*  The angle to point w makes with the real axis.                            */
 real psi_angle = w.PolarAngle() * rad2deg;
 real psi_radius = w.Norm() * 0.88;
 path psi_arc = vec2.Arc(vec2.Origin, psi_radius, 0.0, psi_angle);
 Label psi_label = Label("$\psi$", position = 0.5);
 
+/*  The angle the product z*w makes with the real axis.                       */
 real sum_angle = psi_angle + theta_angle;
-real sum_radius = prod.Norm() * 0.75;
+real sum_radius = prod.Norm() * 0.6;
 path sum_arc = vec2.Arc(vec2.Origin, sum_radius, 0.0, sum_angle);
 Label sum_label = Label("$\theta+\psi$", position = 0.5);
 
+/*  Rotation transform to draw the angle theta twice. Once from the real axis *
+ *  to the point z. And again from the point w to the point z*w.              */
 transform w_rotate = rotate(w.PolarAngle() * rad2deg);
 
-/*  Add grid lines to the drawing.                                            */
-grid.DrawGridLines(grid_start, grid_end, axis_start, axis_end);
+/*  Points specifying the coordinate axes and grid lines.                     */
+real x_start = -1.4;
+real x_end = 6.9;
+real y_start = -1.4;
+real y_end = 6.9;
 
 /*  Draw the coordinate axes.                                                 */
-axes.DrawAndLabelCoordinateAxesWithTickMarks(
-    axis_start,
-    axis_end,
+axes.DrawAndLabelCoordinateAxesWithGridLines(
+    x_start,
+    x_end,
+    y_start,
+    y_end,
     y_suffix = "i",
     x_string = "\textrm{Re}(z)",
     y_string = "\textrm{Im}(z)"
 );
 
-/*  Draw the arrows indicating the sum of z and w.                            */
+/*  Draw the arrows indicating the product of z and w.                        */
 draw(vec2.Origin.LineTo(prod), default.thin_dash_pen);
 draw(vec2.Origin.LineTo(z), default.sharp_arrow, margins);
 draw(vec2.Origin.LineTo(w), default.sharp_arrow, margins);
 
+/*  Add the points z, w, and the product z*w, and label everything.           */
 z.DrawDot(dot_radius);
 w.DrawDot(dot_radius);
 prod.DrawDot(dot_radius);
@@ -96,8 +99,8 @@ z.AddLabel("$z$", vec2.NorthWest);
 w.AddLabel("$w$", vec2.NorthWest);
 prod.AddLabel("$zw$", vec2.NorthEast);
 
+/*  Draw the arcs representing the angles the points make with the real axis. */
 draw(theta_label, theta_arc, default.thin_dash_pen);
 draw(theta_label, w_rotate * theta_arc, default.thin_dash_pen);
-
 draw(psi_label, psi_arc, default.thin_dash_pen);
 draw(sum_label, sum_arc, default.thin_dash_pen);

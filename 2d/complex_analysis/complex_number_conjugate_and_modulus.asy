@@ -36,10 +36,6 @@ texpreamble("\usepackage{amssymb}");
 complex.Complex O = complex.Complex(0.0, 0.0);
 complex.Complex C = complex.Complex(2.0, 2.0);
 
-/*  Start and end parameters for the coordinate axes.                         */
-complex.Complex start = complex.Complex(-0.5, -2.2);
-complex.Complex end = complex.Complex(4.4, 2.2);
-
 /*  The complex number under consideration, and it's conjugate.               */
 complex.Complex Z = complex.Complex(3.6, 1.6);
 complex.Complex ZBar = Z.Conjugate();
@@ -47,10 +43,21 @@ complex.Complex ZBar = Z.Conjugate();
 /*  The label for the modulus is placed half-way up the line to Z.            */
 complex.Complex HalfZ = 0.5 * Z;
 
-/*  Draw the coordinate axes, but label them with complex number notation.    */
-axes.DrawAndLabelCoordinateAxesWithTickMarks(
-    start.AsPair(), end.AsPair(),
-    y_suffix = "i", x_string = "\Re(z)", y_string = "\Im(z)"
+/*  Points specifying the coordinate axes and grid lines.                     */
+real x_start = -1.4;
+real x_end = 4.9;
+real y_start = -2.9;
+real y_end = 2.9;
+
+/*  Draw the coordinate axes.                                                 */
+axes.DrawAndLabelCoordinateAxesWithGridLines(
+    x_start,
+    x_end,
+    y_start,
+    y_end,
+    y_suffix = "i",
+    x_string = "\textrm{Re}(z)",
+    y_string = "\textrm{Im}(z)"
 );
 
 /*  Draw lines representing the point Z and it's conjugate.                   */
