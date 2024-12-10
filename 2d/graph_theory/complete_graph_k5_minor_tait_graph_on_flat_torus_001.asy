@@ -76,6 +76,31 @@ draw((-edge, 0.0) -- V[2]);
 draw(V[1] -- (0.0, edge));
 draw((0.0, -edge) -- V[3]);
 
+draw(U[0] -- U[1], blue);
+draw(U[1] -- U[2], blue);
+draw(U[2] -- U[3], blue);
+draw(U[3] -- U[0], blue);
+
+draw(U[0] -- W[0], blue);
+draw(U[1] -- W[1], blue);
+draw(U[2] -- W[2], blue);
+draw(U[3] -- W[3], blue);
+
+draw(U[1] -- W[0], blue);
+draw(U[2] -- W[1], blue);
+draw(U[3] -- W[2], blue);
+draw(U[0] -- W[3], blue);
+
+draw(T[0] -- W[0], blue);
+draw(T[1] -- W[1], blue);
+draw(T[2] -- W[2], blue);
+draw(T[3] -- W[3], blue);
+
+draw(T[1] -- W[0], blue);
+draw(T[2] -- W[1], blue);
+draw(T[3] -- W[2], blue);
+draw(T[0] -- W[3], blue);
+
 for (n = 0; n < 4; ++n)
 {
     /*  Draw a dot indicating the vertex.                                     */
@@ -85,10 +110,11 @@ for (n = 0; n < 4; ++n)
     filldraw(circle(T[n], 0.05), white, black);
 }
 
-/*  Draw in lines to indicate the square.                                     */
 draw(A -- B, blue + linewidth(1.0));
 draw(C -- D, blue + linewidth(1.0));
 draw(A -- C, red + linewidth(1.0));
 draw(B -- D, red + linewidth(1.0));
 
 clip(A -- B -- D -- C -- cycle);
+
+
