@@ -21,8 +21,8 @@
  *  Date:       October 6, 2021                                               *
  ******************************************************************************
  *  Purpose:                                                                  *
- *      Figure from a first semester calculus course. This shows a secant     *
- *      line approximating the derivative at a particular point.              *
+ *      Figure from a first semester calculus course. This shows a tangent    *
+ *      line for the derivative at a particular point.                        *
  ******************************************************************************/
 
 /*  Two dimensional vector struct provided here.                              */
