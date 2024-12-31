@@ -37,7 +37,7 @@ import size_256_default_settings as default;
 
 /*  Index for looping over lines.                                             */
 int n;
-int number_of_lines = 50;
+int number_of_lines = 30;
 
 /*  Start and end for the x and y axes.                                       */
 real xstart = -0.1;
