@@ -54,6 +54,17 @@ vec2.Vec2[] pts = {
     vec2.Vec2(1.0, 1.0)
 };
 
+/*  Index of the point where the instantaneous slope agrees with the average. */
+int index = 2;
+
+/*  Create points for the tangent line.                                       */
+real numer = pts[pts.length - 1].y - pts[0].y;
+real denom = pts[pts.length - 1].x - pts[0].x;
+real m = numer / denom;
+real b = pts[index].y - m*pts[index].x;
+vec2.Vec2 Q0 = vec2.Vec2(pts[0].x, m*pts[0].x + b);
+vec2.Vec2 Q1 = vec2.Vec2(pts[pts.length - 1].x, m*pts[pts.length - 1].x + b);
+
 /*  Construct a smooth curve passing through all of the points.               */
 path curve = pf.PathFromPoints(pts);
 
@@ -71,6 +82,9 @@ draw(curve);
 
 /*  Draw the secant line across the entire curve.                             */
 draw(pts[0].LineTo(pts[pts.length - 1]), default.blue_pen);
+
+/*  And draw the tangent line at the central point.                           */
+draw(Q0.LineTo(Q1), default.red_pen);
 
 /*  Loop through the points and draw projections and mark them with dots.     */
 for (n = 0; n < pts.length; ++n)
