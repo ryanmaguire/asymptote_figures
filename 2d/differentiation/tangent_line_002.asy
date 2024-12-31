@@ -89,8 +89,8 @@ axes.DrawAndLabelCoordinateAxes(
 
 draw(func_path);
 
-/*  Place a dot where the tangent line lies tangent to the curve.             */
-P0.DrawDot(0.25 * default.dot_radius);
-
 /*  Draw the tangent line.                                                    */
 draw(Q0.LineTo(Q1));
+
+/*  Place a dot where the tangent line lies tangent to the curve.             */
+P0.DrawDot(0.25 * default.dot_radius);

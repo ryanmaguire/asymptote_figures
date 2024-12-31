@@ -91,14 +91,14 @@ axes.DrawAndLabelCoordinateAxes(
 
 draw(func_path);
 
-/*  Draw the dots.                                                            */
-P0.DrawDot(0.25 * default.dot_radius);
-P1.DrawDot(0.25 * default.dot_radius);
-corner.DrawDot(0.25 * default.dot_radius);
-
 /*  Draw dashed lines creating the right angled triangle.                     */
 draw(P0.LineTo(corner), default.dash_pen);
 draw(P1.LineTo(corner), default.dash_pen);
 
 /*  Draw the secant line.                                                     */
 draw(Q0.LineTo(Q1));
+
+/*  Draw the dots.                                                            */
+P0.DrawDot(0.25 * default.dot_radius);
+P1.DrawDot(0.25 * default.dot_radius);
+corner.DrawDot(0.25 * default.dot_radius);

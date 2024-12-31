@@ -77,7 +77,6 @@ for (n = 0; n < pts.length; ++n)
 {
     Label label;
     vec2.Vec2 x_proj = pts[n].ProjectX();
-    pts[n].DrawDot(0.25 * default.dot_radius);
 
     /*  The left-most point is the boundary of the interval, which is "a".    */
     if (n == 0)
@@ -93,4 +92,5 @@ for (n = 0; n < pts.length; ++n)
 
     /*  Draw a dashed line down to the x axis and label the point.            */
     draw(label, pts[n].LineTo(x_proj), default.dash_pen);
+    pts[n].DrawDot(0.25 * default.dot_radius);
 }
