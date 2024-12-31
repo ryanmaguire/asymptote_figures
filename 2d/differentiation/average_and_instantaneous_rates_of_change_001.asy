@@ -17,11 +17,11 @@
  *  along with asymptote_figures. If not see <https://www.gnu.org/licenses/>. *
  ******************************************************************************
  *  Author:     Ryan Maguire                                                  *
- *  Date:       October 6, 2021                                               *
+ *  Date:       December 31, 2024                                             *
  ******************************************************************************
  *  Purpose:                                                                  *
- *      Figure from a first semester calculus course. This shows a tangent    *
- *      line for the derivative at a particular point.                        *
+ *      Draws a curve with several points on it. Used to represent the        *
+ *      differences between instantaneous and average rates of change.        *
  ******************************************************************************/
 
 /*  Two dimensional vector struct provided here.                              */
@@ -30,54 +30,34 @@ import vec2;
 /*  Function for plotting the x and y axes.                                   */
 import coordinate_axes as axes;
 
-/*  Functions for creating paths from real-valued functions.                  */
+/*  Functions for creating smooth splines through points provided here.       */
 import path_functions as pf;
 
 /*  Default pens and parameters for size(512) drawings provided here.         */
 import size_256_default_settings as default;
 
-/*  The function being plotted.                                               */
-real func(real x)
-{
-    return x*x;
-}
-
-/*  The derivative of the function.                                           */
-real deriv(real x)
-{
-    return 2.0*x;
-}
-
-/*  Number of samples for the function.                                       */
-int samples = 30;
-
 /*  Start and end for the x and y axes.                                       */
 real xstart = -0.2;
-real xend = 1.1;
+real xend = 1.2;
 real ystart = -0.2;
-real yend = 1.1;
+real yend = 1.2;
 
-/*  Start and end points for the function.                                    */
-real fstart = -0.1;
-real fend = 1.0;
+/*  Variable for indexing over the points.                                    */
+int n;
 
-/*  The point we care about.                                                  */
-real x0 = 0.2;
-real y0 = func(x0);
+/*  The points defining the curve.                                            */
+vec2.Vec2[] pts = {
+    vec2.Vec2(0.2, 0.2),
+    vec2.Vec2(0.4, 0.6),
+    vec2.Vec2(0.6, 0.85),
+    vec2.Vec2(0.8, 0.95),
+    vec2.Vec2(1.0, 1.0)
+};
 
-/*  The point (x0, y0) where the tangent line will be plotted.                */
-vec2.Vec2 P0 = vec2.Vec2(x0, y0);
+/*  Construct a smooth curve passing through all of the points.               */
+path curve = pf.PathFromPoints(pts);
 
-/*  Variables for the tangent line, including the slope and y-intercept.      */
-real m = deriv(x0);
-real b = y0 - m*x0;
-vec2.Vec2 Q0 = vec2.Vec2(fstart, m*fstart + b);
-vec2.Vec2 Q1 = vec2.Vec2(fend, m*fend + b);
-
-/*  Path for the function.                                                    */
-path func_path = pf.PathFromFunction(func, fstart, fend, samples);
-
-/*  Draw the axes and the path for the function.                              */
+/*  Draw the axes and the path for the curve.                                 */
 axes.DrawAndLabelCoordinateAxes(
     xstart,         /*  Left-most end-point for the x axis.     */
     xend,           /*  Right-most end-point for the x axis.    */
@@ -87,10 +67,28 @@ axes.DrawAndLabelCoordinateAxes(
     y_string = "x"  /*  Label for the y-axis, which is position.*/
 );
 
-draw(func_path);
+draw(curve);
+draw(pts[0].LineTo(pts[pts.length - 1]), default.blue_pen);
 
-/*  Place a dot where the tangent line lies tangent to the curve.             */
-P0.DrawDot(0.25 * default.dot_radius);
+/*  Loop through the points and draw projections and mark them with dots.     */
+for (n = 0; n < pts.length; ++n)
+{
+    Label label;
+    vec2.Vec2 x_proj = pts[n].ProjectX();
+    pts[n].DrawDot(0.25 * default.dot_radius);
 
-/*  Draw the tangent line.                                                    */
-draw(Q0.LineTo(Q1));
+    /*  The left-most point is the boundary of the interval, which is "a".    */
+    if (n == 0)
+        label = Label("$a$", position = 1.0);
+
+    /*  Similarly, the right-most point is the boundary "b".                  */
+    else if (n == pts.length - 1)
+        label = Label("$b$", position = 1.0);
+
+    /*  All other points are given generic labels.                            */
+    else
+        label = Label("$t_{" + string(n) + "}$", position = 1.0);
+
+    /*  Draw a dashed line down to the x axis and label the point.            */
+    draw(label, pts[n].LineTo(x_proj), default.dash_pen);
+}
