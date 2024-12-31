@@ -25,17 +25,17 @@
  *      line approximating the derivative at a particular point.              *
  ******************************************************************************/
 
-/*  Graphing tools are here.                                                  */
-import graph;
+/*  Two dimensional vector struct provided here.                              */
+import vec2;
 
-/*  Make sure custom_arrows.asy is in your path. This file is found in the    *
- *  asymptote/ folder of this project. You'll need to edit the                *
- *  ASYMPTOTE_DIR environment variable to include this.                       */
-import custom_arrows;
+/*  Function for plotting the x and y axes.                                   */
+import coordinate_axes as axes;
 
-/*  PDF is easiest to use in LaTeX, so output this.                           */
-import settings;
-settings.outformat = "pdf";
+/*  Functions for creating paths from real-valued functions.                  */
+import path_functions as pf;
+
+/*  Default pens and parameters for size(512) drawings provided here.         */
+import size_256_default_settings as default;
 
 /*  The function being plotted.                                               */
 real func(real x)
@@ -44,73 +44,62 @@ real func(real x)
     return x*(2.0 + x2*(-3.0 + x2));
 }
 
-/*  Size of the image.                                                        */
-size(256);
-
 /*  Number of samples for the function.                                       */
 int samples = 30;
 
 /*  Start and end for the x and y axes.                                       */
-real start = -0.2;
-real end = 1.6;
+real xstart = -0.2;
+real xend = 1.4;
+real ystart = -0.4;
+real yend = 1.5;
 
 /*  Start and end points for the function.                                    */
-real fstart = -0.1;
+real fstart = -0.2;
 real fend = 1.35;
 
-/*  Size of a dot.                                                            */
-real rDot = 0.012;
-
-/*  Size of arrow heads.                                                      */
-real arsize = 5bp;
+/*  Displacement for the secant line.                                         */
+real dx = 0.4;
 
 /*  The point we care about.                                                  */
-real x0 = 1.0;
+real x0 = 0.4;
 real y0 = func(x0);
-pair P0 = (x0, y0);
 
-/*  Variables for the secant line.                                            */
-pair P1, Q0, Q1;
+/*  The point (x0, y0) and the perturbed point creating the secant line.      */
+vec2.Vec2 P0 = vec2.Vec2(x0, y0);
+vec2.Vec2 P1 = vec2.Vec2(x0 + dx, func(x0 + dx));
 
-/*  Displacement for the secant line.                                         */
-real dx = 0.2;
+/*  The bottom of the right-angle triangle made by P0 and P1.                 */
+vec2.Vec2 corner = vec2.Vec2(P0.x, P1.y);
 
-/*  Factors for the slope-intercept form of the secant line.                  */
-real m, b;
+/*  Variables for the secant line, including the slope and y-intercept.       */
+real m = (P1.y - P0.y)/(P1.x - P0.x);
+real b = y0 - m*x0;
+vec2.Vec2 Q0 = vec2.Vec2(fstart, m*fstart + b);
+vec2.Vec2 Q1 = vec2.Vec2(fend, m*fend + b);
 
-/*  Pens for the axes and function.                                           */
-pen axesp = black + linewidth(1.0pt) + fontsize(12pt);
-pen drawp = black + linewidth(0.6pt);
-pen funcp = deepblue + linewidth(0.8pt);
-pen dashp = black + linewidth(0.6pt) + linetype("4 4");
+/*  Path for the function.                                                    */
+path func_path = pf.PathFromFunction(func, fstart, fend, samples);
 
-/*  Labels for the axes.                                                      */
-Label xl = Label("$x$", position = 1.0);
-Label yl = Label("$y$", position = 1.0);
+/*  Draw the axes and the path for the function.                              */
+axes.DrawAndLabelCoordinateAxes(
+    xstart,         /*  Left-most end-point for the x axis.     */
+    xend,           /*  Right-most end-point for the x axis.    */
+    ystart,         /*  Bottom-most end-point for the y axis.   */
+    yend,           /*  Top-most end-point for the y axis.      */
+    x_string = "t", /*  Label for the x-axis, which is time.    */
+    y_string = "x"  /*  Label for the y-axis, which is position.*/
+);
 
-/*  Draw the axes.                                                            */
-draw(xl, (start, 0.0) -- (end, 0.0), N, axesp, SharpArrow(arsize));
-draw(yl, (0.0, start) -- (0.0, end), E, axesp, SharpArrow(arsize));
-
-/*  And draw the function.                                                    */
-draw(graph(func, fstart, fend, n=samples, operator ..), funcp);
-
-/*  Compute the other point for the secant line.                              */
-P1 = (x0 + dx, func(x0 + dx));
-
-/*  Compute the slope and y-intercept of the secant line.                     */
-m = (P1.y - P0.y)/(P1.x - P0.x);
-b = y0 - m*x0;
-
-/*  Compute two points on the secant line.                                    */
-Q0 = (fstart, m*fstart + b);
-Q1 = (fend, m*fend + b);
+draw(func_path);
 
 /*  Draw the dots.                                                            */
-filldraw(circle((P1.x, P0.y), rDot), black, black);
-filldraw(circle(P0, rDot), black, black);
-filldraw(circle(P1, rDot), black, black);
-draw(P0 -- (P1.x, y0) -- P1, dashp);
+P0.DrawDot(0.25 * default.dot_radius);
+P1.DrawDot(0.25 * default.dot_radius);
+corner.DrawDot(0.25 * default.dot_radius);
+
+/*  Draw dashed lines creating the right angled triangle.                     */
+draw(P0.LineTo(corner), default.dash_pen);
+draw(P1.LineTo(corner), default.dash_pen);
 
 /*  Draw the secant line.                                                     */
-draw(Q0 -- Q1, drawp);
+draw(Q0.LineTo(Q1));

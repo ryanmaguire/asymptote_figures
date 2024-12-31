@@ -21,21 +21,21 @@
  *  Date:       October 6, 2021                                               *
  ******************************************************************************
  *  Purpose:                                                                  *
- *      Figure from a first semester calculus course. This shows the tangent  *
- *      line for a function at a point.                                       *
+ *      Figure from a first semester calculus course. This shows a secant     *
+ *      line approximating the derivative at a particular point.              *
  ******************************************************************************/
 
-/*  Graphing tools are here.                                                  */
-import graph;
+/*  Two dimensional vector struct provided here.                              */
+import vec2;
 
-/*  Make sure custom_arrows.asy is in your path. This file is found in the    *
- *  asymptote/ folder of this project. You'll need to edit the                *
- *  ASYMPTOTE_DIR environment variable to include this.                       */
-import custom_arrows;
+/*  Function for plotting the x and y axes.                                   */
+import coordinate_axes as axes;
 
-/*  PDF is easiest to use in LaTeX, so output this.                           */
-import settings;
-settings.outformat = "pdf";
+/*  Functions for creating paths from real-valued functions.                  */
+import path_functions as pf;
+
+/*  Default pens and parameters for size(512) drawings provided here.         */
+import size_256_default_settings as default;
 
 /*  The function being plotted.                                               */
 real func(real x)
@@ -43,63 +43,55 @@ real func(real x)
     return x*x;
 }
 
-/*  The derivative of func.                                                   */
-real func_prime(real x)
+/*  The derivative of the function.                                           */
+real deriv(real x)
 {
     return 2.0*x;
 }
-
-/*  Size of the image.                                                        */
-size(256);
 
 /*  Number of samples for the function.                                       */
 int samples = 30;
 
 /*  Start and end for the x and y axes.                                       */
-real start = -0.1;
-real end = 1.1;
+real xstart = -0.2;
+real xend = 1.1;
+real ystart = -0.2;
+real yend = 1.1;
 
 /*  Start and end points for the function.                                    */
-real fstart = 0.0;
+real fstart = -0.1;
 real fend = 1.0;
 
-/*  Size of arrow heads.                                                      */
-real arsize = 5bp;
-
 /*  The point we care about.                                                  */
-real x0 = 0.3;
+real x0 = 0.2;
 real y0 = func(x0);
-pair P0 = (x0, y0);
 
-/*  Variables for the tangent line.                                           */
-pair Q0, Q1;
+/*  The point (x0, y0) where the tangent line will be plotted.                */
+vec2.Vec2 P0 = vec2.Vec2(x0, y0);
 
-/*  Factors for the slope-intercept form of the tangent line.                 */
-real m, b;
+/*  Variables for the tangent line, including the slope and y-intercept.      */
+real m = deriv(x0);
+real b = y0 - m*x0;
+vec2.Vec2 Q0 = vec2.Vec2(fstart, m*fstart + b);
+vec2.Vec2 Q1 = vec2.Vec2(fend, m*fend + b);
 
-/*  Pens for the axes and function.                                           */
-pen axesp = black + linewidth(1.0pt) + fontsize(12pt);
-pen funcp = deepblue + linewidth(0.8pt);
-pen drawp = black + linewidth(0.6pt);
+/*  Path for the function.                                                    */
+path func_path = pf.PathFromFunction(func, fstart, fend, samples);
 
-/*  Labels for the axes.                                                      */
-Label xl = Label("$x$", position = 1.0);
-Label yl = Label("$y$", position = 1.0);
+/*  Draw the axes and the path for the function.                              */
+axes.DrawAndLabelCoordinateAxes(
+    xstart,         /*  Left-most end-point for the x axis.     */
+    xend,           /*  Right-most end-point for the x axis.    */
+    ystart,         /*  Bottom-most end-point for the y axis.   */
+    yend,           /*  Top-most end-point for the y axis.      */
+    x_string = "t", /*  Label for the x-axis, which is time.    */
+    y_string = "x"  /*  Label for the y-axis, which is position.*/
+);
 
-/*  Draw the axes.                                                            */
-draw(xl, (start, 0.0) -- (end, 0.0), N, axesp, SharpArrow(arsize));
-draw(yl, (0.0, start) -- (0.0, end), E, axesp, SharpArrow(arsize));
+draw(func_path);
 
-/*  And draw the function.                                                    */
-draw(graph(func, fstart, fend, n=samples, operator ..), funcp);
-
-/*  Compute the slope and y-intercept of the tangent line.                    */
-m = func_prime(x0);
-b = y0 - m*x0;
-
-/*  Compute two points on the tangent line.                                   */
-Q0 = (fstart, m*fstart + b);
-Q1 = (fend, m*fend + b);
+/*  Place a dot where the tangent line lies tangent to the curve.             */
+P0.DrawDot(0.25 * default.dot_radius);
 
 /*  Draw the tangent line.                                                    */
-draw(Q0 -- Q1, drawp);
+draw(Q0.LineTo(Q1));
