@@ -205,9 +205,17 @@ DrawCoordinateAxesWithTickMarks(real x_start,
                                 arrowbar arrow = default_arrow,
                                 real x_tick_length = 0.1,
                                 real y_tick_length = 0.1,
+                                real x_tick_minor_length = 0.05,
+                                real y_tick_minor_length = 0.05,
                                 pen tick_pen = tick.default_tick_pen,
                                 int x_skip = 1,
-                                int y_skip = 1)
+                                int y_skip = 1,
+                                int x_subdivisions = 1,
+                                int y_subdivisions = 1,
+                                bool up_ticks = true,
+                                bool down_ticks = true,
+                                bool left_ticks = true,
+                                bool right_ticks = true)
 {
     /*  The origin does not get tick marks.                                   */
     bool skip_zero = true;
@@ -234,7 +242,11 @@ DrawCoordinateAxesWithTickMarks(real x_start,
         x_end,                          /*  Right-most point for tick marks.  */
         tick_pen = tick_pen,            /*  Pen used for the tick marks.      */
         x_tick_length = x_tick_length,  /*  Length of the tick marks.         */
-        x_skip = x_skip                 /*  Number of tick marks skipped.     */
+        x_tick_minor_length = x_tick_minor_length,  /*  Length of sub-ticks.  */
+        x_skip = x_skip,                /*  Number of tick marks skipped.     */
+        x_subdivisions = x_subdivisions,/*  Number of marks in an interval.   */
+        up_ticks = up_ticks,            /*  Boolean for drawing upward ticks. */
+        down_ticks = down_ticks         /*  Boolean for downward ticks.       */
     );
 
     /*  Add tick marks along the y axis.                                      */
@@ -243,7 +255,11 @@ DrawCoordinateAxesWithTickMarks(real x_start,
         y_end,                          /*  Top-most point for tick marks.    */
         tick_pen = tick_pen,            /*  Pen used for the tick marks.      */
         y_tick_length = y_tick_length,  /*  Length of the tick marks.         */
-        y_skip = y_skip                 /*  Number of tick marks skipped.     */
+        y_tick_minor_length = y_tick_minor_length,  /*  Length of sub-ticks.  */
+        y_skip = y_skip,                /*  Number of tick marks skipped.     */
+        y_subdivisions = y_subdivisions,/*  Number of marks in an interval.   */
+        right_ticks = right_ticks,      /*  Boolean for drawing right ticks.  */
+        left_ticks = left_ticks         /*  Boolean for left ticks.           */
     );
 }
 /*  End of DrawCoordinateAxesWithTickMarks.                                   */
@@ -283,9 +299,17 @@ DrawRectangularCoordinateAxesWithTickMarks(real x_length,
                                            arrowbar arrow = default_arrow,
                                            real x_tick_length = 0.1,
                                            real y_tick_length = 0.1,
+                                           real x_tick_minor_length = 0.05,
+                                           real y_tick_minor_length = 0.05,
                                            pen tick_pen = tick.default_tick_pen,
                                            int x_skip = 1,
-                                           int y_skip = 1)
+                                           int y_skip = 1,
+                                           int x_subdivisions = 1,
+                                           int y_subdivisions = 1,
+                                           bool up_ticks = true,
+                                           bool down_ticks = true,
+                                           bool left_ticks = true,
+                                           bool right_ticks = true)
 {
     /*  The origin does not get tick marks.                                   */
     bool skip_zero = true;
@@ -309,7 +333,15 @@ DrawRectangularCoordinateAxesWithTickMarks(real x_length,
         x_tick_length = x_tick_length,  /*  Length of the x-axis tick marks.  */
         y_tick_length = y_tick_length,  /*  Length of the y-axis tick marks.  */
         x_skip = x_skip,                /*  Number of ticks to skip in x axis.*/
-        y_skip = y_skip                 /*  Number of ticks to skip in y axis.*/
+        y_skip = y_skip,                /*  Number of ticks to skip in y axis.*/
+        x_tick_minor_length = x_tick_minor_length,
+        y_tick_minor_length = y_tick_minor_length,
+        x_subdivisions = x_subdivisions,
+        y_subdivisions = y_subdivisions,
+        up_ticks = up_ticks,
+        down_ticks = down_ticks,
+        left_ticks = left_ticks,
+        right_ticks = right_ticks
     );
 }
 /*  End of DrawRectangularCoordinateAxesWithTickMarks.                        */
@@ -344,8 +376,15 @@ DrawSquareCoordinateAxesWithTickMarks(real length,
                                       arrowbar arrow = default_arrow,
                                       real x_tick_length = 0.1,
                                       real y_tick_length = 0.1,
+                                      real x_tick_minor_length = 0.05,
+                                      real y_tick_minor_length = 0.05,
                                       pen tick_pen = tick.default_tick_pen,
-                                      int grid_skip = 1)
+                                      int grid_skip = 1,
+                                      int subdivisions = 1,
+                                      bool up_ticks = true,
+                                      bool down_ticks = true,
+                                      bool left_ticks = true,
+                                      bool right_ticks = true)
 {
     /*  The origin does not get tick marks.                                   */
     bool skip_zero = true;
@@ -365,7 +404,15 @@ DrawSquareCoordinateAxesWithTickMarks(real length,
         x_tick_length = x_tick_length,  /*  Length of the x-axis tick marks.  */
         y_tick_length = y_tick_length,  /*  Length of the y-axis tick marks.  */
         x_skip = grid_skip,             /*  Number of ticks to skip in x axis.*/
-        y_skip = grid_skip              /*  Number of ticks to skip in y axis.*/
+        y_skip = grid_skip,             /*  Number of ticks to skip in y axis.*/
+        x_tick_minor_length = x_tick_minor_length,
+        y_tick_minor_length = y_tick_minor_length,
+        x_subdivisions = subdivisions,
+        y_subdivisions = subdivisions,
+        up_ticks = up_ticks,
+        down_ticks = down_ticks,
+        left_ticks = left_ticks,
+        right_ticks = right_ticks
     );
 }
 /*  End of DrawSquareCoordinateAxesWithTickMarks.                             */
@@ -606,7 +653,15 @@ DrawAndLabelCoordinateAxesWithTickMarks(real x_start,
                                         string y_prefix = "",
                                         string y_suffix = "",
                                         string x_string = "x",
-                                        string y_string = "y")
+                                        string y_string = "y",
+                                        real x_tick_minor_length = 0.05,
+                                        real y_tick_minor_length = 0.05,
+                                        int x_subdivisions = 1,
+                                        int y_subdivisions = 1,
+                                        bool up_ticks = true,
+                                        bool down_ticks = true,
+                                        bool left_ticks = true,
+                                        bool right_ticks = true)
 {
     /*  The origin does not get tick marks.                                   */
     bool skip_zero = true;
@@ -638,6 +693,10 @@ DrawAndLabelCoordinateAxesWithTickMarks(real x_start,
             x_prefix = x_prefix,
             x_suffix = x_suffix,
             x_string = x_string,
+            x_tick_minor_length = x_tick_minor_length,
+            x_subdivisions = x_subdivisions,
+            up_ticks = up_ticks,
+            down_ticks = down_ticks,
             skip_zero = skip_zero
         );
 
@@ -651,6 +710,10 @@ DrawAndLabelCoordinateAxesWithTickMarks(real x_start,
             y_prefix = y_prefix,
             y_suffix = y_suffix,
             y_string = y_string,
+            y_tick_minor_length = y_tick_minor_length,
+            y_subdivisions = y_subdivisions,
+            left_ticks = left_ticks,
+            right_ticks = right_ticks,
             skip_zero = skip_zero
         );
     }
@@ -665,6 +728,10 @@ DrawAndLabelCoordinateAxesWithTickMarks(real x_start,
             tick_pen = tick_pen,
             x_tick_length = x_tick_length,
             x_skip = x_skip,
+            x_tick_minor_length = x_tick_minor_length,
+            x_subdivisions = x_subdivisions,
+            up_ticks = up_ticks,
+            down_ticks = down_ticks,
             skip_zero = skip_zero
         );
 
@@ -675,6 +742,10 @@ DrawAndLabelCoordinateAxesWithTickMarks(real x_start,
             tick_pen = tick_pen,
             y_tick_length = y_tick_length,
             y_skip = y_skip,
+            y_tick_minor_length = y_tick_minor_length,
+            y_subdivisions = y_subdivisions,
+            left_ticks = left_ticks,
+            right_ticks = right_ticks,
             skip_zero = skip_zero
         );
     }
@@ -738,16 +809,24 @@ DrawAndLabelRectangularCoordinateAxesWithTickMarks(
     arrowbar arrow = default_arrow,
     real x_tick_length = 0.1,
     real y_tick_length = 0.1,
+    real x_tick_minor_length = 0.05,
+    real y_tick_minor_length = 0.05,
     pen tick_pen = tick.default_tick_pen,
     bool label_ticks = true,
     int x_skip = 1,
     int y_skip = 1,
+    int x_subdivisions = 1,
+    int y_subdivisions = 1,
     string x_prefix = "",
     string x_suffix = "",
     string y_prefix = "",
     string y_suffix = "",
     string x_string = "x",
-    string y_string = "y"
+    string y_string = "y",
+    bool up_ticks = true,
+    bool down_ticks = true,
+    bool left_ticks = true,
+    bool right_ticks = true
 )
 {
     /*  Check for legal inputs.                                               */
@@ -770,16 +849,24 @@ DrawAndLabelRectangularCoordinateAxesWithTickMarks(
         arrow = arrow,
         x_tick_length = x_tick_length,
         y_tick_length = y_tick_length,
+        x_tick_minor_length = x_tick_minor_length,
+        y_tick_minor_length = y_tick_minor_length,
         tick_pen = tick_pen,
         label_ticks = label_ticks,
         x_skip = x_skip,
         y_skip = y_skip,
+        x_subdivisions = x_subdivisions,
+        y_subdivisions = y_subdivisions,
         x_prefix = x_prefix,
         x_suffix = x_suffix,
         y_prefix = y_prefix,
         y_suffix = y_suffix,
         x_string = x_string,
-        y_string = y_string
+        y_string = y_string,
+        up_ticks = up_ticks,
+        down_ticks = down_ticks,
+        left_ticks = left_ticks,
+        right_ticks = right_ticks
     );
 }
 /*  End of DrawAndLabelRectangularCoordinateAxesWithTickMarks.                */

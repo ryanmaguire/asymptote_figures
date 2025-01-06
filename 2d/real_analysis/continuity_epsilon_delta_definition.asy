@@ -23,7 +23,7 @@ import graph;
 
 /*  PDF works best for LaTeX docs, so use this.                               */
 import settings;
-settings.outformat = "pdf";
+settings.outformat = "svg";
 
 /*  Make sure custom_arrows.asy is in your path. This file is found in the    *
  *  asymptote/ folder of this project. You'll need to edit the                *
@@ -34,7 +34,7 @@ import custom_arrows;
 defaultpen(black + linewidth(0.4pt));
 
 /*  Size of the output figure.                                                */
-size(128);
+size(256);
 
 /*  Pen for the function, axes, dashed lines, and filling.                    */
 pen funcpen = deepblue + linewidth(0.5pt);
