@@ -500,9 +500,9 @@ struct Vec2 {
      *  Output:                                                               *
      *      None (void).                                                      *
      **************************************************************************/
-    void AddLabel(string L, Vec2 offset = Vec2(0.0, 0.0))
+    void AddLabel(string L, Vec2 offset = Vec2(0.0, 0.0), pen p = currentpen)
     {
-        label(L, this.AsPair(), offset.AsPair());
+        label(L, this.AsPair(), offset.AsPair(), p = p);
     }
 
     /**************************************************************************
