@@ -26,23 +26,14 @@ import vec2;
 /*  Functions for creating paths from vector-valued functions.                */
 import parametric_curves as pc;
 
-/*  Functions for adding grid lines to a drawing.                             */
-import grid_lines as grid;
-
 /*  Functions for plotting the x and y axes.                                  */
 import coordinate_axes as axes;
 
 /*  Default pens and parameters for size(256) drawings provided here.         */
 import size_256_default_settings as default;
 
-/*  The point under consideration.                                            */
-
-/*  Start and end values for the square guide-grid to be drawn.               */
-int grid_start = -50;
-int grid_end = 50;
-
 /*  Length of the grid lines.                                                 */
-real grid_length = 55.0;
+real grid_length = 30.99;
 
 /*  Radius for the dots used to label points.                                 */
 real dot_radius = 1.0;
@@ -50,15 +41,12 @@ real dot_radius = 1.0;
 int n_x, n_y;
 int start = -30;
 int end = 30;
-int step = 6;
-
-/*  Add grid lines to the drawing.                                            */
-grid.DrawSquareGridLinesWithTickMarks(
-    grid_start, grid_end, grid_length, grid_skip = 10
-);
+int step = 5;
 
 /*  Draw the coordinate axes.                                                 */
-axes.DrawAndLabelSquareCoordinateAxes(grid_length);
+axes.DrawAndLabelSquareCoordinateAxesWithGridLines(
+    grid_length, x_skip = 10, y_skip = 10
+);
 
 vec2.Vec2 linear_transform(vec2.Vec2 P)
 {
@@ -69,7 +57,7 @@ vec2.Vec2 linear_transform(vec2.Vec2 P)
 
     real x = a*P.x + b*P.y;
     real y = c*P.x + d*P.y;
-    return vec2.Vec2(x, y);
+    return 0.25 * vec2.Vec2(x, y);
 }
 
 for (n_x = start; n_x <= end; n_x += step)

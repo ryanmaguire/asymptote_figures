@@ -26,9 +26,6 @@ import vec2;
 /*  Functions for creating paths from real-valued functions.                  */
 import path_functions as pf;
 
-/*  Functions for adding grid lines to a drawing.                             */
-import grid_lines as grid;
-
 /*  Functions for plotting the x and y axes.                                  */
 import coordinate_axes as axes;
 
@@ -37,10 +34,6 @@ import size_256_default_settings as default;
 
 /*  Length of the coordinate axes and grid lines.                             */
 real grid_length = 3.4;
-
-/*  Parameters for the grid lines.                                            */
-int grid_start = -3;
-int grid_end = 3;
 
 /*  Parameter for the differential equation x''' = x' with x(0) = x'(0) = 1.  */
 real ode_a;
@@ -71,11 +64,8 @@ real solution(real t)
     return 2.0*diff + ode_a*exp_t - diff / exp_t;
 }
 
-/*  Add grid lines to the drawing.                                            */
-grid.DrawSquareGridLinesWithTickMarks(grid_start, grid_end, grid_length);
-
 /*  Draw the coordinate axes.                                                 */
-axes.DrawAndLabelSquareCoordinateAxes(grid_length);
+axes.DrawAndLabelSquareCoordinateAxesWithGridLines(grid_length);
 
 /*  Loop over the five solutions and plot them.                               */
 for (n = 0; n < 5; ++n)
