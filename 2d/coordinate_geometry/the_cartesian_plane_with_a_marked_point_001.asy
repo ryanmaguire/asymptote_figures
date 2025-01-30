@@ -23,9 +23,6 @@
 /*  Provides a vector struct for drawing lines and curves.                    */
 import vec2;
 
-/*  Functions for adding grid lines to a drawing.                             */
-import grid_lines as grid;
-
 /*  Functions for plotting the x and y axes.                                  */
 import coordinate_axes as axes;
 
@@ -45,11 +42,8 @@ real grid_length = 3.7;
 /*  Radius for the dots used to label points.                                 */
 real dot_radius = 0.05;
 
-/*  Add grid lines to the drawing.                                            */
-grid.DrawSquareGridLines(grid_start, grid_end, grid_length);
-
 /*  Draw the coordinate axes.                                                 */
-axes.DrawAndLabelSquareCoordinateAxesWithTickMarks(grid_length);
+axes.DrawAndLabelSquareCoordinateAxesWithGridLines(grid_length);
 
 /*  Label the point in Cartesian coordinates.                                 */
 point.DrawDot(dot_radius);

@@ -23,9 +23,6 @@
 /*  Provides a vector struct for drawing lines and curves.                    */
 import vec2;
 
-/*  Functions for adding grid lines to a drawing.                             */
-import grid_lines as grid;
-
 /*  Functions for plotting the x and y axes.                                  */
 import coordinate_axes as axes;
 
@@ -43,23 +40,16 @@ vec2.Vec2 theta_point = vec2.FromPolar(1.5, 5.0*pi/12.0);
 vec2.Vec2 x_projection = point.ProjectX();
 vec2.Vec2 y_projection = point.ProjectY();
 
-/*  Start and end values for the square guide-grid to be drawn.               */
-int grid_start = -10;
-int grid_end = 10;
-
 /*  Length of the grid lines.                                                 */
-real grid_length = 11.0;
+real grid_length = 10.9;
 
 /*  Radius for the dots used to label points.                                 */
 real dot_radius = 0.15;
 
-/*  Add grid lines to the drawing.                                            */
-grid.DrawSquareGridLinesWithTickMarks(
-    grid_start, grid_end, grid_length, grid_skip = 2
-);
-
 /*  Draw the coordinate axes.                                                 */
-axes.DrawAndLabelSquareCoordinateAxes(grid_length);
+axes.DrawAndLabelSquareCoordinateAxesWithGridLines(
+    grid_length, x_skip = 2, y_skip = 2
+);
 
 /*  Draw a line representing the point in the plane.                          */
 draw(vec2.Origin.LineTo(point), default.blue_pen);

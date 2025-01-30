@@ -23,9 +23,6 @@
 /*  Provides a vector struct for drawing lines and curves.                    */
 import vec2;
 
-/*  Functions for adding grid lines to a drawing.                             */
-import grid_lines as grid;
-
 /*  Functions for plotting the x and y axes.                                  */
 import coordinate_axes as axes;
 
@@ -37,13 +34,9 @@ vec2.Vec2 point = vec2.Vec2(4, 2);
 vec2.Vec2 pointX = point.ProjectX();
 vec2.Vec2 pointY = point.ProjectY();
 
-/*  Start and end values for the square guide-grid to be drawn.               */
-int grid_start = -1;
-int grid_end = 4;
-
 /*  Length of the grid lines.                                                 */
-vec2.Vec2 axis_start = vec2.Vec2(-1.2, -1.2);
-vec2.Vec2 axis_end = vec2.Vec2(4.4, 4.4);
+real start = -1.2;
+real end = 4.4;
 
 /*  Radius for the dots used to label points.                                 */
 real dot_radius = 0.05;
@@ -52,11 +45,8 @@ real dot_radius = 0.05;
 string math_string = "$\sqrt{a^{2}+b^{2}}$";
 Label L = rotate(27.0) * Label(math_string, position = 0.5);
 
-/*  Add grid lines to the drawing.                                            */
-grid.DrawGridLines(grid_start, grid_end, axis_start, axis_end);
-
-/*  Draw the coordinate axes.                                                 */
-axes.DrawAndLabelCoordinateAxes(axis_start, axis_end);
+/*  Draw the coordinate axes with labels and grid lines.                      */
+axes.DrawAndLabelCoordinateAxesWithGridLines(start, end, start, end);
 
 /*  Add a dot for the point.                                                  */
 point.DrawDot(dot_radius);
