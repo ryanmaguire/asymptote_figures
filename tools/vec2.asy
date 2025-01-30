@@ -1319,3 +1319,158 @@ Vec2 PlaneToDisk(Vec2 P)
     return factor * P;
 }
 /*  End of PlaneToDisk.                                                       */
+
+/******************************************************************************
+ *  Function:                                                                 *
+ *      AreCollinear                                                          *
+ *  Purpose:                                                                  *
+ *      Determines if three points in the plane are collinear.                *
+ *  Arguments:                                                                *
+ *      O (Vec2):                                                             *
+ *          A point in the Euclidean plane.                                   *
+ *      P (Vec2):                                                             *
+ *          Another point in the Euclidean plane.                             *
+ *      Q (Vec2):                                                             *
+ *          A third point in the Euclidean plane.                             *
+ *  Output:                                                                   *
+ *      are_collinear (bool):                                                 *
+ *          True if OP and OQ are collinear, false otherwise.                 *
+ *  Method:                                                                   *
+ *      Compute the determinant of the matrix formed by the column vectors    *
+ *      OP and OQ.                                                            *
+ ******************************************************************************/
+bool AreCollinear(Vec2 O, Vec2 P, Vec2 Q)
+{
+    /*  To determine if O, P, and Q are collinear, we need the vectors OP and *
+     *  OQ. Compute this using the extracted values.                          */
+    real a = P.x - O.x;
+    real b = Q.x - O.x;
+    real c = P.y - O.y;
+    real d = Q.y - O.y;
+
+    /*  Consider the following matrix:                                        *
+     *                                                                        *
+     *           -                    -                                       *
+     *          |  Px - Ox    Qx - Ox  |                                      *
+     *      A = |  Py - Oy    Qy - Oy  |                                      *
+     *           -                    -                                       *
+     *                                                                        *
+     *           -        -                                                   *
+     *          |  a    b  |                                                  *
+     *        = |  c    d  |                                                  *
+     *           -        -                                                   *
+     *                                                                        *
+     *  This matrix is the linear transformation that takes the standard unit *
+     *  vectors (1, 0) and (0, 1) to the relative position vector OP and OQ.  *
+     *  OP and OQ are collinear if and only if this matrix is singular,       *
+     *  meaning the determinant is zero. Compute this.                        */
+    real det = a*d - b*c;
+
+    /*  det is zero if and only if the points are collinear. Check this.      */
+    if (det == 0.0)
+        return true;
+
+    /*  Otherwise the three points describe a (non-degenerate) plane.         */
+    return false;
+}
+/*  End of AreCollinear.                                                      */
+
+/******************************************************************************
+ *  Function:                                                                 *
+ *      LinearIntersection                                                    *
+ *  Purpose:                                                                  *
+ *      Determines where two lines intersect.                                 *
+ *  Arguments:                                                                *
+ *      O (Vec2):                                                             *
+ *          A point in the Euclidean plane.                                   *
+ *      P (Vec2):                                                             *
+ *          Another point in the Euclidean plane.                             *
+ *      Q (Vec2):                                                             *
+ *          A third point in the Euclidean plane.                             *
+ *  Output:                                                                   *
+ *      center (Vec2):                                                        *
+ *          The center of O, P, and Q.                                        *
+ *  Method:                                                                   *
+ *      Find the bisectors of the line segments AB and AC, compute the        *
+ *      vectors orthogonal to AB and AC, and then find where the lines        *
+ *      described by the vectors intersect.                                   *
+ ******************************************************************************/
+Vec2 LinearIntersection(Vec2 P0, Vec2 V0, Vec2 P1, Vec2 V1)
+{
+    /*  Declare necessary variables.                                          */
+    real diffx, diffy, t0, intersectx, intersecty, inva, invb, rcpr_det;
+
+    /*  We will solve this by finding the solution to t0*V0 - t1*V1 = P1 - P0 *
+     *  and then return P0 + t0*V0. To do this we'll set this up as a matrix  *
+     *  equation, so first we'll compute the matrix values.                   */
+    real a = V0.x;
+    real b = -V1.x;
+    real c = V0.y;
+    real d = -V1.y;
+
+    /*  The solution exists if and only if the determinant is non-zero.       */
+    real det = a*d - b*c;
+    assert(det != 0.0);
+
+    /*  If the determinant is non-zero, compute the upper row of the inverse  *
+     *  matrix. We will not need the bottom row.                              */
+    rcpr_det = 1.0 / det;
+    inva = d * rcpr_det;
+    invb = -b * rcpr_det;
+
+    /*  The right-side of the equation is P1 - P0, so compute this.           */
+    diffx = P1.x - P0.x;
+    diffy = P1.y - P0.y;
+
+    /*  Solve for t0, the "time" of the intersection in the parametrization.  */
+    t0 = inva*diffx + invb*diffy;
+
+    /*  Compute the intersection using t0 and return.                         */
+    intersectx = P0.x + t0*V0.x;
+    intersecty = P0.y + t0*V0.y;
+    return Vec2(intersectx, intersecty);
+}
+/*  End of LinearIntersection.                                                */
+
+/******************************************************************************
+ *  Function:                                                                 *
+ *      FindCenter                                                            *
+ *  Purpose:                                                                  *
+ *      Determines the center of three non-collinear points.                  *
+ *  Arguments:                                                                *
+ *      O (Vec2):                                                             *
+ *          A point in the Euclidean plane.                                   *
+ *      P (Vec2):                                                             *
+ *          Another point in the Euclidean plane.                             *
+ *      Q (Vec2):                                                             *
+ *          A third point in the Euclidean plane.                             *
+ *  Output:                                                                   *
+ *      center (Vec2):                                                        *
+ *          The center of O, P, and Q.                                        *
+ *  Method:                                                                   *
+ *      Find the bisectors of the line segments AB and AC, compute the        *
+ *      vectors orthogonal to AB and AC, and then find where the lines        *
+ *      described by the vectors intersect.                                   *
+ ******************************************************************************/
+Vec2 FindCenter(Vec2 A, Vec2 B, Vec2 C)
+{
+    Vec2 U, V, dU, dV, center;
+
+    /*  For O, P, and Q to describe a circle, the points must not fall on the *
+     *  same line. Check for this.                                            */
+    assert(!AreCollinear(A, B, C));
+
+    /*  Get the midpoints of two of the pairs of the points. The two you      *
+     *  choose does not matter, we'll just use AB and AC.                     */
+    U = Midpoint(A, B);
+    V = Midpoint(A, C);
+
+    /*  Get the orthogonal vectors to the relative position vectors AB and AC.*/
+    dU = (B - A).AsOrthogonal();
+    dV = (C - A).AsOrthogonal();
+
+    /*  V and dV describe a line, as do U and dU. The center of ABC is where  *
+     *  these two lines intersect.                                            */
+    return LinearIntersection(U, dU, V, dV);
+}
+/*  End of FindCenter.                                                        */

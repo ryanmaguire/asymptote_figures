@@ -55,7 +55,7 @@ DrawHorizontalTickMarks(real x_start,
     assert(x_tick_length > 0.0);
     assert(x_tick_minor_length > 0.0);
     assert(x_skip > 0);
-    assert(x_subdivisions >= x_skip);
+    assert(x_subdivisions > 0);
 
     /*  Check if we need to swap the variables.                               */
     if (x_start > x_end)
@@ -149,7 +149,7 @@ DrawVerticalTickMarks(real y_start,
     assert(y_tick_length > 0.0);
     assert(y_tick_minor_length > 0.0);
     assert(y_skip > 0);
-    assert(y_subdivisions >= y_skip);
+    assert(y_subdivisions > 0);
 
     /*  Check if we need to swap the variables.                               */
     if (y_start > y_end)
@@ -245,7 +245,7 @@ DrawAndLabelHorizontalTickMarks(real x_start,
     assert(x_tick_length > 0.0);
     assert(x_tick_minor_length > 0.0);
     assert(x_skip > 0);
-    assert(x_subdivisions >= x_skip);
+    assert(x_subdivisions > 0);
 
     /*  Check if we need to swap the variables.                               */
     if (x_start > x_end)
@@ -349,7 +349,7 @@ DrawAndLabelVerticalTickMarks(real y_start,
     assert(y_tick_length > 0.0);
     assert(y_tick_minor_length > 0.0);
     assert(y_skip > 0);
-    assert(y_subdivisions >= y_skip);
+    assert(y_subdivisions > 0);
 
     /*  Check if we need to swap the variables.                               */
     if (y_start > y_end)
