@@ -284,6 +284,7 @@ struct Vec2 {
         {
             this.x = nan;
             this.y = nan;
+            return;
         }
 
         /*  Otherwise compute the scale factor 1 / ||*this*|| and normalize.  */
@@ -467,6 +468,16 @@ struct Vec2 {
         return (0.0, this.x, this.y);
     }
     /*  End of EmbedYZ.                                                       */
+
+    Vec2 Rotate(real theta)
+    {
+        real cos_theta = cos(theta);
+        real sin_theta = sin(theta);
+
+        real x = cos_theta * this.x - sin_theta * this.y;
+        real y = sin_theta * this.x + cos_theta * this.y;
+        return Vec2(x, y);
+    }
 
     /**************************************************************************
      *  Method:                                                               *
