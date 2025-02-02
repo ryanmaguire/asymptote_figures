@@ -26,10 +26,6 @@ import custom_arrows;
 /*  Used for drawing parameterized curves.                                    */
 import graph;
 
-/*  PDF is easiest to use in LaTeX, so output this.                           */
-import settings;
-settings.outformat = "pdf";
-
 /*  Size of the output figure.                                                */
 size(256);
 

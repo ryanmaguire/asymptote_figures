@@ -98,12 +98,12 @@ vec2.Vec2 Cproj = c5(0.0);
 
 radialshade(
     vec2.Origin.Circle(1.0),
-    gray(0.6),
+    gray(0.5),
     vec2.Origin.AsPair(),
     1.0,
     gray(0.9),
     vec2.Origin.AsPair(),
-    0.6
+    0.2
 );
 
 q1 = q1;
