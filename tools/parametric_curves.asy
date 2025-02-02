@@ -25,7 +25,12 @@
 import vec2;
 
 /*  Creates a path from a parametric equation.                                */
-path PathFromParametricFunction(vec2.Vec2 f(real), real a, real b, int samples)
+path
+PathFromParametricFunction(vec2.Vec2 f(real),
+                           real a,
+                           real b,
+                           int samples,
+                           bool closed = false)
 {
     /*  Declare necessary variables.                                          */
     path g;
@@ -74,6 +79,9 @@ path PathFromParametricFunction(vec2.Vec2 f(real), real a, real b, int samples)
     /*  Add the end point to the path.                                        */
     P = f(end);
     g = g .. P.AsPair();
+
+    if (closed)
+        g = g .. cycle;
 
     /*  If a < b, then start = a and end = b. Return as normal.               */
     if (a < b)
