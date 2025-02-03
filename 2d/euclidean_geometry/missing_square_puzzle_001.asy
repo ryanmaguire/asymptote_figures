@@ -23,10 +23,6 @@
  *  ASYMPTOTE_DIR environment variable to include this.                       */
 import custom_arrows;
 
-/*  The opacity will not render correctly for EPS format, so use PDF.         */
-import settings;
-settings.outformat = "pdf";
-
 /*  Size of the output figure.                                                */
 size(256);
 

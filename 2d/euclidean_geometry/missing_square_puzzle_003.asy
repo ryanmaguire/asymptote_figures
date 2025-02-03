@@ -23,12 +23,8 @@
  *  ASYMPTOTE_DIR environment variable to include this.                       */
 import custom_arrows;
 
-/*  The opacity will not render correctly for EPS format, so use PDF.         */
-import settings;
-settings.outformat = "pdf";
-
 /*  Size of the output figure.                                                */
-size(128);
+size(256);
 
 /*  Pens used throughout the drawing.                                         */
 pen graypen = gray(0.7) + linewidth(0.4pt);
