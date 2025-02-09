@@ -86,7 +86,7 @@ label("$a$", MidPoint2D(B1, B2), N);
 label("$b$", MidPoint2D(B2, B3), E);
 label("$c$", MidPoint2D(B3, B1), SW);
 
-label("$a$", MidPoint2D(C1, C2), E);
+label("$a$", MidPoint2D(C1, C2), W);
 label("$b$", MidPoint2D(C2, C3), N);
 label("$c$", MidPoint2D(C3, C1), SE);
 
