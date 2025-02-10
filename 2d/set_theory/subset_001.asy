@@ -1,37 +1,38 @@
 /******************************************************************************
  *                                  LICENSE                                   *
  ******************************************************************************
- *  This file is part of Mathematics-and-Physics.                             *
+ *  This file is part of asymptote_figures.                                   *
  *                                                                            *
- *  Mathematics-and-Physics is free software: you can redistribute it and/or  *
+ *  asymptote_figures is free software: you can redistribute it and/or        *
  *  modify it under the terms of the GNU General Public License as published  *
  *  by the Free Software Foundation, either version 3 of the License, or      *
  *  (at your option) any later version.                                       *
  *                                                                            *
- *  Mathematics-and-Physics is distributed in the hope that it will be useful *
+ *  asymptote_figures is distributed in the hope that it will be useful       *
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of            *
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             *
  *  GNU General Public License for more details.                              *
  *                                                                            *
  *  You should have received a copy of the GNU General Public License         *
- *  along with Mathematics-and-Physics.  If not, see                          *
- *  <https://www.gnu.org/licenses/>.                                          *
+ *  along with asymptote_figures. If not see <https://www.gnu.org/licenses/>. *
+ ******************************************************************************
+ *  Purpose:                                                                  *
+ *      Visual aid for the idea of a subset using blobs in the plane.         *
  ******************************************************************************/
 
-/*  PDF is easiest to use in LaTeX, so output this.                           */
-import settings;
-settings.outformat = "pdf";
+/*  Two dimensional vector struct provided here.                              */
+import vec2;
 
-/*  Size of the output figure.                                                */
-size(128);
+/*  Default pens and parameters for size(256) drawings provided here.         */
+import size_256_default_settings as default;
 
-pair P0 = (0.0, 0.0);
-pair P1 = (0.2, 0.3);
+vec2.Vec2 point = vec2.Vec2(0.2, 0.3);
+vec2.Vec2 b_label = vec2.Vec2(-0.5, 0.6);
 real r0 = 1.0;
 real r1 = 0.4;
 
-filldraw(circle(P0, r0), blue+opacity(0.7), black);
-filldraw(circle(P1, r1), red+opacity(0.7), black);
-label("$A$", P1);
-label("$B$", (-0.5, 0.6));
+filldraw(vec2.Origin.Circle(r0), default.blue_pen, defaultpen);
+filldraw(point.Circle(r1), default.red_pen, defaultpen);
 
+point.AddLabel("$A$");
+b_label.AddLabel("$B$");
