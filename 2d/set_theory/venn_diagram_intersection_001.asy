@@ -18,12 +18,8 @@
  *  <https://www.gnu.org/licenses/>.                                          *
  ******************************************************************************/
 
-/*  PDF is easiest to use in LaTeX, so output this.                           */
-import settings;
-settings.outformat = "pdf";
-
 /*  Size of the output figure.                                                */
-size(128);
+size(256);
 
 pair C1 = (-1.3, 0.0);
 pair C2 = (1.3, 0.0);
