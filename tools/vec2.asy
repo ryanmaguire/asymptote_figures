@@ -527,9 +527,13 @@ struct Vec2 {
      *  Output:                                                               *
      *      None (void).                                                      *
      **************************************************************************/
-    void DrawDot(real radius)
+    void DrawDot(real radius, pen fillpen = black, pen drawpen = black)
     {
-        filldraw(circle(this.AsPair(), radius));
+        filldraw(
+            circle(this.AsPair(), radius),
+            fillpen = fillpen,
+            drawpen = drawpen
+        );
     }
 
     path Circle(real radius)
@@ -1246,7 +1250,7 @@ real RelativeAngle(Vec2 P, Vec2 Q, Vec2 C)
  *      g (path):                                                             *
  *          The arc on the circle.                                            *
  ******************************************************************************/
-path Arc(Vec2 P, Vec2 Q, real radius, bool flip = false)
+path Arc(Vec2 P, Vec2 Q, real radius, bool reflect = false, bool flip = false)
 {
     /*  Conversion factor to go from radians to degrees.                      */
     real dpr = 180.0 / pi;
@@ -1266,7 +1270,7 @@ path Arc(Vec2 P, Vec2 Q, real radius, bool flip = false)
      *  distance from P to Q. Compute using this.                             */
     real dist = PQ.Norm();
     real shift_val = sqrt(radius * radius - 0.25 * dist * dist);
-    real shift = (flip ? -shift_val : shift_val);
+    real shift = (reflect ? -shift_val : shift_val);
 
     /*  Compute the location of the center of the circle.                     */
     Vec2 center = M + shift*ortho;
@@ -1278,6 +1282,9 @@ path Arc(Vec2 P, Vec2 Q, real radius, bool flip = false)
     real end_angle = dpr * relQ.PositivePolarAngle();
 
     /*  The arc can be computed from the main arc routine.                    */
+    if (flip)
+        return Arc(center, radius, start_angle, end_angle - 360.0);
+
     return Arc(center, radius, start_angle, end_angle);
 }
 /*  End of Arc.                                                               */
