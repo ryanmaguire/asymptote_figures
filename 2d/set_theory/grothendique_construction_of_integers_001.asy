@@ -26,10 +26,6 @@
  *  ASYMPTOTE_DIR environment variable to include this.                       */
 import custom_arrows;
 
-/*  PDF is easiest to use in LaTeX, so output this.                           */
-import settings;
-settings.outformat = "pdf";
-
 /*  Size of the output figure.                                                */
 size(256);
 
