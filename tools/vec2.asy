@@ -563,9 +563,15 @@ struct Vec2 {
      *  Output:                                                               *
      *      None (void).                                                      *
      **************************************************************************/
-    void DrawCircle(real radius)
+    void DrawCircle(real radius, pen draw_pen = defaultpen)
     {
-        draw(this.Circle(radius));
+        draw(this.Circle(radius), draw_pen);
+    }
+
+    void
+    FillDrawCircle(real radius, pen fill_pen, pen draw_pen = defaultpen)
+    {
+        filldraw(this.Circle(radius), fill_pen, draw_pen);
     }
 }
 

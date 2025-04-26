@@ -31,7 +31,7 @@ include default_arrows;
 size(512);
 
 /*  Radius used for creating dots to label points.                            */
-real dot_radius = 0.07;
+real dot_radius = 0.0125;
 
 /*  Default types, font sizes, and pen sizes that are most commonly used.     */
 pen label_size = fontsize(14pt);

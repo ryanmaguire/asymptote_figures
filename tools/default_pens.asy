@@ -108,5 +108,15 @@ pen gray_dash_pen = gray_pen + dash_type;
 pen gray_thick_dash_pen = gray_thick_pen + dash_type;
 pen gray_transparent_pen = gray_pen + opacity(0.5);
 
+/*  Light-gray variants of the previously defined pens.                       */
+pen light_gray_thin_pen = gray(0.8) + thin_line_width + label_size;
+pen light_gray_pen = gray(0.8)  + line_width + label_size;
+pen light_gray_thick_pen = gray(0.8)  + thick_line_width + label_size;
+
+pen light_gray_thin_dash_pen = light_gray_thin_pen + dash_type;
+pen light_gray_dash_pen = light_gray_pen + dash_type;
+pen light_gray_thick_dash_pen = light_gray_thick_pen + dash_type;
+pen light_gray_transparent_pen = light_gray_pen + opacity(0.5);
+
 /*  Pen used for very large labels. Used in some equations with knots.        */
 pen massive_pen = black + line_width + fontsize(32pt);
