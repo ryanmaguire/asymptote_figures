@@ -18,11 +18,8 @@
  *  <https://www.gnu.org/licenses/>.                                          *
  ******************************************************************************/
 
-import settings;
-settings.outformat = "pdf";
-
-/*  Size of the figure.                                                       */
-size(256);
+/*  Default pens and parameters for size(512) drawings provided here.         */
+import size_512_default_settings as default;
 
 path p;
 real xshift = 2.0;
