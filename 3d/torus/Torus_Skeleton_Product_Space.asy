@@ -3,13 +3,12 @@ import settings;
 import graph3;
 import tube;
 settings.render=8;
-settings.outformat="pdf";
 
 // Size of the output.
-size(200);
+size(256);
 
 // Location of the camera and object.
-currentprojection=perspective(camera = (-30, 20, 20), target  = (0,  0,  0));
+currentprojection=perspective(camera = (-30, 20, 20), target = (0,  0,  0));
 
 real R = 3;
 real a = 1;
