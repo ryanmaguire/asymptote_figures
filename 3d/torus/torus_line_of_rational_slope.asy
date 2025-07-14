@@ -3,14 +3,7 @@ import settings;
 import graph3;
 import tube;
 
-if(!settings.multipleView)
-    settings.batchView=false;
-
 settings.render=8;
-settings.outformat="pdf";
-settings.inlineimage=true;
-settings.embed=true;
-settings.toolbar=false;
 viewportmargin=(2, 2);
 
 /*  Set up the camera and the orientation of the figure.                      */

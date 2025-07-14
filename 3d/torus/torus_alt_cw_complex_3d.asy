@@ -1,9 +1,7 @@
 // Boilerplate stuff.
-import settings;
 import graph3;
 import tube;
-settings.outformat="pdf";
-settings.inlineimage=true;
+settings.render = 8;
 
 currentprojection=perspective(camera = (20, -80, 25), up   = (0, 0, 1),
                               target = (0,  0,  0),  zoom = 0.85);
