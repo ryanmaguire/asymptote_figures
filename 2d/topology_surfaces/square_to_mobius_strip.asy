@@ -1,5 +1,4 @@
 import settings;
-settings.outformat = "pdf";
 
 // Seting output format to "pdf".
 import graph;

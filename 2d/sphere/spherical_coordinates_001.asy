@@ -79,6 +79,6 @@ draw(azimuth_p.LineTo(azimuth_p_y), default.thin_dash_pen);
 draw(vec2.Origin.LineTo(azimuth_p), default.thin_dash_pen);
 
 draw("$\theta$", vec2.Arc(vec2.Origin, 0.25, theta, 90.0), default.thin_pen);
-draw("$\phi$", vec2.Arc(vec2.Origin, 0.25, phi, 0.0), default.thin_pen);
+draw("$\phi$", vec2.Arc(vec2.Origin, 0.125, -135, phi), default.thin_pen);
 
 p.AddLabel("$\mathbf{p}$", vec2.NorthEast);

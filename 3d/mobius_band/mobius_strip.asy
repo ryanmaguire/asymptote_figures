@@ -2,8 +2,7 @@ import settings;
 import tube;
 import graph3;
 import palette;
-settings.render=8;
-settings.outformat = "pdf";
+settings.render=16;
 
 size(256);
 
