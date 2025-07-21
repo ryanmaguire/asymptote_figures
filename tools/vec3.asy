@@ -184,6 +184,16 @@ struct Vec3 {
     }
     /*  End of Norm.                                                          */
 
+    real RhoSq()
+    {
+        return this.x*this.x + this.y*this.y;
+    }
+
+    real Rho()
+    {
+        return sqrt(this.RhoSq());
+    }
+
     /**************************************************************************
      *  Method:                                                               *
      *      PolarAngle                                                        *
@@ -204,6 +214,11 @@ struct Vec3 {
         return atan2(this.y, this.x);
     }
     /*  End of PolarAngle.                                                    */
+
+    real ZenithAngle()
+    {
+        return atan2(this.z, this.Rho());
+    }
 
     /**************************************************************************
      *  Method:                                                               *
@@ -309,6 +324,33 @@ struct Vec3 {
         return Vec3(factor*this.x, factor*this.y, factor*this.z);
     }
     /*  End of AsUnitNormal.                                                  */
+
+    Vec3 UnitAzimuth()
+    {
+        real phi = this.PolarAngle();
+        real x = -sin(phi);
+        real y = cos(phi);
+        real z = 0.0;
+        return Vec3(x, y, z);
+    }
+
+    Vec3 UnitZenith()
+    {
+        real phi = this.PolarAngle();
+        real theta = this.ZenithAngle();
+
+        real cos_phi = cos(phi);
+        real sin_phi = sin(phi);
+
+        real cos_theta = cos(theta);
+        real sin_theta = sin(theta);
+
+        real x = cos_theta * cos_phi;
+        real y = cos_theta * sin_phi;
+        real z = -sin_theta;
+
+        return Vec3(x, y, z);
+    }
 
     /**************************************************************************
      *  Method:                                                               *
@@ -1251,7 +1293,7 @@ Vec3 InverseStereographicProjection(vec2.Vec2 P)
 vec2.Vec2 OrthographicProjection(Vec3 P, Vec3 U)
 {
     Vec3 V = U.Orthogonal().AsUnitNormal();
-    Vec3 W = V.Cross(U).AsUnitNormal();
+    Vec3 W = U.Cross(V).AsUnitNormal();
     real x = P.Dot(V);
     real y = P.Dot(W);
     return vec2.Vec2(x, y);
@@ -1343,3 +1385,26 @@ ParametricCurve(Vec3 func(real),
 
     return g;
 }
+
+/******************************************************************************
+ *  Function:                                                                 *
+ *      SpaceToBall                                                           *
+ *  Purpose:                                                                  *
+ *      Provides an explicit smooth transformation of Euclidean space to      *
+ *      the unit ball (i.e. a diffeomorphism).                                *
+ *  Arguments:                                                                *
+ *      P (Vec3):                                                             *
+ *          A point in Euclidean space.                                       *
+ *  Output:                                                                   *
+ *      out (Vec3):                                                           *
+ *          The point P transformed to the unit ball.                         *
+ *  Method:                                                                   *
+ *      Compute 1 / (1 + ||P||^2) and scale the input by this.                *
+ ******************************************************************************/
+Vec3 SpaceToBall(Vec3 P)
+{
+    real norm_squared = P.NormSq();
+    real factor = 1.0 / (1.0 + norm_squared);
+    return factor * P;
+}
+/*  End of SpaceToBall.                                                       */
