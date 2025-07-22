@@ -42,14 +42,11 @@ vec2.Vec2[] path_points = {vec2.Origin, v0, sum, v1};
 path parallelogram = vec2.PolygonThroughPoints(path_points, closed = true);
 
 /*  Start and end values for the square guide-grid to be drawn.               */
-int grid_start = -2;
-int grid_end = 13;
-vec2.Vec2 start = vec2.Vec2(-2.5, -2.5);
-vec2.Vec2 end = vec2.Vec2(13.5, 13.5);
+real start = -1.9;
+real end = 12.9;
 
 /*  Create the plot with tick-marks, axes, and directed arrows.               */
-grid.DrawGridLinesWithTickMarks(grid_start, grid_end, start, end, grid_skip=2);
-axes.DrawAndLabelCoordinateAxes(start, end);
+axes.DrawAndLabelCoordinateAxesWithGridLines(start, end, start, end);
 
 /*  Draw vectors representing the edges of the parallelogram.                 */
 filldraw(parallelogram, default.gray_transparent_pen);
