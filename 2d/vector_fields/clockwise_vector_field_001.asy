@@ -29,7 +29,7 @@ import vector_fields as vf;
 /*  Default pens and parameters for size(256) drawings provided here.         */
 import size_256_default_settings as default;
 
-/*  The vector field to be drawn. It is radial, pointing inward.              */
+/*  The vector field to be drawn. It spins around the origin.                 */
 vec2.Vec2 vector_field(vec2.Vec2 point)
 {
     real factor = 0.125;
