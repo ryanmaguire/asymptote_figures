@@ -283,11 +283,78 @@ DrawBoxCoordinates(real x_start,
     /*  Loop through the y-coordinates and draw horizontal tick marks.        */
     for (n = y_first; n <= y_last; n += y_skip)
     {
+        /*  Draw the semi-major tick marks.                                   */
+        for (ns = 1; ns <= y_subdivisions; ++ns)
+        {
+            /*  The current center of the semi-major tick mark in the y axis. */
+            ys = n + ns * y_semi_major_displacement;
+
+            /*  Draw the minor ticks between the semi-major tick marks.       */
+            for (nm = 1; nm < y_minor_subdivisions; ++nm)
+            {
+                /*  The center of the minor tick mark being drawn.            */
+                ym = ys + nm * y_minor_displacement - y_semi_major_displacement;
+
+                /*  If we are above or below either of the endpoints, do not  *
+                 *  draw anything. Simply skip this point.                    */
+                if (ym <= y_start)
+                    continue;
+
+                /*  We are drawing bottom-to-top, so if we are above the      *
+                 *  top-most endpoint, we are done drawing. Break.            */
+                if (ym >= y_end)
+                    break;
+
+                /*  Compute the endpoints for the tick marks.                 */
+                left_tick_left = vec2.Vec2(x_start - minor_tick_length, ym);
+                left_tick_right = vec2.Vec2(x_start + minor_tick_length, ym);
+                right_tick_left = vec2.Vec2(x_end - minor_tick_length, ym);
+                right_tick_right = vec2.Vec2(x_end + minor_tick_length, ym);
+
+                /*  Draw the given minor tick mark.                           */
+                draw(left_tick_left.LineTo(left_tick_right), tick_pen);
+                draw(right_tick_left.LineTo(right_tick_right), tick_pen);
+            }
+            /*  End of for-loop drawing minor tick marks in the y-axis.       */
+
+            /*  Same check as before, if the semi-major tick mark has a y     *
+             *  value less than the bottom-most endpoint, skip it.            */
+            if (ys <= y_start)
+                continue;
+
+            /*  If we are past the bounds above, end the for-loop.            */
+            if (ys >= y_end)
+                break;
+
+            /*  The last semi-major tick mark does not need to be drawn since *
+             *  the subsequent major tick mark will cover this point.         */
+            if (ns == y_subdivisions)
+                break;
+
+            /*  Compute the endpoints for the semi-major tick marks.          */
+            left_tick_left = vec2.Vec2(x_start - semi_major_tick_length, ys);
+            left_tick_right = vec2.Vec2(x_start + semi_major_tick_length, ys);
+            right_tick_left = vec2.Vec2(x_end - semi_major_tick_length, ys);
+            right_tick_right = vec2.Vec2(x_end + semi_major_tick_length, ys);
+
+            /*  Draw the semi-major tick mark.                                */
+            draw(left_tick_left.LineTo(left_tick_right), tick_pen);
+            draw(right_tick_left.LineTo(right_tick_right), tick_pen);
+        }
+        /*  End of for-loop drawing semi-major tick marks in the y-axis.      */
+
+        /*  We decremented y_first backwards in order to draw semi-major and  *
+         *  minor tick marks between the bounds of the box and the first      *
+         *  major tick mark. If n = y_first, do not draw a major tick mark.   *
+         *  This would lie outside of the box plot.                           */
+        if (n == y_first)
+            continue;
+
         /*  Compute the endpoints for the tick-marks.                         */
-        right_tick_right = vec2.Vec2(x_end + tick_length, n);
-        right_tick_left = vec2.Vec2(x_end - tick_length, n);
-        left_tick_right = vec2.Vec2(x_start + tick_length, n);
         left_tick_left = vec2.Vec2(x_start - tick_length, n);
+        left_tick_right = vec2.Vec2(x_start + tick_length, n);
+        right_tick_left = vec2.Vec2(x_end - tick_length, n);
+        right_tick_right = vec2.Vec2(x_end + tick_length, n);
 
         /*  Draw the tick marks and add labels.                               */
         if (draw_labels)
@@ -303,34 +370,8 @@ DrawBoxCoordinates(real x_start,
             draw(left_tick_right.LineTo(left_tick_left), tick_pen);
             draw(right_tick_left.LineTo(right_tick_right), tick_pen);
         }
-
-        /*  Draw the semi-major tick marks.                                   */
-        for (ns = 1; ns < y_subdivisions; ++ns)
-        {
-            ys = n + ns * y_semi_major_displacement;
-            right_tick_right = vec2.Vec2(x_end + semi_major_tick_length, ys);
-            right_tick_left = vec2.Vec2(x_end - semi_major_tick_length, ys);
-            left_tick_right = vec2.Vec2(x_start + semi_major_tick_length, ys);
-            left_tick_left = vec2.Vec2(x_start - semi_major_tick_length, ys);
-
-            draw(left_tick_right.LineTo(left_tick_left), tick_pen);
-            draw(right_tick_left.LineTo(right_tick_right), tick_pen);
-
-            /*  Finally, draw the minor tick marks.                           */
-            for (nm = 1; nm < x_minor_subdivisions; ++nm)
-            {
-                ym = ys + nm * y_minor_displacement;
-                right_tick_right = vec2.Vec2(x_end + minor_tick_length, ym);
-                right_tick_left = vec2.Vec2(x_end - minor_tick_length, ym);
-                left_tick_right = vec2.Vec2(x_start + minor_tick_length, ym);
-                left_tick_left = vec2.Vec2(x_start - minor_tick_length, ym);
-
-                draw(left_tick_right.LineTo(left_tick_left), tick_pen);
-                draw(right_tick_left.LineTo(right_tick_right), tick_pen);
-            }
-        }
     }
-    /*  End of for-loop drawing the horizontal tick-marks.                    */
+    /*  End of for-loop drawing tick-marks along the y-axis.                  */
 }
 /*  End of DrawBoxCoordinates.                                                */
 
