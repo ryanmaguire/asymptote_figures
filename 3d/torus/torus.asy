@@ -23,7 +23,6 @@ size(256);
 
 import graph3;
 import settings;
-settings.outformat = "pdf";
 
 settings.render = 8;
 
