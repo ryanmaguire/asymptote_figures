@@ -27,7 +27,7 @@ import vec2;
 /*  Default pens and parameters for size(512) drawings provided here.         */
 import size_512_default_settings as default;
 
-thin_pen = default.thin_pen + fontsize(6.0pt);
+thin_pen = default.thin_pen + fontsize(14.0pt);
 
 void DrawEye(vec2.Vec2 anchor, real length, real angle)
 {
@@ -155,7 +155,7 @@ vec2.Vec2 y_max = x_max.Rotate(pi - 2.0 * x_max.PolarAngle());
 
 vec2.Vec2 earth_dir = x_max.AsUnitNormal();
 
-vec2.Vec2 rho = vec2.Vec2(-0.65, -0.5);
+vec2.Vec2 rho = vec2.Vec2(-0.65, -0.65);
 
 vec2.Vec2 rho0 = vec2.Vec2(1.0, -0.75);
 vec2.Vec2 rho0_perturb = rho0 + 0.35 * earth_dir;
@@ -176,12 +176,12 @@ DrawEye(eye, eye_scale, eye_angle);
 draw("$D$", eye_edge.LineTo(rho0), default.thin_pen);
 draw(rho0_perturb.LineTo(rho0), default.thin_pen);
 
-draw("$B$", ArcForAngle(rho0, eye, rho0_perturb , 0.25), thin_pen);
-draw(Label("$\rho_{0}$", position = 0.25), rho0.LineTo(core), thin_pen);
-draw("$\phi_{0}$", ArcForAngle(core, x_max, rho0, 0.15), thin_pen);
+draw("$B$", ArcForAngle(rho0, eye, rho0_perturb , 0.27), thin_pen);
+draw(Label("$\rho_{0}$", position = 0.22), rho0.LineTo(core), thin_pen);
+draw("$\phi_{0}$", ArcForAngle(core, x_max, rho0, 0.07), thin_pen);
 
-draw(Label("$\rho$", position = 0.75), core.LineTo(rho), thin_pen);
-draw("$\phi$", ArcForAngle(core, x_max, rho, 0.25), thin_pen);
+draw(Label("$\rho$", position = 0.92), core.LineTo(rho), thin_pen);
+draw("$\phi$", ArcForAngle(core, x_max, rho, 0.22), thin_pen);
 
 rho0.DrawDot(default.dot_radius);
 rho.DrawDot(default.dot_radius);
